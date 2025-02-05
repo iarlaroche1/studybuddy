@@ -13,7 +13,7 @@
 
         <!-- Section containing the text prompting the user to sign-in -->
         <div class="sign-in-text-container">
-          <p class="sign-in-text">Sign-in here to get started!</p>
+          <p class="sign-in-text">Sign-up here to get started!</p>
         </div>
 
         <!-- Name input field section -->
@@ -45,7 +45,7 @@
 
         <!-- Sign-in button wrapper -->
         <div class="sign-in-button-wrapper">
-          <button class="sign-in-button" @click="handleSignIn">Sign In</button>
+          <button class="sign-in-button" @click="handleSignIn">Sign Up</button>
         </div>
 
       </div>
@@ -109,9 +109,9 @@ body, html {
 /* Adding the thin bar at the top */
 .main-container::before {
   content: '';
-  
   top: 0;
   left: 0;
+  position:absolute;
   width: 100%;
   height: 50px; /* Thin bar height */
   background-color: rgb(173, 7, 82); /* Same color as the button */
@@ -222,7 +222,7 @@ body, html {
   background-color: #242526;
   height: 100px;
   width: 100%;
-  position: absolute;
+  position: relative;
   bottom: 0;
   text-align: center;
   padding: 10px;
