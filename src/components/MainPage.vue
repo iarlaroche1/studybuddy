@@ -45,7 +45,7 @@
 
         <!-- Sign-in button wrapper -->
         <div class="sign-in-button-wrapper">
-          <button class="sign-in-button" @click="handleSignIn">Sign Up</button>
+          <button class="sign-in-button" @click="createUser">Sign Up</button>
         </div>
 
       </div>
@@ -61,6 +61,9 @@
 </template>
 
 <script>
+import app from '../api/firebase';
+import { getFunctions, httpsCallable } from "firebase/functions";
+
 export default {
   name: "MainPage",
   data() {
@@ -73,6 +76,19 @@ export default {
     };
   },
   methods: {
+    async createUser() {
+      console.log(this.handle);
+            console.log(this.comment);
+            const functions = getFunctions(app); 
+            const createUser = httpsCallable(functions, 'createUser'); 
+            const result = await createUser(
+                { 
+                    email: this.email, 
+                    fullName: this.fullName,
+                    password: this.password
+                });
+            console.log(result);
+        },
     handleSignIn() {
       // Sign-in logic here
       if (this.password === this.confirmPassword) {
