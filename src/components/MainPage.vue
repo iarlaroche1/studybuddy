@@ -77,15 +77,14 @@ export default {
   },
   methods: {
     async createUser() {
-      console.log(this.handle);
-            console.log(this.comment);
+            console.log(this.email + ", " + this.fullName + ", " + this.password);
             const functions = getFunctions(app); 
             const createUser = httpsCallable(functions, 'createUser'); 
             const result = await createUser(
                 { 
-                    email: this.email, 
-                    fullName: this.fullName,
-                    password: this.password
+                    "email":this.email, 
+                    "fullName":this.fullName,
+                    "password":this.password
                 });
             console.log(result);
         },

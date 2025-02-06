@@ -8,11 +8,12 @@
  */
 
 const {onRequest} = require("firebase-functions/v2/https");
-//const { onCall } = require('firebase-functions/v2/https');
-//const logger = require("firebase-functions/logger");
-//const { initializeApp } = require('firebase-admin/app');
+const { onCall } = require('firebase-functions/v2/https');
+const logger = require("firebase-functions/logger");
+const { initializeApp } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
 const admin = require('firebase-admin');
+const { request } = require("express");
 admin.initializeApp();
 
 // Create and deploy your first functions
@@ -24,22 +25,14 @@ admin.initializeApp();
 // });
 
 const db = getFirestore();
-
- exports.createUser = onRequest(async (data, context) => {
-    console.log("Creating user", { structuredData: true });
-     // Save the data in our Firestore DB
-     const { userEmail, userFullName, userPassword } = data.data;
-    const res = await db.collection('users').add({
-    email: userEmail,
-    fullName: userFullName,
-    password: userPassword,
-    });
-    // If successful id will be returned
-    if (res.id) {
-    console.log('user added with ID:', res.id);
-    context.send('Operation successful: User added.');
-    } else {
-    console.error('Failed to add the user.');
-    context.send('Operation failed: User not added.');
-    }
-    });
+// send user data to users database
+// TODO set up with firebase auth - this is purely temporary
+exports.createUser = onCall(async (data, context) => {
+   const { email, fullName, password } = data.data;
+   
+   const res = await db.collection('users').add({
+      email,
+      fullName,
+      password
+   })
+});
