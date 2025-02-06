@@ -1,7 +1,7 @@
 <template>
   <!-- Main container for the page -->
   <div class="main-container">
- 
+
     <!-- Wrapper div for the content and header image -->
     <div class="content-wrapper">
 
@@ -25,7 +25,8 @@
         <!-- Email input field section -->
         <div class="input-container">
           <label for="email">Email:</label>
-          <input id="email" v-model="email" type="email" placeholder="Enter your university email" class="input-field" />
+          <input id="email" v-model="email" type="email" placeholder="Enter your university email"
+            class="input-field" />
         </div>
 
         <!-- Password input field section -->
@@ -37,11 +38,16 @@
         <!-- Confirm password section -->
         <div class="input-container">
           <label for="confirm-password">Confirm Password:</label>
-          <input id="confirm-password" v-model="confirmPassword" type="password" placeholder="Re-enter your password" class="input-field" />
+          <input id="confirm-password" v-model="confirmPassword" type="password" placeholder="Re-enter your password"
+            class="input-field" />
         </div>
 
         <!-- Text prompting users to log in if they already have an account -->
-        <p class="login-prompt">Already have an account? Login here</p>
+        <!-- In the sign-up page template -->
+        <p class="login-prompt">
+          <router-link to="/LoginPage">Already have an account? Login here</router-link>
+        </p>
+
 
         <!-- Sign-in button wrapper -->
         <div class="sign-in-button-wrapper">
@@ -62,7 +68,7 @@
 
 <script>
 export default {
-  name: "MainPage",
+  name: "SignUpPage",
   data() {
     return {
       header: require('@/assets/header.jpg'),
@@ -85,9 +91,11 @@ export default {
 };
 </script>
 
+
 <style>
 /* General Reset for Body */
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   font-family: "Inter", Helvetica, sans-serif;
@@ -106,26 +114,34 @@ body, html {
   padding: 20px;
   position: relative;
 }
+
 /* Adding the thin bar at the top */
 .main-container::before {
   content: '';
   top: 0;
   left: 0;
-  position:absolute;
+  position: absolute;
   width: 100%;
-  height: 50px; /* Thin bar height */
-  background-color: rgb(173, 7, 82); /* Same color as the button */
-  z-index: 1000; /* Ensures the bar stays above other content */
+  height: 50px;
+  /* Thin bar height */
+  background-color: rgb(173, 7, 82);
+  /* Same color as the button */
+  z-index: 1000;
+  /* Ensures the bar stays above other content */
 }
+
 /* Wrapper div for content */
 .content-wrapper {
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Aligns form container vertically */
-  align-items: center; /* Aligns form container horizontally */
+  justify-content: center;
+  /* Aligns form container vertically */
+  align-items: center;
+  /* Aligns form container horizontally */
   background-color: #cccccc;
   width: 100%;
-  max-width: 1200px; /* Limit the max width */
+  max-width: 1200px;
+  /* Limit the max width */
   padding: 20px;
   box-sizing: border-box;
   position: relative;
@@ -135,7 +151,8 @@ body, html {
 /* Header image */
 .header-image {
   width: auto;
-  max-height: 30vh; /* 30% of the viewport height */
+  max-height: 30vh;
+  /* 30% of the viewport height */
   object-fit: fill;
   border-radius: 10px;
 }
@@ -145,7 +162,8 @@ body, html {
   background-color: #fff6f6;
   border-radius: 30px;
   width: 100%;
-  max-width: 600px; /* Max width of the form */
+  max-width: 600px;
+  /* Max width of the form */
   padding: 30px;
   box-sizing: border-box;
   margin-top: 20px;
@@ -176,7 +194,8 @@ body, html {
   font-size: 18px;
   font-weight: 500;
   color: #000;
-  margin-bottom: 8px; /* space between label and input */
+  margin-bottom: 8px;
+  /* space between label and input */
 }
 
 /* Input field styles */
@@ -187,7 +206,8 @@ body, html {
   width: 100%;
   padding: 15px;
   font-size: 18px;
-  margin-top: 5px; /* small space between label and input */
+  margin-top: 5px;
+  /* small space between label and input */
   box-sizing: border-box;
   transition: all 0.3s ease;
 }
@@ -245,7 +265,8 @@ body, html {
 }
 
 .login-prompt:hover {
-  color: #8e44ad; /* Hover effect color */
+  color: #8e44ad;
+  /* Hover effect color */
 }
 
 /* Responsive Design Tweaks */
