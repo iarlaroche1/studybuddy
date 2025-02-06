@@ -77,25 +77,25 @@ export default {
   },
   methods: {
     async createUser() {
-            console.log(this.email + ", " + this.fullName + ", " + this.password);
-            const functions = getFunctions(app); 
-            const createUser = httpsCallable(functions, 'createUser'); 
+              // Sign-in logic here
+            if (this.password !== this.confirmPassword) {
+              alert("Passwords do not match!")
+              return;
+            }
+            console.log("Form submitted with " + this.email + ", " + this.fullName + ", " + this.password);
+            const functions = getFunctions(app);
+            const createUser = httpsCallable(functions, 'createUser');
             const result = await createUser(
-                { 
-                    "email":this.email, 
+                {
+                    "email":this.email,
                     "fullName":this.fullName,
                     "password":this.password
                 });
             console.log(result);
         },
-    handleSignIn() {
-      // Sign-in logic here
-      if (this.password === this.confirmPassword) {
-        console.log("Form submitted with:", this.fullName, this.email, this.password);
-      } else {
-        alert("Passwords do not match!");
-      }
-    }
+    //handleSignIn() {
+      
+    //}
   }
 };
 </script>
