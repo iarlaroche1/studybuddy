@@ -25,6 +25,7 @@ export const handleSignIn = (fullName, email, password, confirmPassword, users) 
     alert("Passwords do not match!");
     return;
   }
+ 
 
   // Validate email
   if (!validateEmail(email)) {

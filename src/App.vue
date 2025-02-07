@@ -1,20 +1,14 @@
 <template>
   <div id="app">
-    <!-- Add MainPage Component here -->
-    <MainPage />
+    <!-- This will display the component according to the route -->
+    <router-view /> <!-- Vue Router will render the appropriate component here -->
   </div>
 </template>
 
 <script>
-// Import MainPage component
-import MainPage from './components/MainPage.vue';
-
 export default {
-  name: 'App',
-  components: {
-    MainPage, // Register MainPage component
-  }
-}
+  name: 'App'
+};
 </script>
 
 <style>

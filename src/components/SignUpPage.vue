@@ -51,7 +51,7 @@
 
         <!-- Sign-in button wrapper -->
         <div class="sign-in-button-wrapper">
-          <button class="sign-in-button" @click="handleSignIn">Sign Up</button>
+          <button class="sign-in-button" @click="createUser">Sign Up</button>
         </div>
 
       </div>
@@ -99,6 +99,9 @@ export default {
                 });
             console.log(result);
         },
+    //handleSignIn() {
+      
+    //}
   }
 };
 </script>
