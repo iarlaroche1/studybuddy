@@ -45,7 +45,7 @@
         <!-- Text prompting users to log in if they already have an account -->
         <!-- In the sign-up page template -->
         <p class="login-prompt">
-          <router-link to="/LoginPage">Already have an account? Login here</router-link>
+          <router-link to="/login">Already have an account? Login here</router-link>
         </p>
 
 
