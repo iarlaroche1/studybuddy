@@ -1,6 +1,11 @@
+//import firebase from 'firebase/app';  // Import the core Firebase library
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 //import { getAnalytics } from "firebase/analytics";
+
+import 'firebase/functions';  // Import Firebase functions module
+
+
 
 /// i've commented out the analytics import as it was causing an error as was "const analytics = getAnalytics(app);"
 /// but will come back to this im just trying to get it up and running at the mo 
