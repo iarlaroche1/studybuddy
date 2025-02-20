@@ -85,6 +85,7 @@ export default {
             // Signed in
             let user = userCredential.user;
             console.log(user);
+            
             }).catch((error) => {
             let errorCode = error.code;
             let errorMessage = error.message;
