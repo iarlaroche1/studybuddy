@@ -64,6 +64,9 @@
 </template>
 
 <script>
+import app from "../api/firebase"
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
 export default {
     name: "LoginPage",
     data() {
@@ -77,12 +80,17 @@ export default {
     },
     methods: {
         handleLogIn() {
-            // Log-in logic here
-            if (this.password === this.confirmPassword) {
-                console.log("Form submitted with:", this.fullName, this.email, this.password);
-            } else {
-                alert("Passwords do not match!");
-            }
+            const auth = getAuth(app);
+            signInWithEmailAndPassword(auth, this.email, this.password).then((userCredential) => {
+            // Signed in
+            let user = userCredential.user;
+            console.log(user);
+            }).catch((error) => {
+            let errorCode = error.code;
+            let errorMessage = error.message;
+            console.log(errorCode)
+            console.log(errorMessage)
+            });
         }
     }
 };

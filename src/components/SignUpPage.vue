@@ -68,40 +68,46 @@
 
 <script>
 import app from '../api/firebase';
-import { getFunctions, httpsCallable } from "firebase/functions";
+// import { getFunctions, httpsCallable } from "firebase/functions";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
 
 export default {
   name: "SignUpPage",
   data() {
     return {
       header: require('@/assets/header.jpg'),
-      fullName: '',
-      email: '',
-      password: '',
-      confirmPassword: ''
+      fullName: "",
+      email: "",
+      password: "",
+      confirmPassword: ""
     };
   },
   methods: {
-    async createUser() {
-            // Sign-in logic here
-            if (this.password !== this.confirmPassword) {
-              alert("Passwords do not match!")
-              return;
-            }
-            console.log("Form submitted with " + this.email + ", " + this.fullName + ", " + this.password);
-            const functions = getFunctions(app);
-            const createUser = httpsCallable(functions, 'createUser');
-            const result = await createUser(
-                {
-                    "email":this.email,
-                    "fullName":this.fullName,
-                    "password":this.password
-                });
-            console.log(result);
-        },
-    //handleSignIn() {
-      
-    //}
+    createUser(){
+        const auth = getAuth(app);
+
+        // Sign-in logic here
+        if (this.password !== this.confirmPassword) {
+                alert("Passwords do not match!")
+                return;
+        }
+              
+        createUserWithEmailAndPassword(auth, this.email, this.password)
+        .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log(user)
+        // ...
+        })
+        .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode)
+        console.log(errorMessage)
+        // ..
+        });
+    }
   }
 };
 </script>
