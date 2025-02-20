@@ -45,13 +45,13 @@
         <!-- Text prompting users to log in if they already have an account -->
         <!-- In the sign-up page template -->
         <p class="login-prompt">
-          <router-link to="/LoginPage">Already have an account? Login here</router-link>
+          <router-link to="/login">Already have an account? Login here</router-link>
         </p>
 
 
         <!-- Sign-in button wrapper -->
         <div class="sign-in-button-wrapper">
-          <button class="sign-in-button" @click="handleSignIn">Sign Up</button>
+          <button class="sign-in-button" @click="createUser">Sign Up</button>
         </div>
 
       </div>
@@ -67,25 +67,46 @@
 </template>
 
 <script>
+import app from '../api/firebase';
+// import { getFunctions, httpsCallable } from "firebase/functions";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
+
 export default {
   name: "SignUpPage",
   data() {
     return {
       header: require('@/assets/header.jpg'),
-      fullName: '',
-      email: '',
-      password: '',
-      confirmPassword: ''
+      fullName: "",
+      email: "",
+      password: "",
+      confirmPassword: ""
     };
   },
   methods: {
-    handleSignIn() {
-      // Sign-in logic here
-      if (this.password === this.confirmPassword) {
-        console.log("Form submitted with:", this.fullName, this.email, this.password);
-      } else {
-        alert("Passwords do not match!");
-      }
+    createUser(){
+        const auth = getAuth(app);
+
+        // Sign-in logic here
+        if (this.password !== this.confirmPassword) {
+                alert("Passwords do not match!")
+                return;
+        }
+              
+        createUserWithEmailAndPassword(auth, this.email, this.password)
+        .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log(user)
+        // ...
+        })
+        .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode)
+        console.log(errorMessage)
+        // ..
+        });
     }
   }
 };
