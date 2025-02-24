@@ -35,4 +35,6 @@ exports.createUser = onCall(async (data, context) => {
       fullName,
       password
    })
+
+   console.log
 });
