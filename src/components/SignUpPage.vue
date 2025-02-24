@@ -47,6 +47,7 @@
         <p class="login-prompt">
           <router-link to="/login">Already have an account? Login here</router-link>
           <br> 
+          <br>
           <router-link to="/harsshita">Harsshita's page</router-link>
         </p>
 
@@ -60,8 +61,10 @@
 
       <!-- Footer section with text and small image -->
       <div class="footer">
+        <br>
+        <br>
         <div class="footer-text">2024 Study-Buddy App</div>
-        <img class="footer-image" alt="Tempimageonpho" :src="tempImage" />
+       
       </div>
 
     </div>
