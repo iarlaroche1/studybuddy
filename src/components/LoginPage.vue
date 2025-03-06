@@ -45,6 +45,12 @@
                 <p class="login-prompt">
                     <router-link to="/signup">Don't have an account? Sign up here</router-link>
                 </p>
+                
+                <!-- Temp! -->
+                <p class="login-prompt">
+                    <router-link to="/profiletestpage">Test Page</router-link>
+                </p>
+                
 
                 <!-- Log-in button wrapper -->
                 <div class="log-in-button-wrapper">

@@ -21,37 +21,44 @@
 </template>
 
 <script>
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { getAuth, updateProfile } from "firebase/auth";
 
-const auth = getAuth();
-const user = auth.currentUser;
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getAuth, updateProfile, onAuthStateChanged } from "firebase/auth";
+import firebaseApp from "../api/firebase"; // Import the Firebase app instance
 
 var fullName = "";
 var url = "";
 
-
-if (user !== null) {
-        user.providerData.forEach((profile) => {
-            console.log("  Sign-in provider: " + profile.providerId);
-            console.log("  Provider-specific UID: " + profile.uid);
-            console.log("  Name: " + profile.displayName);
-            console.log("  Email: " + profile.email);
-            console.log("  Photo URL: " + profile.photoURL);
-            fullName = profile.displayName;
-            url = profile.photoURL;
-        });
-    } else {console.log("user is null");}
-
 export default {
     data() {
         return {
-            fullName: ''
+            fullName: '',
+            url: '',
+            user: null
         };
+    },
+    created() {
+        const auth = getAuth(firebaseApp); // Use the Firebase app instance
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                this.user = user;
+                user.providerData.forEach((profile) => {
+                    console.log("  Sign-in provider: " + profile.providerId);
+                    console.log("  Provider-specific UID: " + profile.uid);
+                    console.log("  Name: " + profile.displayName);
+                    console.log("  Email: " + profile.email);
+                    console.log("  Photo URL: " + profile.photoURL);
+                    this.fullName = profile.displayName;
+                    this.url = profile.photoURL;
+                });
+            } else {
+                console.log("No user is signed in");
+            }
+        });
     },
     methods: {
         updateUserProfile() {
-            
+            const auth = getAuth(firebaseApp); // ensure auth is defined
             if (this.fullName == null) {
                 this.fullName = fullName;
             }
@@ -70,14 +77,16 @@ export default {
             });
         },
         checkProfile() {
-            if (user !== null) {
-            user.providerData.forEach((profile) => {
+            if (this.user !== null) {
+                this.user.providerData.forEach((profile) => {
                 console.log("  Sign-in provider: " + profile.providerId);
                 console.log("  Provider-specific UID: " + profile.uid);
                 console.log("  Name: " + profile.displayName);
                 console.log("  Email: " + profile.email);
                 console.log("  Photo URL: " + profile.photoURL);
             });
+            } else if (this.user == null) {
+                console.log("User is null");
             }
         },
         handleFileChange(event) {
