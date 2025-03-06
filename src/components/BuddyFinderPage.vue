@@ -16,7 +16,7 @@
         <div class="please-select-the-wrapper">
           <router-link to="/login">return to login page</router-link>
           <p class="please-select-the">
-            Please select the year you are in and the module you want to Study:
+            Please select your year and the optional modules you want to Study:
           </p>
         </div>
 
@@ -26,13 +26,13 @@
             <option v-for="year in years" :key="year" :value="year">Year {{ year }}</option>
           </select>
 
-          <select v-model="selectedModule" :disabled="!selectedYear">
+          <select v-model="selectedOptionalModule" :disabled="!selectedYear">
             <option disabled value="">Select Optional Module(s)</option>
-            <option v-for="module in filteredModules" :key="module" :value="module">{{ module }}</option>
+            <option v-for="optional_modules in filteredModules" :key="optional_modules" :value="optional_modules">{{ optional_modules }}</option>
           </select>
         </div>
 
-        <button class="text-wrapper-2">Find your Study-Buddy here</button>
+        <button class="text-wrapper-2">Click to Find your Study-Buddy!</button>
       </div>
     </div>
   </div>
@@ -46,7 +46,7 @@ export default {
   data() {
     return {
       selectedYear: "",
-      selectedModule: "",
+      selectedOptionalModule: "",
       years: [1, 2, 3, 4],
       required_modules: {
         1: ["Programming", "Web Development", "Professional Skills 1", "Computing Systems", "Algorithms and Information Systems", "Fundamentals of Electrical and Electronic Engineering", "Introduction to Physics"],
@@ -66,12 +66,12 @@ export default {
     // Method to update the module options when a year is selected
     updateModules() {
       // Reset the selected module whenever the year is changed
-      this.selectedModule = "";
+      this.selectedOptionalModule = "";
     }
   },
   computed: {
     filteredModules() {
-      return this.selectedYear ? this.modules[this.selectedYear] : [];
+      return this.selectedYear ? this.optional_modules[this.selectedYear] : [];
     }
   }
 };
