@@ -42,6 +42,12 @@
                     <br><br>
           <router-link to="/buddyfinder">Temp link: BuddyFinder Page</router-link>
                 </p>
+                
+                <!-- Temp! -->
+                <p class="login-prompt">
+                    <router-link to="/profiletestpage">Temp link: Profile Test Page</router-link>
+                </p>
+                
 
                 <!-- Log-in button wrapper -->
                 <div class="log-in-button-wrapper">
@@ -82,8 +88,10 @@ export default {
             // Signed in
             let user = userCredential.user;
             console.log(user);
+            
             // Programmatically navigate to "/buddyfinder" route after successful login
             this.$router.push('/buddyfinder');
+            
             }).catch((error) => {
             let errorCode = error.code;
             let errorMessage = error.message;
