@@ -87,6 +87,8 @@ export default {
             // Signed in
             let user = userCredential.user;
             console.log(user);
+            // Programmatically navigate to "/buddyfinder" route after successful login
+            this.$router.push('/buddyfinder');
             }).catch((error) => {
             let errorCode = error.code;
             let errorMessage = error.message;
