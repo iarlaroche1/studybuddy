@@ -1,9 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-
-/// i've commented out the analytics import as it was causing an error as was "const analytics = getAnalytics(app);"
-/// but will come back to this im just trying to get it up and running at the mo 
+import { getAuth, setPersistence, browserLocalPersistence } from "firebase/auth";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -23,8 +20,10 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
+
 // initialise firebase auth
 // eslint-disable-next-line
 const auth = getAuth(app);
+setPersistence(auth, browserLocalPersistence); // set persistence to local, saving user login across sessions
 
 export default app;
