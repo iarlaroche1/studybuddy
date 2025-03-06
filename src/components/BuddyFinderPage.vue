@@ -40,7 +40,7 @@
         </div>
 
         <!-- Submit Button: Only shows if at least one optional module is selected -->
-        <button v-if="selectedOptionalModules.length > 0" class="text-wrapper-2">
+        <button v-if="selectedOptionalModules.length > 0" @click="storeAcademicDetails" class="text-wrapper-2">
           Find your Study-Buddy here
         </button>
       </div>
@@ -136,6 +136,9 @@ export default {
       // Reset the selected modules whenever the year is changed
       this.selectedOptionalModules = [];
     },
+    storeAcademicDetails(){
+      // TODO 
+    }
   },
   computed: {
     filteredModules() {
