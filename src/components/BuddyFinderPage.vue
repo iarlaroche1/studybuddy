@@ -1,5 +1,5 @@
 <template>
-    <div class="LandingPage">
+    <div class="BuddyFinderPage">
       <div class="div">
         <div class="overlap-group">
           <header class="header">
@@ -14,7 +14,7 @@
         </div>
         <div class="frame-2">
           <div class="please-select-the-wrapper">
-            <router-link to="/login">*temp* back to login </router-link>
+            <router-link to="/login">Already have an account? Login here</router-link>
             <p class="please-select-the">
               Please select the year you are in and the module you want to Study:
             </p>
@@ -39,7 +39,7 @@
   </template>
   <script>
   export default {
-    name: "LandingPage",
+    name: "BuddyFinderPage",
     data() {
       return {
         selectedYear: "",
@@ -69,21 +69,21 @@
   </script>
   
   <style>
-  .LandingPage {
+  .BuddyFinderPage {
     background-color: #cccccc;
     display: flex;
     flex-direction: row;
     justify-content: center;
     width: 100%;
   }
-  .LandingPage .div {
+  .BuddyFinderPage .div {
     background-color: #cccccc;
     height: 1024px;
     position: relative;
     width: 1440px;
   }
   
-  .LandingPage .overlap-group {
+  .BuddyFinderPage .overlap-group {
     height: 174px;
     left: 0;
     position: absolute;
@@ -91,7 +91,7 @@
     width: 1440px;
   }
   
-  .LandingPage .header {
+  .BuddyFinderPage .header {
     background-color: #ad0741;
     height: 174px;
     left: 0;
@@ -100,14 +100,14 @@
     width: 1440px;
   }
   
-  .LandingPage .frame {
+  .BuddyFinderPage .frame {
     height: 174px;
     left: 621px;
     position: relative;
     width: 819px;
   }
   
-  .LandingPage .welcome-to-your {
+  .BuddyFinderPage .welcome-to-your {
     color: #ffffff;
     font-family: "Inter-Bold", Helvetica;
     font-size: 40px;
@@ -119,17 +119,17 @@
     top: 47px;
     width: 674px;
   }
-  .LandingPage .text-wrapper {
+  .BuddyFinderPage .text-wrapper {
     font-weight: 700;
   }
   
-  .LandingPage .span {
+  .BuddyFinderPage .span {
     font-family: "Inter-Light", Helvetica;
     font-size: 20px;
     font-weight: 300;
   }
   
-  .LandingPage .tempimagebltqe {
+  .BuddyFinderPage .tempimagebltqe {
     height: 174px;
     left: 0;
     object-fit: cover;
@@ -138,7 +138,7 @@
     width: 620px;
   }
   
-  .LandingPage .frame-2 {
+  .BuddyFinderPage .frame-2 {
     background-color: #ffffff;
     border-radius: 20px;
     height: 777px;
@@ -149,7 +149,7 @@
     width: 700px;
   }
   
-  .LandingPage .please-select-the-wrapper {
+  .BuddyFinderPage .please-select-the-wrapper {
     height: 139px;
     left: 91px;
     overflow: hidden;
@@ -158,7 +158,7 @@
     width: 520px;
   }
   
-  .LandingPage .please-select-the {
+  .BuddyFinderPage .please-select-the {
     color: #000000;
     font-family: "Inter-Semibold", Helvetica;
   font-size: 32px;
