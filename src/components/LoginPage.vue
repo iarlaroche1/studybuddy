@@ -44,6 +44,8 @@
                 <!-- In the login page template -->
                 <p class="login-prompt">
                     <router-link to="/signup">Don't have an account? Sign up here</router-link>
+                    <br><br>
+          <router-link to="/buddyfinder">Temp link: BuddyFinder Page</router-link>
                 </p>
 
                 <!-- Log-in button wrapper -->
