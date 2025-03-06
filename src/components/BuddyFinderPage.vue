@@ -16,29 +16,37 @@
         <div class="please-select-the-wrapper">
           <router-link to="/login">return to login page</router-link>
           <p class="please-select-the">
-            Please select your year and the optional modules you want to Study:
+            Please select your year and the optional modules you want to study:
           </p>
         </div>
 
+        <!-- Year Selection Dropdown -->
         <div class="dropdown-container">
           <select v-model="selectedYear" @change="updateModules">
             <option disabled value="">Select Year</option>
             <option v-for="year in years" :key="year" :value="year">Year {{ year }}</option>
           </select>
 
-          <select v-model="selectedOptionalModule" :disabled="!selectedYear">
-            <option disabled value="">Select Optional Module(s)</option>
-            <option v-for="optional_modules in filteredModules" :key="optional_modules" :value="optional_modules">{{ optional_modules }}</option>
-          </select>
+          <!-- Optional Module Checkboxes -->
+          <div v-if="selectedYear" class="optional-modules">
+            <h3>Select Optional Module(s)</h3>
+            <div v-for="optionalModule in filteredModules" :key="optionalModule" class="checkbox-container">
+              <label>
+                <input type="checkbox" :value="optionalModule" v-model="selectedOptionalModules" />
+                {{ optionalModule }}
+              </label>
+            </div>
+          </div>
         </div>
 
-        <button class="text-wrapper-2">Click to Find your Study-Buddy!</button>
+        <!-- Submit Button: Only shows if at least one optional module is selected -->
+        <button v-if="selectedOptionalModules.length > 0" class="text-wrapper-2">
+          Find your Study-Buddy here
+        </button>
       </div>
     </div>
   </div>
 </template>
-
-
 <script>
 
 export default {
@@ -46,34 +54,94 @@ export default {
   data() {
     return {
       selectedYear: "",
-      selectedOptionalModule: "",
+      selectedOptionalModules: [],  // Array to store selected optional modules
       years: [1, 2, 3, 4],
       required_modules: {
-        1: ["Programming", "Web Development", "Professional Skills 1", "Computing Systems", "Algorithms and Information Systems", "Fundamentals of Electrical and Electronic Engineering", "Introduction to Physics"],
-        2: ["Discrete Mathematics", "Software Engineering 1", "Object-Oriented Programming", "Database Systems1", "Computer Systems and Organization", "Statistics for Data Science 1", "Networks and Data Communications 1", "Object-Oriented Programming: Data Structures and Algorithms"],
-        3: ["Database Systems 2", "Networks ad Data Communications 2", "Software Engineering 2", "Programming 3", "Professional Experience programme in Information Technology", "Organisational Innovation", "Professional skills"],
-        4: ["Advanced Professional Skills", "Artificial Intelligence", "Software Engineering 3", "Machine Learning", "Real Time Systems", "Distributed Systems and Co Operative Computing"]
+        1: [
+          "Programming",
+          "Web Development",
+          "Professional Skills 1",
+          "Computing Systems",
+          "Algorithms and Information Systems",
+          "Fundamentals of Electrical and Electronic Engineering",
+          "Introduction to Physics",
+        ],
+        2: [
+          "Discrete Mathematics",
+          "Software Engineering 1",
+          "Object-Oriented Programming",
+          "Database Systems1",
+          "Computer Systems and Organization",
+          "Statistics for Data Science 1",
+          "Networks and Data Communications 1",
+          "Object-Oriented Programming: Data Structures and Algorithms",
+        ],
+        3: [
+          "Database Systems 2",
+          "Networks ad Data Communications 2",
+          "Software Engineering 2",
+          "Programming 3",
+          "Professional Experience programme in Information Technology",
+          "Organisational Innovation",
+          "Professional skills",
+        ],
+        4: [
+          "Advanced Professional Skills",
+          "Artificial Intelligence",
+          "Software Engineering 3",
+          "Machine Learning",
+          "Real Time Systems",
+          "Distributed Systems and Co Operative Computing",
+        ],
       },
       optional_modules: {
         1: ["Mathematics", "Mathematics (Honours)"],
-        2: ["Differential Forms", "Discrete Mathematics", "Linear Algebra", "Introduction to Modelling", "Next Generation Technologies 2", "Complex Analysis"],
-        3: ["Human Computer Interaction", "Programming Paradigms", "Metric Spaces", "Numerical Analysis 1", "Groups", "Games Programming"],
-        4: ["Rings", "Graphics and Image Process", "Systems Modelling and Simulation", "Final Year Project", "Meaasure Theory", "Euclidean and Non-Euclidean Geometry", "Information Retrieval", "Networks", "Fields and Appliactions", "Topology", "Computer Security and Forensic Computing", "Advanced Group Theory", "Cryptography"]
-      }
+        2: [
+          "Differential Forms",
+          "Discrete Mathematics",
+          "Linear Algebra",
+          "Introduction to Modelling",
+          "Next Generation Technologies 2",
+          "Complex Analysis",
+        ],
+        3: [
+          "Human Computer Interaction",
+          "Programming Paradigms",
+          "Metric Spaces",
+          "Numerical Analysis 1",
+          "Groups",
+          "Games Programming",
+        ],
+        4: [
+          "Rings",
+          "Graphics and Image Process",
+          "Systems Modelling and Simulation",
+          "Final Year Project",
+          "Measure Theory",
+          "Euclidean and Non-Euclidean Geometry",
+          "Information Retrieval",
+          "Networks",
+          "Fields and Applications",
+          "Topology",
+          "Computer Security and Forensic Computing",
+          "Advanced Group Theory",
+          "Cryptography",
+        ],
+      },
     };
   },
   methods: {
     // Method to update the module options when a year is selected
     updateModules() {
-      // Reset the selected module whenever the year is changed
-      this.selectedOptionalModule = "";
-    }
+      // Reset the selected modules whenever the year is changed
+      this.selectedOptionalModules = [];
+    },
   },
   computed: {
     filteredModules() {
       return this.selectedYear ? this.optional_modules[this.selectedYear] : [];
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -224,10 +292,10 @@ select option {
   border-radius: 95px;
   margin-bottom: 100px;
   cursor: pointer;
-  position: absolute;
+  position: static;
   bottom: 50px;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-0%);
   width: 520px;
   text-align: center;
 }
