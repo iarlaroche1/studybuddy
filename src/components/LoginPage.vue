@@ -16,12 +16,7 @@
                     <p class="log-in-text">Please Log in!</p>
                 </div>
 
-                <!-- Name input field section -->
-                <div class="input-container">
-                    <label for="full-name">Full Name:</label>
-                    <input id="full-name" v-model="fullName" type="text" placeholder="Enter your full name"
-                        class="input-field" />
-                </div>
+               
 
                 <!-- Email input field section -->
                 <div class="input-container">
@@ -44,11 +39,13 @@
                 <!-- In the login page template -->
                 <p class="login-prompt">
                     <router-link to="/signup">Don't have an account? Sign up here</router-link>
+                    <br><br>
+          <router-link to="/buddyfinder">Temp link: BuddyFinder Page</router-link>
                 </p>
                 
                 <!-- Temp! -->
                 <p class="login-prompt">
-                    <router-link to="/profiletestpage">Test Page</router-link>
+                    <router-link to="/profiletestpage">Temp link: Profile Test Page</router-link>
                 </p>
                 
 
@@ -91,6 +88,9 @@ export default {
             // Signed in
             let user = userCredential.user;
             console.log(user);
+            
+            // Programmatically navigate to "/buddyfinder" route after successful login
+            this.$router.push('/buddyfinder');
             
             }).catch((error) => {
             let errorCode = error.code;
@@ -194,12 +194,7 @@ html {
     line-height: 1.4;
 }
 
-/* Input container styling */
-.input-container {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
-}
+
 
 .input-container label {
     font-size: 18px;

@@ -5,14 +5,15 @@ import { createRouter, createWebHistory } from 'vue-router';  // Import Vue Rout
 // Import the components for the routes
 import SignUpPage from './components/SignUpPage.vue';
 import LoginPage from './components/LoginPage.vue';
+import BuddyFinderPage from './components/BuddyFinderPage.vue';
 import ProfileTestPage from './components/ProfileTestPage.vue';
 import test from './components/newprofiletest.vue';
-
 
 // Define routes for Vue Router
 const routes = [
   { path: '/signup', component: SignUpPage },
   { path: '/login', component: LoginPage },
+  { path: '/buddyfinder', component: BuddyFinderPage }
   { path: '/profiletestpage', component: ProfileTestPage },
   { path: '/test', component: test }
 ];
