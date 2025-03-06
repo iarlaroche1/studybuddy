@@ -13,7 +13,7 @@ import test from './components/newprofiletest.vue';
 const routes = [
   { path: '/signup', component: SignUpPage },
   { path: '/login', component: LoginPage },
-  { path: '/buddyfinder', component: BuddyFinderPage }
+  { path: '/buddyfinder', component: BuddyFinderPage },
   { path: '/profiletestpage', component: ProfileTestPage },
   { path: '/test', component: test }
 ];
