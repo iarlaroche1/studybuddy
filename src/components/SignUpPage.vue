@@ -72,7 +72,7 @@
 <script>
 import app from '../api/firebase';
 // import { getFunctions, httpsCallable } from "firebase/functions";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 
 export default {
@@ -100,6 +100,9 @@ export default {
         .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
+        updateProfile(auth.currentUser, {
+          displayName: this.fullName
+        });
         console.log(user)
         // ...
         })
