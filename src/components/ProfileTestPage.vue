@@ -1,19 +1,20 @@
 <template>
-    <div>
+    <div>      
         <!-- Name input field section -->
         <div class="input-container">
             <label for="full-name">Full Name:</label>
             <input id="full-name" v-model="fullName" type="text" placeholder="Enter your full name" class="input-field" />
         </div>
-        <div>
-           <input type="file" @change="handleFileChange" accept="image/*" id="input1">
-           <button @click="uploadImage">Upload</button>
-        </div>
-         <div v-if="imageData!=null">                     
-            <img class="preview" height="268" width="356" :src="img1">
-            <br>
-         </div>
 
+        <!-- pfp input field section -->
+        <div>
+            <img v-if="url !== '' && url !== null" id="preview" height="100" width="100" :src="url">
+           <input type="file" @change="preview" accept="image/*" id="input1">
+           <!-- commenting out the below button because it isn't really necessary, updateProfile does the same thing -->
+           <!-- <button @click="uploadImage">Upload</button> -->
+        </div>
+        
+        <br>
         <button @click="updateUserProfile">Update Profile</button><br>
         <button @click="checkProfile">Check Profile</button>
         
@@ -54,11 +55,12 @@ export default {
             } else {
                 console.log("No user is signed in");
             }
-        });
+        }); 
     },
     methods: {
         updateUserProfile() {
             const auth = getAuth(firebaseApp); // ensure auth is defined
+            this.uploadImage();
             if (this.fullName == null) {
                 this.fullName = fullName;
             }
@@ -89,8 +91,10 @@ export default {
                 console.log("User is null");
             }
         },
-        handleFileChange(event) {
-            this.selectedFile = event.target.files[0];
+        preview() {
+            const file = document.getElementById("input1").files[0];
+            if (!file) return;
+            document.getElementById("preview").src = URL.createObjectURL(file);
         },
         async uploadImage() {
             const file = document.getElementById("input1").files[0];
