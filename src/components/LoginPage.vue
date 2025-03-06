@@ -16,12 +16,7 @@
                     <p class="log-in-text">Please Log in!</p>
                 </div>
 
-                <!-- Name input field section -->
-                <div class="input-container">
-                    <label for="full-name">Full Name:</label>
-                    <input id="full-name" v-model="fullName" type="text" placeholder="Enter your full name"
-                        class="input-field" />
-                </div>
+               
 
                 <!-- Email input field section -->
                 <div class="input-container">
@@ -191,12 +186,7 @@ html {
     line-height: 1.4;
 }
 
-/* Input container styling */
-.input-container {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
-}
+
 
 .input-container label {
     font-size: 18px;
