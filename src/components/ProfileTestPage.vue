@@ -6,8 +6,8 @@
             <input id="full-name" v-model="fullName" type="text" placeholder="Enter your full name" class="input-field" />
         </div>
         <div>
-           <input type="file" @change="handleFileChange" accept="image/*" ref="input1">
-           <button @click="previewImage">Submit</button>
+           <input type="file" @change="handleFileChange" accept="image/*" id="input1">
+           <button @click="uploadImage">Upload</button>
         </div>
          <div v-if="imageData!=null">                     
             <img class="preview" height="268" width="356" :src="img1">
@@ -92,18 +92,19 @@ export default {
         handleFileChange(event) {
             this.selectedFile = event.target.files[0];
         },
-        async uploadImage(event) {
-            const file = event.target.files[0];
-            if (!file) return;
+        async uploadImage() {
+            const file = document.getElementById("input1").files[0];
+              if (!file) return;
 
+            const auth = getAuth(firebaseApp);
             const storage = getStorage();
-            const storageRef = ref(storage, `profileImages/${file.name}`);
+            const storageRef = ref(storage, `profileImages/${auth.currentUser.email}`);
 
             try {
                 const snapshot = await uploadBytes(storageRef, file);
                 const uploadURL = await getDownloadURL(snapshot.ref);
                 console.log("File available at", uploadURL);
-                url = uploadURL;
+                this.url = uploadURL;
             } catch (error) {
                 console.error("Error uploading file:", error);
             }

@@ -8,6 +8,7 @@ import LoginPage from './components/LoginPage.vue';
 import BuddyFinderPage from './components/BuddyFinderPage.vue';
 import ProfileTestPage from './components/ProfileTestPage.vue';
 import test from './components/newprofiletest.vue';
+import NotFoundPage from './components/NotFoundPage.vue';
 
 // Define routes for Vue Router
 const routes = [
@@ -15,7 +16,8 @@ const routes = [
   { path: '/login', component: LoginPage },
   { path: '/buddyfinder', component: BuddyFinderPage },
   { path: '/profiletestpage', component: ProfileTestPage },
-  { path: '/test', component: test }
+  { path: '/test', component: test },
+  { path: "/:notFound", component: NotFoundPage } // 404 page, currently just directs to login
 ];
 
 // Create the Vue Router instance with history mode
