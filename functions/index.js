@@ -16,8 +16,6 @@ const { getFirestore } = require('firebase-admin/firestore');
 const admin = require('firebase-admin');
 admin.initializeApp();
 
-
-
 const db = getFirestore();
 
 exports.createUser = onCall(async (data, context) => {   
@@ -25,7 +23,7 @@ exports.createUser = onCall(async (data, context) => {
    const res = await db.collection('users').doc(id).set({
            email,
            fullName,
-           photoURL: "gs://ct216project-75856.firebasestorage.app/profileImages/blank.jpg",
+           photoURL: "https://firebasestorage.googleapis.com/v0/b/ct216project-75856.firebasestorage.app/o/profileImages%2Fblank.jpg?alt=media&token=1901e6c2-a4f4-4831-a4af-597538f7318c",
            year: 0
             });
          }

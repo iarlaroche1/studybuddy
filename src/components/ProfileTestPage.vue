@@ -5,6 +5,10 @@
             <label for="full-name">Full Name:</label>
             <input id="full-name" v-model="fullName" type="text" placeholder="Enter your full name" class="input-field" />
         </div>
+        <div class="input-container">
+            <label for="year">Year:</label>
+            <input id="year" v-model="year" type="text" placeholder="Enter your year" class="input-field" />
+        </div>
 
         <!-- pfp input field section -->
         <div>
@@ -26,7 +30,7 @@
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // import { getFunctions, httpsCallable } from "firebase/functions";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
-import { getAuth, updateProfile, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebaseApp from "../api/firebase"; // Import the Firebase app instance
 
 
@@ -39,7 +43,8 @@ export default {
             fullName: '',
             url: '',
             user: null,
-            username: ''
+            username: '',
+            year: ''
         };
     },
     created() {
@@ -49,15 +54,6 @@ export default {
                 this.user = user;
                 this.username = user.email.split('@')[0]; // Extract username from email
                 this.loadUserProfile();
-                user.providerData.forEach((profile) => {
-                    console.log("  Sign-in provider: " + profile.providerId);
-                    console.log("  Provider-specific UID: " + profile.uid);
-                    console.log("  Name: " + profile.displayName);
-                    console.log("  Email: " + profile.email);
-                    console.log("  Photo URL: " + profile.photoURL);
-                    this.fullName = profile.displayName;
-                    this.url = profile.photoURL;
-                });
             } else {
                 console.log("No user is signed in");
             }
@@ -74,12 +70,12 @@ export default {
                 const userData = userDoc.data();
                 this.fullName = userData.fullName;
                 this.url = userData.photoURL;
+                this.year = userData.year;
             } else {
                 console.log("No such document!");
             }
         },
         async updateUserProfile() {
-            const auth = getAuth(firebaseApp);
             const db = getFirestore(firebaseApp);
             const userDocRef = doc(db, "users", this.username);
 
@@ -89,11 +85,7 @@ export default {
                     email: this.user.email,
                     fullName: this.fullName,
                     photoURL: this.url,
-                    year: 0
-                });
-                await updateProfile(auth.currentUser, {
-                    displayName: this.fullName,
-                    photoURL: this.url
+                    year: this.year
                 });
                 console.log('Profile updated successfully');
             } catch (error) {
@@ -126,7 +118,7 @@ export default {
             this.username = this.user.email.split('@')[0];
             const storageRef = ref(storage, `profileImages/${this.username}`);
 
-            try {
+            try {   
                 const snapshot = await uploadBytes(storageRef, file);
                 const uploadURL = await getDownloadURL(snapshot.ref);
                 console.log("File available at", uploadURL);
