@@ -1,4 +1,5 @@
 <template>
+  
   <div class="BuddyFinderPage">
     <div class="div">
       <div class="overlap-group">
@@ -26,16 +27,25 @@
             <option disabled value="">Select Year</option>
             <option v-for="year in years" :key="year" :value="year">Year {{ year }}</option>
           </select>
-
           <!-- Optional Module Checkboxes -->
+
+
           <div v-if="selectedYear" class="optional-modules">
+
+        
+
             <h3>Select Optional Module(s)</h3>
-            <div v-for="optionalModule in filteredModules" :key="optionalModule" class="checkbox-container">
+            <div class="checkbox-container">
               <label>
-                <input type="checkbox" :value="optionalModule" v-model="selectedOptionalModules" />
-                {{ optionalModule }}
+                <select class="selectpicker" v-model="selectedOptionalModules" multiple>
+                  <option v-for="module in filteredModules" :key="module" :value="module">
+                    {{ module }}
+                  </option>
+
+                </select>
               </label>
             </div>
+
           </div>
         </div>
 
@@ -43,6 +53,7 @@
         <button v-if="selectedOptionalModules.length > 0" @click="storeAcademicDetails" class="text-wrapper-2">
           Find your Study-Buddy here
         </button>
+
       </div>
     </div>
   </div>
@@ -136,13 +147,16 @@ export default {
       // Reset the selected modules whenever the year is changed
       this.selectedOptionalModules = [];
     },
-    storeAcademicDetails(){
+    storeAcademicDetails() {
       // TODO 
     }
   },
   computed: {
     filteredModules() {
       return this.selectedYear ? this.optional_modules[this.selectedYear] : [];
+      /* If a year is selected (this.selectedYear is truthy), 
+      // filteredModules will return the list of modules for that specific year from the optional_modules object.
+      If no year is selected (this.selectedYear is falsy), it will return an empty array []. */
     },
   },
 };
