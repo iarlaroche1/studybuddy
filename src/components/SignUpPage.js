@@ -12,10 +12,10 @@ export const validateEmail = (email) => {
   return regex.test(email);
 };
 
-export async function createUser(email, fullName, password) {
+export async function createUser(email, fullName ) {
   const functions = getFunctions(app);
   const createUser = httpsCallable(functions, 'createUser');
-  const result = await createUser({ email, fullName, password });
+  const result = await createUser({ email, fullName });
   return result.data;
 }
 
@@ -32,7 +32,7 @@ export const handleSignIn = (fullName, email, password, confirmPassword, users) 
     alert("Please enter a valid email!");
     return;
   }
-
+  
   createUser(email, fullName, password);
   
   // Create a new user object
