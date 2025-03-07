@@ -1,4 +1,20 @@
 <template>
+    
+
+    <div class="pos-f-t">
+  <div class="collapse" id="navbarToggleExternalContent">
+    <div class="bg-custom p-4">
+      <h5 class="text-white h4">Collapsed content</h5>
+      <span class="text-muted">Toggleable via the navbar brand.</span>
+    </div>
+  </div>
+  <nav class="navbar navbar-dark bg-custom">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </nav>
+</div>
+
     <!-- Main container for the page -->
     <div class="main-container">
 
@@ -39,15 +55,10 @@
                 <!-- In the login page template -->
                 <p class="login-prompt">
                     <router-link to="/signup">Don't have an account? Sign up here</router-link>
-                    <br><br>
-          <router-link to="/buddyfinder">Temp link: BuddyFinder Page</router-link>
+                    
                 </p>
                 
-                <!-- Temp! -->
-                <p class="login-prompt">
-                    <router-link to="/profiletestpage">Temp link: Profile Test Page</router-link>
-                </p>
-                
+               
 
                 <!-- Log-in button wrapper -->
                 <div class="log-in-button-wrapper">
@@ -104,15 +115,11 @@ export default {
 </script>
 
 <style>
-/* General Reset for Body */
-body,
-html {
-    margin: 0;
-    padding: 0;
-    font-family: "Inter", Helvetica, sans-serif;
-    box-sizing: border-box;
-}
 
+/* Change the background color of the navbar */
+.pos-f-t {
+  background-color: rgb(173, 7, 82); /* Change this color to your preferred color */
+}
 /* Main container for the page */
 .main-container {
     /*background-color: #cccccc;*/
@@ -126,20 +133,6 @@ html {
     position: relative;
 }
 
-/* Adding the thin bar at the top */
-.main-container::before {
-    content: '';
-    top: 0;
-    left: 0;
-    position: absolute;
-    width: 100%;
-    height: 50px;
-    /* Thin bar height */
-    background-color: rgb(173, 7, 82);
-    /* Same color as the button */
-    z-index: 1000;
-    /* Ensures the bar stays above other content */
-}
 
 /* Wrapper div for content */
 .content-wrapper {
@@ -270,81 +263,6 @@ html {
     text-decoration: underline;
 }
 
-.login-prompt:hover {
-    color: #8e44ad;
-    /* Hover effect color */
-}
 
-/* Responsive Design Tweaks */
-@media (max-width: 768px) {
-    .log-in-text {
-        font-size: 28px;
-    }
 
-    .input-field {
-        font-size: 16px;
-        padding: 12px;
-    }
-
-    .input-container label {
-        font-size: 20px;
-    }
-
-    .log-in-button {
-        font-size: 20px;
-        padding: 12px 24px;
-    }
-
-    .header-image {
-        max-height: 25vh;
-    }
-
-    .log-in-form-container {
-        padding: 20px;
-    }
-
-    .footer {
-        height: 80px;
-    }
-
-    .footer-text {
-        font-size: 16px;
-    }
-}
-
-@media (max-width: 480px) {
-    .log-in-text {
-        font-size: 24px;
-    }
-
-    .input-field {
-        font-size: 14px;
-        padding: 10px;
-    }
-
-    .input-container label {
-        font-size: 18px;
-    }
-
-    .log-in-button {
-        font-size: 18px;
-        padding: 10px 20px;
-    }
-
-    .header-image {
-        max-height: 20vh;
-    }
-
-    .log-in-form-container {
-        padding: 15px;
-    }
-
-    .footer {
-        height: 60px;
-    }
-
-    .footer-text {
-        font-size: 14px;
-    }
-}
 </style>

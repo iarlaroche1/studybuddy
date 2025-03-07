@@ -1,69 +1,98 @@
 <template>
-  
-  <div class="BuddyFinderPage">
-    <div class="div">
-      <div class="overlap-group">
-        <header class="header">
-          <div class="frame">
-            <p class="welcome-to-your">
-              <span class="text-wrapper">Welcome to your Study-Buddy App <br /></span>
-              <span class="span">(Only for computer science students)</span>
-            </p>
-          </div>
-        </header>
-        <img class="tempimagebltqe" alt="Placeholder Image" src="header" />
-      </div>
-      <div class="frame-2">
-        <div class="please-select-the-wrapper">
-          <router-link to="/login">return to login page</router-link>
-          <p class="please-select-the">
-            Please select your year and the optional modules you want to study:
-          </p>
-        </div>
-
-        <!-- Year Selection Dropdown -->
-        <div class="dropdown-container">
-          <select v-model="selectedYear" @change="updateModules">
-            <option disabled value="">Select Year</option>
-            <option v-for="year in years" :key="year" :value="year">Year {{ year }}</option>
-          </select>
-          <!-- Optional Module Checkboxes -->
 
 
-          <div v-if="selectedYear" class="optional-modules">
-
-        
-
-            <h3>Select Optional Module(s)</h3>
-            <div class="checkbox-container">
-              <label>
-                <select class="selectpicker" v-model="selectedOptionalModules" multiple>
-                  <option v-for="module in filteredModules" :key="module" :value="module">
-                    {{ module }}
-                  </option>
-
-                </select>
-              </label>
+    <div class="pos-f-t">
+        <div class="collapse" id="navbarToggleExternalContent">
+            <div class="bg-custom p-4">
+                <h5 class="text-white h4">Collapsed content</h5>
+                <span class="text-muted">Toggleable via the navbar brand.</span>
             </div>
-
-          </div>
         </div>
+        <nav class="navbar navbar-dark bg-custom">
+            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </nav>
+    </div>
 
-        <!-- Submit Button: Only shows if at least one optional module is selected -->
+    <!-- Main container for the page -->
+    <div class="main-container">
+
+        <!-- Wrapper div for the content and header image -->
+        <div class="content-wrapper">
+
+            <!-- Header image -->
+            <img class="header-image" alt="Header" :src="header" />
+
+            <!-- Academic Info form container -->
+            <div class="academic-form-container">
+
+                <!-- Section containing the text prompting the user to enter academic details -->
+                <div class="academic-text-container">
+                    <p class="academic-text"> Please select your year and the optional modules you want to study :</p>
+                </div>
+
+
+
+                <!-- input field section -->
+                <div class="dropdown-container">
+
+                    <select v-model="selectedYear" @change="updateModules">
+                        <option disabled value="">Select Year</option>
+                        <option v-for="year in years" :key="year" :value="year">Year {{ year }}</option>
+                    </select>
+                
+
+                    <div v-if="selectedYear" class="optional-modules">
+
+
+
+                        <h3>Select Optional Module(s) (CTRL + click to select Multiple)</h3>
+                        <div class="dropdown-container">
+                            <label>
+                                <select class="selectpicker" v-model="selectedOptionalModules" multiple>
+                                    <option v-for="module in filteredModules" :key="module" :value="module">
+                                        {{ module }}
+                                    </option>
+
+                                </select>
+                            </label>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+              
+
+                 <!-- Submit Button: Only shows if at least one optional module is selected -->
         <button v-if="selectedOptionalModules.length > 0" @click="storeAcademicDetails" class="text-wrapper-2">
           Find your Study-Buddy here
         </button>
 
-      </div>
+            </div>
+
+            <!-- Footer section with text and small image -->
+            <div class="footer">
+                <div class="footer-text">2024 Study-Buddy App</div>
+                <img class="footer-image" alt="Tempimageonpho" :src="tempImage" />
+            </div>
+
+        </div>
     </div>
-  </div>
 </template>
+
 <script>
 
+
 export default {
-  name: "BuddyFinderPage",
+    name: "BuddyFinderPage2",
   data() {
     return {
+    header: require('@/assets/header.jpg'),
       selectedYear: "",
       selectedOptionalModules: [],  // Array to store selected optional modules
       years: [1, 2, 3, 4],
@@ -163,161 +192,132 @@ export default {
 </script>
 
 <style>
-.BuddyFinderPage {
-  background-color: #cccccc;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  width: 100%;
+/* Change the background color of the navbar */
+.pos-f-t {
+    background-color: rgb(173, 7, 82);
+    /* Change this color to your preferred color */
 }
 
-.BuddyFinderPage .div {
-  background-color: #cccccc;
-  height: 1024px;
-  position: relative;
-  width: 1440px;
+/* Main container for the page */
+.main-container {
+    /*background-color: #cccccc;*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 100vh;
+    padding: 20px;
+    position: relative;
 }
 
-.BuddyFinderPage .overlap-group {
-  height: 174px;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 1440px;
+
+/* Wrapper div for content */
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Aligns form container vertically */
+    align-items: center;
+    /* Aligns form container horizontally */
+    background-color: #cccccc;
+    width: 100%;
+    max-width: 1200px;
+    /* Limit the max width */
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+    margin-top: 20px;
 }
 
-.BuddyFinderPage .header {
-  background-color: #ad0741;
-  height: 174px;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 1440px;
+/* Header image */
+.header-image {
+    width: auto;
+    max-height: 30vh;
+    /* 30% of the viewport height */
+    object-fit: fill;
+    border-radius: 10px;
 }
 
-.BuddyFinderPage .frame {
-  height: 174px;
-  left: 621px;
-  position: relative;
-  width: 819px;
+/* academic form container */
+.academic-form-container {
+    background-color: #fff6f6;
+    border-radius: 30px;
+    width: 100%;
+    max-width: 600px;
+    /* Max width of the form */
+    padding: 30px;
+    box-sizing: border-box;
+    margin-top: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-.BuddyFinderPage .welcome-to-your {
-  color: #ffffff;
-  font-family: "Inter-Bold", Helvetica;
-  font-size: 40px;
-  font-weight: 400;
-  left: 73px;
-  letter-spacing: 0;
-  line-height: normal;
-  position: absolute;
-  top: 47px;
-  width: 674px;
+/* academic text */
+.academic-text-container {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-.BuddyFinderPage .text-wrapper {
-  font-weight: 700;
+.academic-text {
+    font-size: 32px;
+    font-weight: 600;
+    color: #000;
+    line-height: 1.4;
 }
 
-.BuddyFinderPage .span {
-  font-family: "Inter-Light", Helvetica;
-  font-size: 20px;
-  font-weight: 300;
+
+
+.dropdown-container label {
+    font-size: 18px;
+    font-weight: 500;
+    color: #000;
+    margin-bottom: 8px;
+    /* space between label and input */
 }
 
-.BuddyFinderPage .tempimagebltqe {
-  height: 174px;
-  left: 0;
-  object-fit: cover;
-  position: absolute;
-  top: 0;
-  width: 620px;
-}
 
-.BuddyFinderPage .frame-2 {
-  background-color: #ffffff;
-  border-radius: 20px;
-  height: 777px;
-  left: 370px;
-  overflow: hidden;
-  position: absolute;
-  top: 202px;
-  width: 700px;
-}
 
-.BuddyFinderPage .please-select-the-wrapper {
-  height: 139px;
-  left: 91px;
-  overflow: hidden;
-  position: absolute;
-  top: 55px;
-  width: 520px;
-}
-
-.BuddyFinderPage .please-select-the {
-  color: #000000;
-  font-family: "Inter-Semibold", Helvetica;
-  font-size: 32px;
-  font-weight: 600;
-  left: 0;
-  letter-spacing: 0;
-  line-height: normal;
-  position: absolute;
-  top: -1px;
-  width: 520px;
-}
-
-.dropdown-container {
-  display: flex;
-  flex-direction: column;
-  margin: 20px;
-  align-items: center;
-  margin-top: 200px;
-}
-
-.dropdown-container select {
-  padding: 35px;
-  margin: 30px;
-  border: none;
-  border-radius: 65px;
-  font-size: 16px;
-  width: 590px;
-  background-color: #ad0741;
-  color: white;
-  font-weight: bold;
-  text-align: center;
-  cursor: pointer;
-  appearance: none;
-}
-
-select:focus {
-  outline: none;
-}
-
-select option {
-  background-color: white;
-  color: black;
-}
-
+/* Button styling */
 .text-wrapper-2 {
-  background-color: rgb(175, 7, 65);
-  color: white;
-  border: none;
-  padding: 25px;
-  font-size: 20px;
-  font-weight: bold;
-  border-radius: 95px;
-  margin-bottom: 100px;
-  cursor: pointer;
-  position: static;
-  bottom: 50px;
-  left: 50%;
-  transform: translateX(-0%);
-  width: 520px;
-  text-align: center;
+    background-color: rgb(173, 7, 82);
+    color: white;
+    font-size: 24px;
+    font-weight: 600;
+    padding: 15px 32px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 30px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
 }
 
 .text-wrapper-2:hover {
-  background-color: rgb(175, 7, 65);
+    background-color: rgb(160, 6, 75);
+    transform: scale(1.05);
 }
+
+.text-wrapper-2:active {
+    background-color: rgb(255, 117, 179);
+}
+
+/* Footer section */
+.footer {
+    background-color: #242526;
+    height: 100px;
+    width: 100%;
+    position: relative;
+    bottom: 0;
+    text-align: center;
+    padding: 10px;
+}
+
+.footer-text {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+
 </style>

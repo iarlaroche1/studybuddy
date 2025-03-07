@@ -1,6 +1,6 @@
 
 // Import Bootstrap CSS
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.css';
 // Optional: Import Bootstrap JS for interactive components (e.g., tooltips, popovers)
 import 'bootstrap';
 
@@ -35,3 +35,6 @@ const router = createRouter({
 const app = createApp(App);
 app.use(router);  // Use the router in the app
 app.mount('#app');  // Mount the app to the DOM
+
+
+import "bootstrap/dist/js/bootstrap.js"
