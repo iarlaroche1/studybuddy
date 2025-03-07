@@ -27,7 +27,6 @@ const app = initializeApp(firebaseConfig);
 // initialise firestore
 const db = getFirestore(app);
 
-
 exports.createUser = onCall(async (data, context) => {   
   const { email, fullName } = data.data;      
   const res = await db.collection('users').add({
