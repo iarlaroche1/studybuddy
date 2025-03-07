@@ -24,18 +24,22 @@
 <script>
 
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+// import { getFunctions, httpsCallable } from "firebase/functions";
+import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 import { getAuth, updateProfile, onAuthStateChanged } from "firebase/auth";
 import firebaseApp from "../api/firebase"; // Import the Firebase app instance
 
-var fullName = "";
-var url = "";
+
+// var fullName = "";
+// var url = "";
 
 export default {
     data() {
         return {
             fullName: '',
             url: '',
-            user: null
+            user: null,
+            username: ''
         };
     },
     created() {
@@ -43,6 +47,8 @@ export default {
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 this.user = user;
+                this.username = user.email.split('@')[0]; // Extract username from email
+                this.loadUserProfile();
                 user.providerData.forEach((profile) => {
                     console.log("  Sign-in provider: " + profile.providerId);
                     console.log("  Provider-specific UID: " + profile.uid);
@@ -55,28 +61,44 @@ export default {
             } else {
                 console.log("No user is signed in");
             }
-        }); 
+        });
+        
     },
     methods: {
-        updateUserProfile() {
-            const auth = getAuth(firebaseApp); // ensure auth is defined
-            this.uploadImage();
-            if (this.fullName == null) {
-                this.fullName = fullName;
+        async loadUserProfile() {
+            const db = getFirestore(firebaseApp);
+            const userDocRef = doc(db, "users", this.username);
+            const userDoc = await getDoc(userDocRef);
+
+            if (userDoc.exists()) {
+                const userData = userDoc.data();
+                this.fullName = userData.fullName;
+                this.url = userData.photoURL;
+            } else {
+                console.log("No such document!");
             }
-            if (this.url == null) {
-                this.url = url;
-            }
-            updateProfile(auth.currentUser, {
-                displayName: this.fullName,
-                photoURL: this.url,
-            }).then(() => {
-                // Profile updated!
+        },
+        async updateUserProfile() {
+            const auth = getAuth(firebaseApp);
+            const db = getFirestore(firebaseApp);
+            const userDocRef = doc(db, "users", this.username);
+
+            try {
+                await this.uploadImage();
+                await setDoc(userDocRef, {
+                    email: this.user.email,
+                    fullName: this.fullName,
+                    photoURL: this.url,
+                    year: 0
+                });
+                await updateProfile(auth.currentUser, {
+                    displayName: this.fullName,
+                    photoURL: this.url
+                });
                 console.log('Profile updated successfully');
-            }).catch((error) => {
-                // An error occurred
-                console.log(error);
-            });
+            } catch (error) {
+                console.error("Error updating profile:", error);
+            }
         },
         checkProfile() {
             if (this.user !== null) {
@@ -100,9 +122,9 @@ export default {
             const file = document.getElementById("input1").files[0];
               if (!file) return;
 
-            const auth = getAuth(firebaseApp);
             const storage = getStorage();
-            const storageRef = ref(storage, `profileImages/${auth.currentUser.email}`);
+            this.username = this.user.email.split('@')[0];
+            const storageRef = ref(storage, `profileImages/${this.username}`);
 
             try {
                 const snapshot = await uploadBytes(storageRef, file);
@@ -115,6 +137,7 @@ export default {
         }
     }
 };
+
 </script>
 
 <style scoped>

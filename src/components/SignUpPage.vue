@@ -97,24 +97,28 @@ export default {
         }
 
         createUserWithEmailAndPassword(auth, this.email, this.password)
+        .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        var id = this.email.split('@')[0];
+        console.log(user);
+
+        const functions = getFunctions(app); 
+        const createUser = httpsCallable(functions, 'createUser'); 
+        const result = createUser(
+            {
+                "id":id,
+                "email":this.email,
+                "fullName":this.fullName
+            });
+          console.log(result);
+        })
         .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode)
         console.log(errorMessage)
-        return;
         });
-
-        var id = this.email.split('@')[0];
-        const functions = getFunctions(app); 
-        const createUser = httpsCallable(functions, 'createUser'); 
-        const result = await createUser(
-            {
-                "id":id,
-                "email":this.email, 
-                "fullName":this.fullName
-            });
-          console.log(result);
     }
   }
 };
