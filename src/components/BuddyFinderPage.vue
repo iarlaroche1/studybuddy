@@ -1,21 +1,29 @@
 <template>
 
+<nav class="navbar navbar-light bg-light">
 
-    <div class="pos-f-t">
-        <div class="collapse" id="navbarToggleExternalContent">
-            <div class="bg-custom p-4">
-                <h5 class="text-white h4">Collapsed content</h5>
-                <span class="text-muted">Toggleable via the navbar brand.</span>
-            </div>
-        </div>
-        <nav class="navbar navbar-dark bg-custom">
-            <button class="navbar-toggler" type="button" data-toggle="collapse"
-                data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
-                aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </nav>
-    </div>
+    <a href = "#" 
+    class = "navbar-brand mb-0 h1">
+
+    Navbar
+</a>
+<div class="collapse navbar-collapse" id = "navbarNav"></div>
+<ul class = "navbar-nav"></ul>
+<li class="nav-item active">
+    <a href="#" class="nav-link"></a>
+    Home
+</li>
+<li class="nav-item active">
+    <a href="#" class="nav-link"></a>
+    Features
+</li>
+
+<li class="nav-item active">
+    <a href="#" class="nav-link"></a>
+    Pricing
+</li>
+    </nav>
+
 
     <!-- Main container for the page -->
     <div class="main-container">
@@ -78,7 +86,7 @@
             <!-- Footer section with text and small image -->
             <div class="footer">
                 <div class="footer-text">2024 Study-Buddy App</div>
-                <img class="footer-image" alt="Tempimageonpho" :src="tempImage" />
+             
             </div>
 
         </div>

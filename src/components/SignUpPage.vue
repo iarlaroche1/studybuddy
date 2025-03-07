@@ -105,7 +105,7 @@ export default {
   methods: {
     createUser(){
         const auth = getAuth(app);
-
+      // todo alert user if email is invalid
         // Sign-in logic here
         if (this.password !== this.confirmPassword) {
                 alert("Passwords do not match!")
@@ -119,7 +119,9 @@ export default {
         updateProfile(auth.currentUser, {
           displayName: this.fullName
         });
+        this.$router.push('/buddyfinder');
         console.log(user)
+      
         // ...
         })
         .catch((error) => {
