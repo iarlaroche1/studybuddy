@@ -79,6 +79,7 @@ export default {
   data() {
     return {
       header: require('@/assets/header.jpg'),
+      id: "",
       fullName: "",
       email: "",
       password: "",
@@ -103,10 +104,13 @@ export default {
         console.log(errorMessage)
         return;
         });
+
+        var id = this.email.split('@')[0];
         const functions = getFunctions(app); 
         const createUser = httpsCallable(functions, 'createUser'); 
         const result = await createUser(
-            { 
+            {
+                "id":id,
                 "email":this.email, 
                 "fullName":this.fullName
             });

@@ -4,7 +4,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, setPersistence, browserLocalPersistence } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { onCall } from "firebase-functions/v2/https";
+import { getFunctions, httpsCallable } from "firebase/functions";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -27,19 +27,12 @@ const app = initializeApp(firebaseConfig);
 // initialise firestore
 const db = getFirestore(app);
 
-exports.createUser = onCall(async (data, context) => {   
-  const { email, fullName } = data.data;      
-  const res = await db.collection('users').add({
-          email,
-          fullName,
-          photoURL: "gs://ct216project-75856.firebasestorage.app/profileImages/blank.jpg",
-          year: 0 })
-        }
-      );
-
-
 // initialise firebase auth
 const auth = getAuth(app);
 setPersistence(auth, browserLocalPersistence); // set persistence to local, saving user login across sessions
+
+// initialise functions
+const functions = getFunctions(app);
+export const createUser = httpsCallable(functions, 'createUser');
 
 export default app;
