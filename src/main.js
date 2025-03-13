@@ -1,3 +1,9 @@
+
+// Import Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.css';
+// Optional: Import Bootstrap JS for interactive components (e.g., tooltips, popovers)
+import 'bootstrap';
+
 import { createApp } from 'vue';
 import App from './App.vue';  // Import the main App component
 import { createRouter, createWebHistory } from 'vue-router';  // Import Vue Router for Vue 3
@@ -8,6 +14,7 @@ import LoginPage from './components/LoginPage.vue';
 import BuddyFinderPage from './components/BuddyFinderPage.vue';
 import ProfileTestPage from './components/ProfileTestPage.vue';
 import NotFoundPage from './components/NotFoundPage.vue';
+
 
 // Define routes for Vue Router
 const routes = [
@@ -28,3 +35,6 @@ const router = createRouter({
 const app = createApp(App);
 app.use(router);  // Use the router in the app
 app.mount('#app');  // Mount the app to the DOM
+
+
+import "bootstrap/dist/js/bootstrap.js"
