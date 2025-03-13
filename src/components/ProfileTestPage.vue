@@ -1,19 +1,24 @@
 <template>
-    <div>
+    <div>      
         <!-- Name input field section -->
         <div class="input-container">
             <label for="full-name">Full Name:</label>
             <input id="full-name" v-model="fullName" type="text" placeholder="Enter your full name" class="input-field" />
         </div>
-        <div>
-           <input type="file" @change="handleFileChange" accept="image/*" ref="input1">
-           <button @click="previewImage">Submit</button>
+        <div class="input-container">
+            <label for="year">Year:</label>
+            <input id="year" v-model="year" type="text" placeholder="Enter your year" class="input-field" />
         </div>
-         <div v-if="imageData!=null">                     
-            <img class="preview" height="268" width="356" :src="img1">
-            <br>
-         </div>
 
+        <!-- pfp input field section -->
+        <div>
+            <img v-if="url !== '' && url !== null" id="preview" height="100" width="100" :src="url">
+           <input type="file" @change="preview" accept="image/*" id="input1">
+           <!-- commenting out the below button because it isn't really necessary, updateProfile does the same thing -->
+           <!-- <button @click="uploadImage">Upload</button> -->
+        </div>
+        
+        <br>
         <button @click="updateUserProfile">Update Profile</button><br>
         <button @click="checkProfile">Check Profile</button>
         
@@ -23,18 +28,23 @@
 <script>
 
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { getAuth, updateProfile, onAuthStateChanged } from "firebase/auth";
+// import { getFunctions, httpsCallable } from "firebase/functions";
+import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebaseApp from "../api/firebase"; // Import the Firebase app instance
 
-var fullName = "";
-var url = "";
+
+// var fullName = "";
+// var url = "";
 
 export default {
     data() {
         return {
             fullName: '',
             url: '',
-            user: null
+            user: null,
+            username: '',
+            year: ''
         };
     },
     created() {
@@ -42,39 +52,45 @@ export default {
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 this.user = user;
-                user.providerData.forEach((profile) => {
-                    console.log("  Sign-in provider: " + profile.providerId);
-                    console.log("  Provider-specific UID: " + profile.uid);
-                    console.log("  Name: " + profile.displayName);
-                    console.log("  Email: " + profile.email);
-                    console.log("  Photo URL: " + profile.photoURL);
-                    this.fullName = profile.displayName;
-                    this.url = profile.photoURL;
-                });
+                this.username = user.email.split('@')[0]; // Extract username from email
+                this.loadUserProfile();
             } else {
                 console.log("No user is signed in");
             }
         });
+        
     },
     methods: {
-        updateUserProfile() {
-            const auth = getAuth(firebaseApp); // ensure auth is defined
-            if (this.fullName == null) {
-                this.fullName = fullName;
+        async loadUserProfile() {
+            const db = getFirestore(firebaseApp);
+            const userDocRef = doc(db, "users", this.username);
+            const userDoc = await getDoc(userDocRef);
+
+            if (userDoc.exists()) {
+                const userData = userDoc.data();
+                this.fullName = userData.fullName;
+                this.url = userData.photoURL;
+                this.year = userData.year;
+            } else {
+                console.log("No such document!");
             }
-            if (this.url == null) {
-                this.url = url;
-            }
-            updateProfile(auth.currentUser, {
-                displayName: this.fullName,
-                photoURL: this.url,
-            }).then(() => {
-                // Profile updated!
+        },
+        async updateUserProfile() {
+            const db = getFirestore(firebaseApp);
+            const userDocRef = doc(db, "users", this.username);
+
+            try {
+                await this.uploadImage();
+                await setDoc(userDocRef, {
+                    email: this.user.email,
+                    fullName: this.fullName,
+                    photoURL: this.url,
+                    year: this.year
+                });
                 console.log('Profile updated successfully');
-            }).catch((error) => {
-                // An error occurred
-                console.log(error);
-            });
+            } catch (error) {
+                console.error("Error updating profile:", error);
+            }
         },
         checkProfile() {
             if (this.user !== null) {
@@ -89,27 +105,31 @@ export default {
                 console.log("User is null");
             }
         },
-        handleFileChange(event) {
-            this.selectedFile = event.target.files[0];
-        },
-        async uploadImage(event) {
-            const file = event.target.files[0];
+        preview() {
+            const file = document.getElementById("input1").files[0];
             if (!file) return;
+            document.getElementById("preview").src = URL.createObjectURL(file);
+        },
+        async uploadImage() {
+            const file = document.getElementById("input1").files[0];
+              if (!file) return;
 
             const storage = getStorage();
-            const storageRef = ref(storage, `profileImages/${file.name}`);
+            this.username = this.user.email.split('@')[0];
+            const storageRef = ref(storage, `profileImages/${this.username}`);
 
-            try {
+            try {   
                 const snapshot = await uploadBytes(storageRef, file);
                 const uploadURL = await getDownloadURL(snapshot.ref);
                 console.log("File available at", uploadURL);
-                url = uploadURL;
+                this.url = uploadURL;
             } catch (error) {
                 console.error("Error uploading file:", error);
             }
         }
     }
 };
+
 </script>
 
 <style scoped>

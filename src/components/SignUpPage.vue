@@ -87,15 +87,15 @@
 
 <script>
 import app from '../api/firebase';
-// import { getFunctions, httpsCallable } from "firebase/functions";
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-
+import { getFunctions, httpsCallable } from "firebase/functions";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 export default {
   name: "SignUpPage",
   data() {
     return {
       header: require('@/assets/header.jpg'),
+      id: "",
       fullName: "",
       email: "",
       password: "",
@@ -103,7 +103,7 @@ export default {
     };
   },
   methods: {
-    createUser(){
+    async createUser(){
         const auth = getAuth(app);
       // todo alert user if email is invalid
         // Sign-in logic here
@@ -111,25 +111,29 @@ export default {
                 alert("Passwords do not match!")
                 return;
         }
-              
+
         createUserWithEmailAndPassword(auth, this.email, this.password)
         .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        updateProfile(auth.currentUser, {
-          displayName: this.fullName
-        });
-        this.$router.push('/buddyfinder');
-        console.log(user)
-      
-        // ...
+        var id = this.email.split('@')[0];
+        console.log(user);
+
+        const functions = getFunctions(app); 
+        const createUser = httpsCallable(functions, 'createUser'); 
+        const result = createUser(
+            {
+                "id":id,
+                "email":this.email,
+                "fullName":this.fullName
+            });
+          console.log(result);
         })
         .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode)
         console.log(errorMessage)
-        // ..
         });
     }
   }
