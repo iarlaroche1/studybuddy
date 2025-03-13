@@ -9,7 +9,7 @@
  * See a full list of supported triggers at https://firebase.google.com/docs/functions
  */
 
-/*
+
 const { onCall } = require('firebase-functions/v2/https');
 const { initializeApp } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
@@ -28,4 +28,3 @@ exports.createUser = onCall(async (data, context) => {
             });
          }
        );
-*/

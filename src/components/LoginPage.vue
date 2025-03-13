@@ -69,8 +69,8 @@
 
             <!-- Footer section with text and small image -->
             <div class="footer">
-                <div class="footer-text">2024 Study-Buddy App</div>
-                <img class="footer-image" alt="Tempimageonpho" :src="tempImage" />
+                <div class="footer-text">© 2025 Study-Buddy App. All Rights Reserved.</div>
+                
             </div>
 
         </div>

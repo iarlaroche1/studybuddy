@@ -5,8 +5,9 @@
     <a href = "#" 
     class = "navbar-brand mb-0 h1">
 
-    Navbar
+    Studdy-Buddy Finder
 </a>
+
 <div class="collapse navbar-collapse" id = "navbarNav"></div>
 <ul class = "navbar-nav"></ul>
 <li class="nav-item active">
@@ -15,12 +16,12 @@
 </li>
 <li class="nav-item active">
     <a href="#" class="nav-link"></a>
-    Features
+   Buddy Finder 
 </li>
 
 <li class="nav-item active">
     <a href="#" class="nav-link"></a>
-    Pricing
+    Chat
 </li>
     </nav>
 
@@ -56,8 +57,15 @@
                     <div v-if="selectedYear" class="optional-modules">
 
 
+                      <div class="selectTitleDiv">
+                        <h3 class="selectOptionalTitle">
+                           <br>Select Optional Module(s) <br>
+                          </h3>
 
-                        <h3>Select Optional Module(s) (CTRL + click to select Multiple)</h3>
+                           <h3 class="selectOptionalTitleSubtext">
+                             (CTRL + click to select Multiple)<br>
+                           </h3>
+                          </div>
                         <div class="dropdown-container">
                             <label>
                                 <select class="selectpicker" v-model="selectedOptionalModules" multiple>
@@ -81,11 +89,14 @@
           Find your Study-Buddy here
         </button>
 
+        <button v-if="selectedOptionalModules.length == 0" class="text-wrapper-2-disabled">
+          Find your Study-Buddy here
+        </button>
+
             </div>
 
-            <!-- Footer section with text and small image -->
             <div class="footer">
-                <div class="footer-text">2024 Study-Buddy App</div>
+                <div class="footer-text">© 2025 Study-Buddy App. All Rights Reserved.</div>
              
             </div>
 
@@ -185,6 +196,7 @@ export default {
       this.selectedOptionalModules = [];
     },
     storeAcademicDetails() {
+      this.$router.push('/homepage');
       // TODO 
     }
   },
@@ -230,7 +242,7 @@ export default {
     /* Aligns form container horizontally */
     background-color: #cccccc;
     width: 100%;
-    max-width: 1200px;
+    max-width: 120%;
     /* Limit the max width */
     padding: 20px;
     box-sizing: border-box;
@@ -267,13 +279,20 @@ export default {
 }
 
 .academic-text {
-    font-size: 32px;
+    font-size: 20px;
     font-weight: 600;
     color: #000;
     line-height: 1.4;
 }
-
-
+.selectTitleDiv {
+  padding: 20px;
+}
+.selectOptionalTitle {
+  font-size: 20px;
+}
+.selectOptionalTitleSubtext {
+  font-size: 15px;
+}
 
 .dropdown-container label {
     font-size: 18px;
@@ -288,6 +307,21 @@ export default {
 /* Button styling */
 .text-wrapper-2 {
     background-color: rgb(173, 7, 82);
+    color: white;
+    font-size: 24px;
+    font-weight: 600;
+    padding: 15px 32px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 30px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+}
+/* Button styling */
+.text-wrapper-2-disabled {
+    background-color: rgb(124, 121, 123);
     color: white;
     font-size: 24px;
     font-weight: 600;

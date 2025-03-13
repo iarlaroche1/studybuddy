@@ -13,6 +13,7 @@ import SignUpPage from './components/SignUpPage.vue';
 import LoginPage from './components/LoginPage.vue';
 import BuddyFinderPage from './components/BuddyFinderPage.vue';
 import ProfileTestPage from './components/ProfileTestPage.vue';
+import HomePage from './components/HomePage.vue';
 import NotFoundPage from './components/NotFoundPage.vue';
 
 
@@ -22,6 +23,7 @@ const routes = [
   { path: '/login', component: LoginPage },
   { path: '/buddyfinder', component: BuddyFinderPage },
   { path: '/profiletestpage', component: ProfileTestPage },
+  { path: '/homepage', component: HomePage },
   { path: "/:notFound", component: NotFoundPage } // 404 page, currently just directs to login
 ];
 
