@@ -1,6 +1,6 @@
 <template>
 
-    
+
 
     <img class="home-header-image" alt="Header" :src="header" />
 
@@ -12,11 +12,21 @@
                 <li><a href="">Buddies</a></li>
                 <li><a href="">Chat</a></li>
                 <li><a href="">Calendar</a></li>
-                
+
             </ul>
         </nav>
 
 
+    </div>
+    <div class="home-header">
+       <h1>Study Buddy</h1>
+    </div>
+    <div class="profile-display-top">
+
+        <img class="profile-picture" alt="ProfilePic" :src="jackiechan" />
+        <div class="username">Luke Tynan</div>
+        <div class="year">2nd Year</div>
+        <button class="edit-profile-button">Edit Profile</button>
     </div>
 
     <!-- Main container for the page -->
@@ -32,35 +42,34 @@
             <div class="left-container">
 
 
-                <div class="text-container">
-                    <p class="academic-text"> Welcome to home page</p>
-                </div>
-
+                
 
 
                 <!-- input field section -->
-                <div class="home-content-container">
+                <div class="bio-content-container">
 
-                    Bio
+                    <h1>Bio</h1>
+                    <p>Mister Study man, cant do integrals , currently studying Calculus.</p>
 
                 </div>
                 <!-- input field section -->
-                <div class="home-content-container">
+                <div class="subjects-content-container">
+                    <h1>Subjects</h1>
+                    <p>TODO: dynamically display modules</p>
 
-                    Subjects
 
                 </div>
 
             </div>
 
-           
+
 
         </div>
     </div>
     <div class="home-footer">
-                <div class="home-footer-text">© 2025 Study-Buddy App. All Rights Reserved.</div>
+        <div class="home-footer-text">© 2025 Study-Buddy App. All Rights Reserved.</div>
 
-            </div>
+    </div>
 </template>
 
 <script>
@@ -92,12 +101,14 @@ export default {
 
 /* Header image */
 .home-header-image {
-    
+
     max-height: auto;
     /* 30% of the viewport height */
     object-fit: fill;
     border-radius: 0px;
-
+    outline-color: #000;
+    outline-style: solid;
+    outline-width: 1px;
 
     position: absolute;
     top: 0;
@@ -109,8 +120,9 @@ export default {
 .side-navbar-container {
     position: relative;
     float: left;
-    top:80px;
-    width: 30%;;
+    top: 80px;
+    width: 30%;
+    ;
 }
 
 .side-navbar ul {
@@ -125,9 +137,9 @@ export default {
 .side-navbar a {
     display: flex;
     color: white;
-    outline-color:#000;
+    outline-color: #000;
     outline-style: solid;
-   outline-width: 1px;
+    outline-width: 1px;
     text-decoration: none;
     font-size: 1rem;
     padding: 15px;
@@ -140,11 +152,37 @@ export default {
 
 .side-navbar a:hover {
     background-color: rgb(182, 50, 109);
-    
+
 }
 
-
-
+.home-header {
+    position: relative;
+    top:0;
+    left:30px;
+    padding:5px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    height:auto;
+    width:auto;
+    outline-color: #000;
+    outline-style: solid;
+    outline-width: 1px;
+    
+}
+.profile-display-top {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    left:30px;
+    padding:5px;
+    height:auto;
+    width: auto;
+    outline-color: #000;
+    outline-style: solid;
+    outline-width: 1px;
+}
 /* Main container for the page */
 .home-page-container {
     /*background-color: #cccccc;*/
@@ -156,7 +194,7 @@ export default {
     min-height: 100vh;
     padding: 0px;
     position: relative;
-    left:30px;
+    left: 30px;
 }
 
 
@@ -173,11 +211,11 @@ export default {
     max-width: 100%;
     /* Limit the max width */
     padding: 20px;
-   
-   
+
+
     position: relative;
-    top:0;
-   
+    top: 0;
+
 }
 
 
@@ -185,8 +223,8 @@ export default {
 /* academic form container */
 .left-container {
     background-color: #fff6f6;
-    border-radius: 30px;
-    width: 100%;
+    border-radius: 3px;
+    width: 50%;
     max-width: 100%;
     /* Max width of the form */
     padding: 30px;
@@ -201,7 +239,19 @@ export default {
 .text-container {
     text-align: center;
     margin-bottom: auto;
-    
+
+}
+
+.bio-content-container{
+    position: relative;
+    left:0px;
+    height:auto;
+}
+
+.subject-content-container{
+    position: relative;
+    left:0px;
+    height:auto;
 }
 
 .academic-text {
