@@ -2,7 +2,7 @@
 
     
 
-    <img class="header-image" alt="Header" :src="header" />
+    <img class="home-header-image" alt="Header" :src="header" />
 
     <div class="side-navbar-container">
         <!-- Header image -->
@@ -26,7 +26,7 @@
         <!-- Wrapper div for the content and header image -->
 
 
-        <div class="content-wrapper">
+        <div class="home-content-wrapper">
 
 
             <div class="left-container">
@@ -39,13 +39,13 @@
 
 
                 <!-- input field section -->
-                <div class="content-container">
+                <div class="home-content-container">
 
                     Bio
 
                 </div>
                 <!-- input field section -->
-                <div class="content-container">
+                <div class="home-content-container">
 
                     Subjects
 
@@ -53,13 +53,14 @@
 
             </div>
 
-            <div class="footer">
-                <div class="footer-text">© 2025 Study-Buddy App. All Rights Reserved.</div>
-
-            </div>
+           
 
         </div>
     </div>
+    <div class="home-footer">
+                <div class="home-footer-text">© 2025 Study-Buddy App. All Rights Reserved.</div>
+
+            </div>
 </template>
 
 <script>
@@ -90,9 +91,9 @@ export default {
 }
 
 /* Header image */
-.header-image {
+.home-header-image {
     
-    max-height: 30vh;
+    max-height: auto;
     /* 30% of the viewport height */
     object-fit: fill;
     border-radius: 0px;
@@ -101,15 +102,15 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
-    width: 150px;
-    height: 150px
+    width: auto;
+    height: 150px;
 }
 
 .side-navbar-container {
     position: relative;
     float: left;
     top:80px;
-    width: auto;
+    width: 30%;;
 }
 
 .side-navbar ul {
@@ -122,6 +123,7 @@ export default {
 }
 
 .side-navbar a {
+    display: flex;
     color: white;
     outline-color:#000;
     outline-style: solid;
@@ -150,29 +152,32 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100%;
+    width: 70;
     min-height: 100vh;
-    padding: 20px;
+    padding: 0px;
     position: relative;
+    left:30px;
 }
 
 
 /* Wrapper div for content */
-.content-wrapper {
+.home-content-wrapper {
     display: flex;
     flex-direction: column;
     justify-content: center;
     /* Aligns form container vertically */
-    align-items: center;
+    align-items: left;
     /* Aligns form container horizontally */
     background-color: #cccccc;
     width: 100%;
-    max-width: 120%;
+    max-width: 100%;
     /* Limit the max width */
     padding: 20px;
-    box-sizing: border-box;
+   
+   
     position: relative;
-    margin-top: 20px;
+    top:0;
+   
 }
 
 
@@ -182,18 +187,21 @@ export default {
     background-color: #fff6f6;
     border-radius: 30px;
     width: 100%;
-    max-width: 600px;
+    max-width: 100%;
     /* Max width of the form */
     padding: 30px;
+    min-height: auto;
     box-sizing: border-box;
-    margin-top: 20px;
+    margin-top: 0px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+
 }
 
 /* academic text */
 .text-container {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: auto;
+    
 }
 
 .academic-text {
@@ -211,7 +219,7 @@ export default {
 
 
 
-.content-container label {
+.home-content-container label {
     font-size: 1rem;
     font-weight: 500;
     color: #000;
@@ -262,8 +270,8 @@ export default {
     background-color: rgb(255, 117, 179);
 }
 
-/* Footer section */
-.footer {
+/* home-footer section */
+.home-footer {
     background-color: #242526;
     height: 100px;
     width: 100%;
@@ -273,7 +281,7 @@ export default {
     padding: 10px;
 }
 
-.footer-text {
+.home-footer-text {
     color: #ffffff;
     font-size: .5rem;
     font-weight: 400;
