@@ -128,7 +128,9 @@ export default {
                 "fullName":this.fullName
             });
           console.log(result);
+          this.$router.push('/buddyfinder');
         })
+        
         .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;

@@ -12,6 +12,16 @@
                 <li><a href="">Buddies</a></li>
                 <li><a href="">Chat</a></li>
                 <li><a href="">Calendar</a></li>
+                <li><a href="">Buddies</a></li>
+                <li><a href="">Chat</a></li>
+                <li><a href="">Calendar</a></li>
+                <li><a href="">Buddies</a></li>
+                <li><a href="">Chat</a></li>
+                <li><a href="">Calendar</a></li>
+                <li><a href="">Buddies</a></li>
+                <li><a href="">Chat</a></li>
+                <li><a href="">Calendar</a></li>
+
 
             </ul>
         </nav>
@@ -23,8 +33,8 @@
     </div>
     <div class="profile-display-top">
 
-        <img class="profile-picture" alt="ProfilePic" :src="jackiechan" />
-        <div class="username">Luke Tynan</div>
+        <img class="profile-picture" alt="ProfilePic" :src=url />
+        <div class="username"><span>Name: {{ fullName }}</span></div>
         <div class="year">2nd Year</div>
         <button class="edit-profile-button">Edit Profile</button>
     </div>
@@ -73,26 +83,62 @@
 </template>
 
 <script>
-
+//import { db, auth } from '@/api/firebase'; // Import Firebase services
+//import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+// import { getFunctions, httpsCallable } from "firebase/functions";
+import { getFirestore, doc,  getDoc } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import firebaseApp from "../api/firebase"; // Import the Firebase app instance
 
 export default {
-    name: "HomePage",
-    data() {
-        return {
-            header: require('@/assets/header.jpg'),
+  name: "HomePage",
+  data() {
+    return {
+      header: require('@/assets/header.jpg'),
+      jackiechan: require('@/assets/jackiechan.jpg'),
+      fullName: '',
+      bio: 'Mister Study man, can\'t do integrals, currently studying Calculus.',
+      user: null,
+            username: '',
+            year: '',
+      subjects: [], // Array to hold dynamic subject data
+      url: ''
+    };
+  },
+  created() {
+    const auth = getAuth(firebaseApp); // Use the Firebase app instance
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                this.user = user;
+                this.username = user.email.split('@')[0]; // Extract username from email
+                this.loadUserProfile();
+            } else {
+                console.log("No user is signed in");
+            }
+        });
+  },
+  methods: {
+    async loadUserProfile() {
+            const db = getFirestore(firebaseApp);
+            const userDocRef = doc(db, "users", this.username);
+            const userDoc = await getDoc(userDocRef);
 
-        };
-    },
-    methods: {
-        // todo
-    },
-    computed: {
-
-    },
+            if (userDoc.exists()) {
+                const userData = userDoc.data();
+                this.fullName = userData.fullName;
+                this.url = userData.photoURL;
+                this.year = userData.year;
+            } else {
+                console.log("No such document!");
+            }
+        },
+  }
 };
 </script>
 
+
 <style>
+
 /* Change the background color of the navbar */
 .pos-f-t {
     background-color: rgb(173, 7, 82);
@@ -154,7 +200,17 @@ export default {
     background-color: rgb(182, 50, 109);
 
 }
+.profile-picture {
+    max-height: 100px;
+    /* 30% of the viewport height */
 
+    border-radius: 0px;
+    outline-color: #000;
+    outline-style: solid;
+    outline-width: 1px;
+
+    position: relative;
+}
 .home-header {
     position: relative;
     top:0;
