@@ -36,7 +36,7 @@
 
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // import { getFunctions, httpsCallable } from "firebase/functions";
-import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, collection, setDoc, getDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebaseApp from "../api/firebase"; // Import the Firebase app instance
 
@@ -140,12 +140,16 @@ export default {
         },
         async editSubjects() {
             const db = getFirestore(firebaseApp);
-            var priorityRef = db.collection("users").document(this.username).collection("priority")
+            const userDocRef = doc(db, "users", this.username);
 
             var table = document.getElementById("subjectAdd");
 
             for (var i = 0; i < table.rows.length; i++) {
-                var course = getElementsByClassName("course")[i].
+                var course = document.getElementsByClassName("course")[i].value;
+                var priority = document.getElementsByClassName("priority")[i].value;
+
+                const priorityDocRef = doc(collection(userDocRef, "priority"), course);
+                await setDoc(priorityDocRef, { priority });
             }
         },
         addSubject() {
