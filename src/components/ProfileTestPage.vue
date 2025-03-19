@@ -1,4 +1,4 @@
-<template>
+    <template>
     <div>      
         <!-- Name input field section -->
         <div class="input-container">
@@ -17,11 +17,18 @@
            <!-- commenting out the below button because it isn't really necessary, updateProfile does the same thing -->
            <!-- <button @click="uploadImage">Upload</button> -->
         </div>
+                
+        <table id="subjectAdd">
+        </table>
         
+        <br>
+        <button @click="addSubject" id="addSubject">Add Subject</button>
+
+        <br>
         <br>
         <button @click="updateUserProfile">Update Profile</button><br>
         <button @click="checkProfile">Check Profile</button>
-        
+
     </div>
 </template>
 
@@ -29,7 +36,7 @@
 
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // import { getFunctions, httpsCallable } from "firebase/functions";
-import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, collection, setDoc, getDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebaseApp from "../api/firebase"; // Import the Firebase app instance
 
@@ -47,7 +54,7 @@ export default {
             year: ''
         };
     },
-    created() {
+    created() {        
         const auth = getAuth(firebaseApp); // Use the Firebase app instance
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -62,15 +69,18 @@ export default {
     },
     methods: {
         async loadUserProfile() {
+            // get user document from database
             const db = getFirestore(firebaseApp);
             const userDocRef = doc(db, "users", this.username);
             const userDoc = await getDoc(userDocRef);
 
+            // if it exists then set the locally saved variables to the data in there
             if (userDoc.exists()) {
                 const userData = userDoc.data();
                 this.fullName = userData.fullName;
                 this.url = userData.photoURL;
                 this.year = userData.year;
+                
             } else {
                 console.log("No such document!");
             }
@@ -81,6 +91,7 @@ export default {
 
             try {
                 await this.uploadImage();
+                await this.editSubjects();
                 await setDoc(userDocRef, {
                     email: this.user.email,
                     fullName: this.fullName,
@@ -126,6 +137,40 @@ export default {
             } catch (error) {
                 console.error("Error uploading file:", error);
             }
+        },
+        async editSubjects() {
+            const db = getFirestore(firebaseApp);
+            const userDocRef = doc(db, "users", this.username);
+
+            var table = document.getElementById("subjectAdd");
+
+            for (var i = 0; i < table.rows.length; i++) {
+                var course = document.getElementsByClassName("course")[i].value;
+                var priority = document.getElementsByClassName("priority")[i].value;
+
+                const priorityDocRef = doc(collection(userDocRef, "priority"), course);
+                await setDoc(priorityDocRef, { priority });
+            }
+        },
+        addSubject() {
+            // get table and create new row
+            var table = document.getElementById("subjectAdd");
+            var row = document.createElement("tr");
+            
+            // create course input field
+            var courseInput = document.createElement("input");
+            courseInput.className = "course";
+            row.appendChild(document.createTextNode("Subject: "));
+            row.appendChild(courseInput);
+
+            // create priority input field
+            var priorityInput = document.createElement("input");
+            priorityInput.className = "priority";
+            row.appendChild(document.createTextNode("Priority: "));
+            row.appendChild(priorityInput);
+            
+            // add row to table
+            table.appendChild(row);
         }
     }
 };
