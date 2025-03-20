@@ -105,7 +105,9 @@
 </template>
 
 <script>
-
+import { getFirestore, doc, setDoc } from "firebase/firestore";
+import firebaseApp from "../api/firebase"; // Import the Firebase app instance
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export default {
     name: "BuddyFinderPage2",
@@ -189,16 +191,39 @@ export default {
       },
     };
   },
+  created() {        
+        const auth = getAuth(firebaseApp); // Use the Firebase app instance
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                this.user = user;
+                this.username = user.email.split('@')[0]; // Extract username from email
+            } else {
+                console.log("No user is signed in");
+            }
+        });
+        
+    },
   methods: {
+    
     // Method to update the module options when a year is selected
     updateModules() {
       // Reset the selected modules whenever the year is changed
       this.selectedOptionalModules = [];
     },
     storeAcademicDetails() {
-      this.$router.push('/homepage');
-      // TODO 
-    }
+            const db = getFirestore(firebaseApp);
+            const userDocRef = doc(db, "users", this.username);
+
+            try {
+                setDoc(userDocRef, {
+                    year: this.selectedYear
+                }, { merge: true }); // use merge: true to preserve existing data
+                console.log('Profile updated successfully');
+            } catch (error) {
+                console.error("Error updating profile:", error);
+            }
+            this.$router.push('/homepage');
+          }
   },
   computed: {
     filteredModules() {
