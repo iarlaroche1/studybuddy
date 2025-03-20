@@ -35,7 +35,7 @@
 
         <img class="profile-picture" alt="ProfilePic" :src=url />
         <div class="username"><span>Name: {{ fullName }}</span></div>
-        <div class="year">2nd Year</div>
+        <div class="year"><span>Year: {{ year }}</span></div>
         <button class="edit-profile-button" @click=handleEditProfile>Edit Profile</button>
     </div>
 

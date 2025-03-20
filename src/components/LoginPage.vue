@@ -102,7 +102,7 @@ export default {
             console.log(user);
             
             // Programmatically navigate to "/buddyfinder" route after successful login
-            this.$router.push('/buddyfinder');
+            this.$router.push('/HomePage');
             
             }).catch((error) => {
             let errorCode = error.code;
