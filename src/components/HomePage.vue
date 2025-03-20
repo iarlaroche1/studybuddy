@@ -12,15 +12,15 @@
                 <li><a href="">Buddies</a></li>
                 <li><a href="">Chat</a></li>
                 <li><a href="">Calendar</a></li>
-                <li><a href="">Buddies</a></li>
-                <li><a href="">Chat</a></li>
-                <li><a href="">Calendar</a></li>
-                <li><a href="">Buddies</a></li>
-                <li><a href="">Chat</a></li>
-                <li><a href="">Calendar</a></li>
-                <li><a href="">Buddies</a></li>
-                <li><a href="">Chat</a></li>
-                <li><a href="">Calendar</a></li>
+                <li><a href="">-</a></li>
+                <li><a href="">-</a></li>
+                <li><a href="">-</a></li>
+                <li><a href="">-</a></li>
+                <li><a href="">-</a></li>
+                <li><a href="">-</a></li>
+                <li><a href="">-</a></li>
+                <li><a href="">-</a></li>
+                <li><a href="">-</a></li>
 
 
             </ul>
@@ -36,7 +36,7 @@
         <img class="profile-picture" alt="ProfilePic" :src=url />
         <div class="username"><span>Name: {{ fullName }}</span></div>
         <div class="year">2nd Year</div>
-        <button class="edit-profile-button">Edit Profile</button>
+        <button class="edit-profile-button" @click=handleEditProfile>Edit Profile</button>
     </div>
 
     <!-- Main container for the page -->
@@ -132,6 +132,9 @@ export default {
                 console.log("No such document!");
             }
         },
+        handleEditProfile(){
+            this.$router.push('/ProfileTestPage');
+        }
   }
 };
 </script>

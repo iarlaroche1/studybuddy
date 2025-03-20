@@ -15,6 +15,7 @@ import BuddyFinderPage from './components/BuddyFinderPage.vue';
 import ProfileTestPage from './components/ProfileTestPage.vue';
 import HomePage from './components/HomePage.vue';
 import NotFoundPage from './components/NotFoundPage.vue';
+import HelloWorld from './components/HelloWorld.vue';
 
 
 // Define routes for Vue Router
@@ -24,6 +25,7 @@ const routes = [
   { path: '/buddyfinder', component: BuddyFinderPage },
   { path: '/profiletestpage', component: ProfileTestPage },
   { path: '/homepage', component: HomePage },
+  { path: '/helloworld', component: HelloWorld },
   { path: "/:notFound", component: NotFoundPage } // 404 page, currently just directs to login
 ];
 
