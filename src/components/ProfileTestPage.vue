@@ -45,6 +45,7 @@ import firebaseApp from "../api/firebase"; // Import the Firebase app instance
 // var url = "";
 
 export default {
+    
     data() {
         return {
             fullName: '',

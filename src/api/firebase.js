@@ -1,16 +1,12 @@
-/* eslint-disable */
+// src/api/firebase.js
 
-// Import the functions you need from the SDKs you need
+/* eslint-disable */
 import { initializeApp } from "firebase/app";
 import { getAuth, setPersistence, browserLocalPersistence } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getFunctions, httpsCallable } from "firebase/functions";
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBLDZNp9PMaCow_5WFdQI-v3JiHXz64XAk",
   authDomain: "ct216project-75856.firebaseapp.com",
@@ -24,15 +20,16 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// initialise firestore
+// Initialize Firestore and Firebase Auth
 const db = getFirestore(app);
-
-// initialise firebase auth
 const auth = getAuth(app);
-setPersistence(auth, browserLocalPersistence); // set persistence to local, saving user login across sessions
+setPersistence(auth, browserLocalPersistence); // Set persistence to local, saving user login across sessions
 
-// initialise functions
+// Initialize Firebase Functions
 const functions = getFunctions(app);
 export const createUser = httpsCallable(functions, 'createUser');
+
+// Export Firebase services
+export { auth, db, functions };
 
 export default app;
