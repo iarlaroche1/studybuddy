@@ -1,69 +1,66 @@
 <template>
 
+    <div class="page-container">
+
+        
+        <img class="home-header-image" alt="Header" :src="header" />
+
+        <div class="side-navbar-container">
+            <!-- Header image -->
+            <nav class="side-navbar">
+                <ul>
+                    <br><br>
+                    <li><a href="">Buddies</a></li>
+                    <li><a href="">Chat</a></li>
+                    <li><a href="">Calendar</a></li>
+                    <li><a href="">-</a></li>
+                    <li><a href="">-</a></li>
+                    <li><a href="">-</a></li>
+                    <li><a href="">-</a></li>
+                    <li><a href="">-</a></li>
+                    <li><a href="">-</a></li>
+                    <li><a href="">-</a></li>
+                    <li><a href="">-</a></li>
+                    <li><a href="">-</a></li>
 
 
-    <img class="home-header-image" alt="Header" :src="header" />
-
-    <div class="side-navbar-container">
-        <!-- Header image -->
-        <nav class="side-navbar">
-            <ul>
-                <br><br>
-                <li><a href="">Buddies</a></li>
-                <li><a href="">Chat</a></li>
-                <li><a href="">Calendar</a></li>
-                <li><a href="">-</a></li>
-                <li><a href="">-</a></li>
-                <li><a href="">-</a></li>
-                <li><a href="">-</a></li>
-                <li><a href="">-</a></li>
-                <li><a href="">-</a></li>
-                <li><a href="">-</a></li>
-                <li><a href="">-</a></li>
-                <li><a href="">-</a></li>
+                </ul>
+            </nav>
 
 
-            </ul>
-        </nav>
+        </div> <!-- end of side navbar  -->
 
+        <div class="rightside-container">
 
-    </div>
-    <div class="home-header">
-       <h1>Study Buddy</h1>
-    </div>
-    <div class="profile-display-top">
+            <div class="home-header">
+               <div><h1 class="title">Study Buddy Finder: Home</h1></div>
+            </div>
 
-        <img class="profile-picture" alt="ProfilePic" :src=url />
-        <div class="username"><span>Name: {{ fullName }}</span></div>
-        <div class="year"><span>Year: {{ year }}</span></div>
-        <button class="edit-profile-button" @click=handleEditProfile>Edit Profile</button>
-    </div>
+            <div class="profile-display-top">
 
-    <!-- Main container for the page -->
-    <div class="home-page-container">
-
-
-        <!-- Wrapper div for the content and header image -->
-
-
-        <div class="home-content-wrapper">
-
-
-            <div class="left-container">
-
-
+                <img class="profile-picture" alt="ProfilePic" :src=url />
+                <div class="username-year"><span>Name: {{ fullName }}<br><span id="year">Year: {{ year }}</span></span></div>
                 
+                <div class="edit-button-div"><span><button class="edit-profile-button" @click=handleEditProfile>Edit Profile</button></span></div>
+                
+            </div>
 
 
-                <!-- input field section -->
+
+
+            <div class="home-content-wrapper">
+
+
                 <div class="bio-content-container">
 
                     <h1>Bio</h1>
                     <p>Mister Study man, cant do integrals , currently studying Calculus.</p>
 
                 </div>
-                <!-- input field section -->
+
+
                 <div class="subjects-content-container">
+                    
                     <h1>Subjects</h1>
                     <h4>Needs to Study</h4>
                     <li v-for="subject in subjects.filter(s => s.priority == 3)" :key=subject.id>
@@ -79,17 +76,16 @@
                     </li>
 
                 </div>
-
             </div>
+        </div><!--rightside container end-->
 
 
+        <div class="home-footer">
+            <div class="home-footer-text">© 2025 Study-Buddy App. All Rights Reserved.</div>
 
         </div>
     </div>
-    <div class="home-footer">
-        <div class="home-footer-text">© 2025 Study-Buddy App. All Rights Reserved.</div>
 
-    </div>
 </template>
 
 <script>
@@ -101,22 +97,22 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebaseApp from "../api/firebase"; // Import the Firebase app instance
 
 export default {
-  name: "HomePage",
-  data() {
-    return {
-      header: require('@/assets/header.jpg'),
-      jackiechan: require('@/assets/jackiechan.jpg'),
-      fullName: '',
-      bio: 'Mister Study man, can\'t do integrals, currently studying Calculus.',
-      user: null,
+    name: "HomePage",
+    data() {
+        return {
+            header: require('@/assets/header.jpg'),
+            jackiechan: require('@/assets/jackiechan.jpg'),
+            fullName: '',
+            bio: 'Mister Study man, can\'t do integrals, currently studying Calculus.',
+            user: null,
             username: '',
             year: '',
-      subjects: [], // Array to hold dynamic subject data
-      url: ''
-    };
-  },
-  created() {
-    const auth = getAuth(firebaseApp); // Use the Firebase app instance
+            subjects: [], // Array to hold dynamic subject data
+            url: ''
+        };
+    },
+    created() {
+        const auth = getAuth(firebaseApp); // Use the Firebase app instance
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 this.user = user;
@@ -126,9 +122,9 @@ export default {
                 console.log("No user is signed in");
             }
         });
-  },
-  methods: {
-    async loadUserProfile() {
+    },
+    methods: {
+        async loadUserProfile() {
             const db = getFirestore(firebaseApp);
             const userDocRef = doc(db, "users", this.username);
             const userDoc = await getDoc(userDocRef);
@@ -157,46 +153,69 @@ export default {
                 console.log("No such document!");
             }
         },
-        handleEditProfile(){
+        handleEditProfile() {
             this.$router.push('/ProfileTestPage');
         }
-  }
+    }
 };
 </script>
 
 
 <style>
-
 /* Change the background color of the navbar */
 .pos-f-t {
     background-color: rgb(173, 7, 82);
     /* Change this color to your preferred color */
 }
 
+.page-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
 /* Header image */
 .home-header-image {
 
     max-height: auto;
+    max-width: auto;
+    min-height: 20%;
+    min-width: 20%;
+    display: flex;
     /* 30% of the viewport height */
     object-fit: fill;
     border-radius: 0px;
-    outline-color: #000;
-    outline-style: solid;
-    outline-width: 1px;
-
+   
     position: absolute;
     top: 0;
     left: 0;
     width: auto;
     height: 150px;
+    
+}
+
+.rightside-container {
+
+    display: flex;
+    flex-direction: row;
+    
+    flex-wrap: wrap;
+   
+   width: 70px;
+   
+ 
+    
+
 }
 
 .side-navbar-container {
     position: relative;
     float: left;
     top: 80px;
-    width: 30%;
-    ;
+    width: 30px;
+    display: flex;
+    flex-direction: column;
+    
 }
 
 .side-navbar ul {
@@ -228,122 +247,147 @@ export default {
     background-color: rgb(182, 50, 109);
 
 }
+
+.home-header {
+    position: absolute;
+    top: 0;
+    left: 570px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 140px;
+  
+   
+
+}
+.title {
+    left: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 140px;
+  
+   
+
+}
+
+.profile-display-top {
+    position: absolute;
+    display: flex;
+    
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    left: 400px;
+    top:140px;
+    padding: 5px;
+    height: 100px;
+    width: 70%;
+    outline-color: #000;
+    outline-style: solid;
+    outline-width: 1px;
+}
+
 .profile-picture {
-    max-height: 100px;
-    /* 30% of the viewport height */
+    max-height: 80px;
+   
+  
+   
+    outline-color: #000;
+    outline-style: solid;
+    outline-width: 1px;
+    padding: 2px;
+   
+}
+
+.username {
+    max-height: 80px;
+    
+  
+   
+    height: auto;
 
     border-radius: 0px;
-    outline-color: #000;
-    outline-style: solid;
-    outline-width: 1px;
-
-    position: relative;
-}
-.home-header {
-    position: relative;
-    top:0;
-    left:30px;
-    padding:5px;
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-    height:auto;
-    width:auto;
-    outline-color: #000;
-    outline-style: solid;
-    outline-width: 1px;
+ 
+    padding: 2px;
     
 }
-.profile-display-top {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    left:30px;
-    padding:5px;
-    height:auto;
-    width: auto;
-    outline-color: #000;
-    outline-style: solid;
-    outline-width: 1px;
+
+.year {
+    max-height: 80px;
+  
+
+    height: auto;
+   
+    border-radius: 0px;
+    
+    padding: 2px;
+  
 }
-/* Main container for the page */
-.home-page-container {
-    /*background-color: #cccccc;*/
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 70;
-    min-height: 100vh;
-    padding: 0px;
-    position: relative;
-    left: 30px;
+
+
+
+.edit-button-div {
+    max-height: 100px;
+
+    height: auto;
+   
+    border-radius: 0px;
+   
+    padding-right: 50px;
+   
 }
+
 
 
 /* Wrapper div for content */
 .home-content-wrapper {
+
+    position: absolute;
     display: flex;
-    flex-direction: column;
+    
+    flex-direction: row;
+   
+    
+    left: 400px;
+    top:250px;
+    padding: 5px;
+    height: 100%;
+    width: 70%;
+    outline-color: #000;
+    outline-style: solid;
+    outline-width: 1px;
+
+}
+
+.bio-content-container {
+    
+    flex-direction: row;
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    /* Aligns form container vertically */
-    align-items: left;
-    /* Aligns form container horizontally */
-    background-color: #cccccc;
-    width: 100%;
-    max-width: 100%;
-    /* Limit the max width */
-    padding: 20px;
-
-
-    position: relative;
-    top: 0;
-
-}
-
-
-
-/* academic form container */
-.left-container {
-    background-color: #fff6f6;
-    border-radius: 3px;
+    height: 100%;
     width: 50%;
-    max-width: 100%;
-    /* Max width of the form */
-    padding: 30px;
-    min-height: auto;
-    box-sizing: border-box;
-    margin-top: 0px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-
+    outline-color: #000;
+    outline-style: solid;
+    outline-width: 1px;
+    background-color: #b5b5b5;
 }
 
-/* academic text */
-.text-container {
-    text-align: center;
-    margin-bottom: auto;
-
+.subjects-content-container {
+    flex-direction: row;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    height: 100%;
+    width: 50%;
+    outline-color: #000;
+    outline-style: solid;
+    outline-width: 1px;
+    background-color: #b5b5b5;
 }
 
-.bio-content-container{
-    position: relative;
-    left:0px;
-    height:auto;
-}
-
-.subject-content-container{
-    position: relative;
-    left:0px;
-    height:auto;
-}
-
-.academic-text {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #000;
-    line-height: 1.4;
-}
 
 .selectTitleDiv {
     padding: 20px;
@@ -417,7 +461,7 @@ export default {
 
 .home-footer-text {
     color: #ffffff;
-    font-size: .5rem;
+    font-size: .9rem;
     font-weight: 400;
 }
 </style>
