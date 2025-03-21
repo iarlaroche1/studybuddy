@@ -33,7 +33,7 @@
         <div class="rightside-container">
 
             <div class="home-header">
-                <h1>Study Buddy</h1>
+               <div><h1 class="title">Study Buddy Finder: Home</h1></div>
             </div>
 
             <div class="profile-display-top">
@@ -60,6 +60,7 @@
 
 
                 <div class="subjects-content-container">
+                    
                     <h1>Subjects</h1>
                     <p>TODO: dynamically display modules</p>
 
@@ -159,30 +160,26 @@ export default {
     /* 30% of the viewport height */
     object-fit: fill;
     border-radius: 0px;
-    outline-color: #000;
-    outline-style: solid;
-    outline-width: 1px;
-
+   
     position: absolute;
     top: 0;
     left: 0;
     width: auto;
     height: 150px;
+    
 }
 
 .rightside-container {
 
     display: flex;
-    /* 30% of the viewport height */
-    right: 0%;
-    border-radius: 0px;
-    outline-color: #000;
-    outline-style: solid;
-    outline-width: 1px;
-    flex-direction: column;
-    width: 60%;
-    height: 60%;
+    flex-direction: row;
+    
     flex-wrap: wrap;
+   
+   width: 70px;
+   
+ 
+    
 
 }
 
@@ -190,9 +187,10 @@ export default {
     position: relative;
     float: left;
     top: 80px;
-    width: 30%;
+    width: 30px;
     display: flex;
     flex-direction: column;
+    
 }
 
 .side-navbar ul {
@@ -228,16 +226,24 @@ export default {
 .home-header {
     position: absolute;
     top: 0;
-    left: 400px;
-    padding: 5px;
+    left: 570px;
+    width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
     height: 140px;
-    width: auto;
-    outline-color: #000;
-    outline-style: solid;
-    outline-width: 1px;
+  
+   
+
+}
+.title {
+    left: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 140px;
+  
+   
 
 }
 
@@ -278,9 +284,7 @@ export default {
     height: auto;
 
     border-radius: 0px;
-    outline-color: #000;
-    outline-style: solid;
-    outline-width: 1px;
+ 
     padding: 2px;
     
 }
@@ -292,9 +296,7 @@ export default {
     height: auto;
    
     border-radius: 0px;
-    outline-color: #000;
-    outline-style: solid;
-    outline-width: 1px;
+    
     padding: 2px;
   
 }
@@ -307,9 +309,7 @@ export default {
     height: auto;
    
     border-radius: 0px;
-    outline-color: #000;
-    outline-style: solid;
-    outline-width: 1px;
+   
     padding-right: 50px;
    
 }
@@ -319,16 +319,17 @@ export default {
 /* Wrapper div for content */
 .home-content-wrapper {
 
-
     position: absolute;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    
+    flex-direction: row;
+   
+    
     left: 400px;
     top:250px;
     padding: 5px;
-    height: 100px;
-    width: 30%;
+    height: 100%;
+    width: 70%;
     outline-color: #000;
     outline-style: solid;
     outline-width: 1px;
@@ -336,31 +337,30 @@ export default {
 }
 
 .bio-content-container {
-    position: absolute;
-    flex-direction: column;
+    
+    flex-direction: row;
     display: flex;
     flex-wrap: wrap;
-    top:0px;
-    left: 0px;
-    height: fit-content;
-    width: 100%;
+    justify-content: center;
+    height: 100%;
+    width: 50%;
     outline-color: #000;
     outline-style: solid;
     outline-width: 1px;
+    background-color: #b5b5b5;
 }
 
 .subjects-content-container {
+    flex-direction: row;
     display: flex;
-    flex-direction: column;
     flex-wrap: wrap;
-    position: absolute;
-    top:200px;
-    left: 0px;
-    height: fit-content;
-    width: 100%;
+    justify-content: center;
+    height: 100%;
+    width: 50%;
     outline-color: #000;
     outline-style: solid;
     outline-width: 1px;
+    background-color: #b5b5b5;
 }
 
 
@@ -436,7 +436,7 @@ export default {
 
 .home-footer-text {
     color: #ffffff;
-    font-size: .5rem;
+    font-size: .9rem;
     font-weight: 400;
 }
 </style>
