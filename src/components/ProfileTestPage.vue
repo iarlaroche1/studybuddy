@@ -149,8 +149,8 @@ export default {
                 var course = document.getElementsByClassName("course")[i].value;
                 var priority = document.getElementsByClassName("priority")[i].value;
 
-                const priorityDocRef = doc(collection(userDocRef, "priority"), course);
-                await setDoc(priorityDocRef, { priority });
+                const subjectsDocRef = doc(collection(userDocRef, "subjects"), course);
+                await setDoc(subjectsDocRef, { priority });
             }
         },
         addSubject() {

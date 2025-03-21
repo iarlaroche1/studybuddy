@@ -65,8 +65,18 @@
                 <!-- input field section -->
                 <div class="subjects-content-container">
                     <h1>Subjects</h1>
-                    <p>TODO: dynamically display modules</p>
-
+                    <h4>Needs to Study</h4>
+                    <li v-for="subject in subjects.filter(s => s.priority == 3)" :key=subject.id>
+                        {{ subject.id }}
+                    </li>
+                    <h4>Could Study</h4>
+                    <li v-for="subject in subjects.filter(s => s.priority == 2)" :key=subject.id>
+                        {{ subject.id }}
+                    </li>
+                    <h4>Doesn't Need to Study</h4>
+                    <li v-for="subject in subjects.filter(s => s.priority == 1)" :key=subject.id>
+                        {{ subject.id }}
+                    </li>
 
                 </div>
 
@@ -86,7 +96,7 @@
 //import { db, auth } from '@/api/firebase'; // Import Firebase services
 //import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // import { getFunctions, httpsCallable } from "firebase/functions";
-import { getFirestore, doc,  getDoc } from "firebase/firestore";
+import { getFirestore, doc, collection,  getDoc, getDocs } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebaseApp from "../api/firebase"; // Import the Firebase app instance
 
@@ -125,9 +135,24 @@ export default {
 
             if (userDoc.exists()) {
                 const userData = userDoc.data();
+
+                // load profile info
                 this.fullName = userData.fullName;
                 this.url = userData.photoURL;
                 this.year = userData.year;
+
+                // list subjects - TEMP CODE to be updated when 
+                const subjectsCollectionRef = collection(userDocRef, "subjects");
+
+                const querySnapshot = await getDocs(subjectsCollectionRef);
+                this.subjects = []; // clear the array before loading
+                if (!querySnapshot.empty) {
+                    querySnapshot.forEach((doc) => {
+                        this.subjects.push({"id": doc.id, "priority": doc.data().priority});
+                    });
+                }
+
+
             } else {
                 console.log("No such document!");
             }
