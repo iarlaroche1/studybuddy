@@ -1,4 +1,4 @@
-    <template>
+<template>
     <div>      
         <!-- Name input field section -->
         <div class="input-container">
@@ -147,7 +147,7 @@ export default {
 
             for (var i = 0; i < table.rows.length; i++) {
                 var course = document.getElementsByClassName("course")[i].value;
-                var priority = document.getElementsByClassName("priority")[i].value;
+                var priority = Number(document.getElementsByClassName("priority")[i].value);
 
                 const subjectsDocRef = doc(collection(userDocRef, "subjects"), course);
                 await setDoc(subjectsDocRef, { priority });
@@ -164,8 +164,12 @@ export default {
             row.appendChild(document.createTextNode("Subject: "));
             row.appendChild(courseInput);
 
-            // create priority input field
+            // create priority input field as a slider
             var priorityInput = document.createElement("input");
+            priorityInput.type = "range";
+            priorityInput.min = "1";
+            priorityInput.max = "3";
+            priorityInput.value = "2";
             priorityInput.className = "priority";
             row.appendChild(document.createTextNode("Priority: "));
             row.appendChild(priorityInput);
