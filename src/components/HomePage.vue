@@ -203,17 +203,7 @@ export default {
     background-color: rgb(182, 50, 109);
 
 }
-.profile-picture {
-    max-height: 100px;
-    /* 30% of the viewport height */
 
-    border-radius: 0px;
-    outline-color: #000;
-    outline-style: solid;
-    outline-width: 1px;
-
-    position: relative;
-}
 .home-header {
     position: relative;
     top:0;
@@ -236,11 +226,64 @@ export default {
     align-items: center;
     left:30px;
     padding:5px;
-    height:auto;
+    height:100px;
     width: auto;
     outline-color: #000;
     outline-style: solid;
     outline-width: 1px;
+}
+.profile-picture {
+    max-height: 80px;
+    /* 30% of the viewport height */
+
+    left:10px;
+    top: 10px;
+    border-radius: 0px;
+    outline-color: #000;
+    outline-style: solid;
+    outline-width: 1px;
+    padding: 2px;
+    position: absolute;
+}
+.username {
+    max-height: 80px;
+    /* 30% of the viewport height */
+    height: auto;
+    left:100px;
+    top: 10px;
+    border-radius: 0px;
+    outline-color: #000;
+    outline-style: solid;
+    outline-width: 1px;
+    padding: 2px;
+    position: absolute;
+}
+.year {
+    max-height: 80px;
+    /* 30% of the viewport height */
+    height: auto;
+    left:100px;
+    top: 50%;
+    border-radius: 0px;
+    outline-color: #000;
+    outline-style: solid;
+    outline-width: 1px;
+    padding: 2px;
+    position: absolute;
+}
+
+.edit-profile-button {
+    max-height: 100px;
+    /* 30% of the viewport height */
+    height: auto;
+    left: 80%;
+    top: 35%;
+    border-radius: 0px;
+    outline-color: #000;
+    outline-style: solid;
+    outline-width: 1px;
+    padding: 2px;
+    position: absolute;
 }
 /* Main container for the page */
 .home-page-container {
