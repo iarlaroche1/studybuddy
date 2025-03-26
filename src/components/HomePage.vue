@@ -252,7 +252,7 @@ export default {
     position: absolute;
     top: 0;
     left: 570px;
-    width: 100%;
+    width: 40%;
     display: flex;
     flex-direction: row;
     align-items: center;
