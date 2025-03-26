@@ -7,7 +7,7 @@
         </div>
         <div class="input-container">
             <label for="year">Year:</label>
-            <select id="year" v-model="year" class="input-field" @change="clearTable()">
+            <select id="year" v-model="year" class="input-field" @change="resetSubjectTable()">
                 <option value="" disabled>Select your year</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -224,7 +224,7 @@ export default {
                 // create text element with course name
                 courseName = document.createElement("div");
                 courseName.className = "course";
-                courseName.id = subject.id;
+                courseName.value = subject.id;
                 courseName.style.textAlign = "left"; // align text to the left
                 courseName.innerHTML = subject.name;
             }
@@ -246,11 +246,20 @@ export default {
             // add row to table
             table.appendChild(row);
         },
-        clearTable() {
+        resetSubjectTable() {
             const table = document.getElementById("subjectAdd");
+            // clear table
             while (table.firstChild) {
                 table.removeChild(table.firstChild);
             }
+
+            // call addSubject for each subject
+            this.subjects.forEach(subject => {
+                if (subject.optional == false && subject.year == this.year) {
+                    console.log(subject.id);
+                    this.addSubject(subject);
+                }
+            });
         }
     }
 };
@@ -265,9 +274,5 @@ export default {
     width: 100%;
     padding: 8px;
     box-sizing: border-box;
-}
-.course {
-    text-align: left; /* Aligns text inside the dropdown */
-    width: 100%; /* Optional: Ensures the dropdown takes up the full width of the cell */
 }
 </style>
