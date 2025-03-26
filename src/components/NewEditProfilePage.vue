@@ -34,13 +34,13 @@
 
             <div class="edit-profile-header">
                 <div>
-                    <h1 class="edit-profile-title">Edit Profile</h1>
+                    <h1 class="edit-profile-title">Study Buddy Finder: Home</h1>
                 </div>
             </div>
 
             <div class="edit-profile-profile-display-top">
 
-                <img v-if="url !== '' && url !== null" id="preview" height="100" width="100" :src="url">
+                <img class="profile-picture" v-if="url !== '' && url !== null" id="preview" height="100" width="100" :src="url">
                 <input type="file" @change="preview" accept="image/*" id="input1">
                 <!-- commenting out the below button because it isn't really necessary, updateProfile does the same thing -->
                 <!-- <button @click="uploadImage">Upload</button> -->
@@ -48,14 +48,15 @@
                 <div class="edit-profile-username-year">
                     <span>
                         <div class="edit-profile-name-input-container">
-                            <input id="full-name" v-model="fullName" type="text" placeholder="Enter your full name"
-                                class="input-field" />
+                            <input id="full-name" v-model="fullName" type="text" placeholder="Enter your full name" class="input-field" />
                         </div>
                         <br>
                         <span>
                             <div class="edit-profile-year-input-container">
-                                <input id="year" v-model="year" type="text" placeholder="Enter your year"
-                                    class="input-field" />
+                                <select id="year" v-model="year" class="input-field">
+                                    <option disabled value="">Select your year</option>
+                                    <option v-for="n in 4" :key="n" :value="n">{{ n }}</option>
+                                </select>
                             </div>
                         </span>
 
@@ -194,6 +195,11 @@ export default {
             const userDocRef = doc(db, "users", this.username);
 
             try {
+                if (!this.year) {
+                    console.error("Year is not selected");
+                    return;
+                }
+
                 await this.uploadImage();
                 await this.editSubjects();
                 await setDoc(userDocRef, {
@@ -389,6 +395,22 @@ export default {
 
 }
 
+
+.input-field {
+    width: 100%; /* Make the input field take full width */
+    padding: 8px;
+    box-sizing: border-box;
+    font-size: 1rem; /* Ensure the text is readable */
+}
+
+.edit-profile-year-input-container select {
+    width: 100%; /* Ensure the dropdown is wide enough */
+    padding: 8px;
+    font-size: 1rem; /* Ensure the selected year is visible */
+    height: auto; /* Adjust height to fit content */
+    box-sizing: border-box;
+}
+
 .edit-profile-title {
     left: 40px;
     display: flex;
@@ -428,11 +450,23 @@ export default {
     padding: 2px;
 
 }
+.profile-picture {
+    height: 80px;
+    width:80px;
+   
+  
+   
+    outline-color: #000;
+    outline-style: solid;
+    outline-width: 1px;
+    padding: 2px;
+   
+}
 
 .edit-profile-name-input-container {
     display: flex;
     max-height: 8px;
-    height: 10px;
+    height: 1px;
     border-radius: 0px;
     padding: 2px;
 }

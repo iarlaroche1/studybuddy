@@ -39,7 +39,9 @@
             <div class="profile-display-top">
 
                 <img class="profile-picture" alt="ProfilePic" :src=url />
-                <div class="username-year"><span>Name: {{ fullName }}<br><span id="year">Year: {{ year }}</span></span></div>
+
+
+                <div class="username-year"><span id="name">Name: {{ fullName }}<br><span id="year">Year: {{ year }}</span></span></div>
                 
                 <div class="edit-button-div"><span><button class="edit-profile-button" @click=handleEditProfile>Edit Profile</button></span></div>
                 
@@ -314,7 +316,17 @@ export default {
     padding: 2px;
     
 }
+.name {
+    max-height: 80px;
+  
 
+    height: auto;
+   
+    border-radius: 0px;
+    
+    padding: 2px;
+  
+}
 .year {
     max-height: 80px;
   
