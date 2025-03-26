@@ -38,8 +38,7 @@
 
             <div class="profile-display-top">
 
-                <img class="profile-picture" alt="ProfilePic" v-if="url !== '' && url !== null" id="preview" height="80" width="80" :src="url">
-                
+                <img class="profile-picture" alt="ProfilePic" :src=url />
                 <div class="username-year"><span>Name: {{ fullName }}<br><span id="year">Year: {{ year }}</span></span></div>
                 
                 <div class="edit-button-div"><span><button class="edit-profile-button" @click=handleEditProfile>Edit Profile</button></span></div>
@@ -291,7 +290,8 @@ export default {
 }
 
 .profile-picture {
-    
+    height: 80px;
+    width:80px;
    
   
    
