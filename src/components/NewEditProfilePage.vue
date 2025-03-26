@@ -2,12 +2,12 @@
 
     <div class="page-container">
 
-        
-        <img class="home-header-image" alt="Header" :src="header" />
 
-        <div class="side-navbar-container">
+        <img class="edit-profile-header-image" alt="Header" :src="header" />
+
+        <div class="edit-profile-side-navbar-container">
             <!-- Header image -->
-            <nav class="side-navbar">
+            <nav class="edit-profile-side-navbar">
                 <ul>
                     <br><br>
                     <li><a href="">Buddies</a></li>
@@ -30,28 +30,75 @@
 
         </div> <!-- end of side navbar  -->
 
-        <div class="rightside-container">
+        <div class="edit-profile-rightside-container">
 
-            <div class="home-header">
-               <div><h1 class="title">Study Buddy Finder: Home</h1></div>
+            <div class="edit-profile-header">
+                <div>
+                    <h1 class="edit-profile-title">Edit Profile</h1>
+                </div>
             </div>
 
-            <div class="profile-display-top">
+            <div class="edit-profile-profile-display-top">
 
-                <img class="profile-picture" alt="ProfilePic" :src=url />
-                <div class="username-year"><span>Name: {{ fullName }}<br><span id="year">Year: {{ year }}</span></span></div>
-                
-                <div class="edit-button-div"><span><button class="edit-profile-button" @click=handleEditProfile>Edit Profile</button></span></div>
-                
+                <img v-if="url !== '' && url !== null" id="preview" height="100" width="100" :src="url">
+                <input type="file" @change="preview" accept="image/*" id="input1">
+                <!-- commenting out the below button because it isn't really necessary, updateProfile does the same thing -->
+                <!-- <button @click="uploadImage">Upload</button> -->
+
+                <div class="edit-profile-username-year">
+                    <span>
+                        <div class="edit-profile-name-input-container">
+                            <input id="full-name" v-model="fullName" type="text" placeholder="Enter your full name"
+                                class="input-field" />
+                        </div>
+                        <br>
+                        <span>
+                            <div class="edit-profile-year-input-container">
+                                <input id="year" v-model="year" type="text" placeholder="Enter your year"
+                                    class="input-field" />
+                            </div>
+                        </span>
+
+                    </span>
+
+
+
+                </div>
+
+                <div class="edit-profile-edit-button-div">
+                    
+                        <button class="edit-profile-button"
+                            @click=handleEditProfile>Edit Profile</button>
+                    
+                   
+                            <button @click="updateUserProfile">Update Profile</button><br>
+                        </div>
+
+            </div>
+
+            <div>
+
+
+                <table id="subjectAdd">
+                </table>
+
+                <br>
+                <button @click="addSubject" id="addSubject">Add Subject</button>
+
+                <br>
+                <br>
+             
+               
+
             </div>
 
 
 
 
-            <div class="home-content-wrapper">
+            <div class="edit-profile-content-wrapper">
 
 
-                <div class="bio-content-container">
+                <div class="edit-profile-bio-content-container">
 
                     <h1>Bio</h1>
                     <p>Mister Study man, cant do integrals , currently studying Calculus.</p>
@@ -59,8 +106,8 @@
                 </div>
 
 
-                <div class="subjects-content-container">
-                    
+                <div class="edit-profile-subjects-content-container">
+
                     <h1>Subjects</h1>
                     <h4>Needs to Study</h4>
                     <li v-for="subject in subjects.filter(s => s.priority == 3)" :key=subject.id>
@@ -80,8 +127,8 @@
         </div><!--rightside container end-->
 
 
-        <div class="home-footer">
-            <div class="home-footer-text">© 2025 Study-Buddy App. All Rights Reserved.</div>
+        <div class="edit-profile-footer">
+            <div class="edit-profile-footer-text">© 2025 Study-Buddy App. All Rights Reserved.</div>
 
         </div>
     </div>
@@ -92,12 +139,12 @@
 //import { db, auth } from '@/api/firebase'; // Import Firebase services
 //import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // import { getFunctions, httpsCallable } from "firebase/functions";
-import { getFirestore, doc, collection,  getDoc, getDocs } from "firebase/firestore";
+import { getFirestore, doc, collection, getDoc, getDocs } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebaseApp from "../api/firebase"; // Import the Firebase app instance
 
 export default {
-    name: "HomePage",
+    name: "NewEditProfilePage",
     data() {
         return {
             header: require('@/assets/header.jpg'),
@@ -144,7 +191,7 @@ export default {
                 this.subjects = []; // clear the array before loading
                 if (!querySnapshot.empty) {
                     querySnapshot.forEach((doc) => {
-                        this.subjects.push({"id": doc.id, "priority": doc.data().priority});
+                        this.subjects.push({ "id": doc.id, "priority": doc.data().priority });
                     });
                 }
 
@@ -154,7 +201,7 @@ export default {
             }
         },
         handleEditProfile() {
-            this.$router.push('/neweditprofile');
+            this.$router.push('/ProfileTestPage');
         }
     }
 };
@@ -175,7 +222,7 @@ export default {
 }
 
 /* Header image */
-.home-header-image {
+.edit-profile-header-image {
 
     max-height: auto;
     max-width: auto;
@@ -185,40 +232,40 @@ export default {
     /* 30% of the viewport height */
     object-fit: fill;
     border-radius: 0px;
-   
+
     position: absolute;
     top: 0;
     left: 0;
     width: auto;
     height: 150px;
-    
+
 }
 
-.rightside-container {
+.edit-profile-rightside-container {
 
     display: flex;
     flex-direction: row;
-    
+
     flex-wrap: wrap;
-   
-   width: 70px;
-   
- 
-    
+
+    width: 70px;
+
+
+
 
 }
 
-.side-navbar-container {
+.edit-profile-side-navbar-container {
     position: relative;
     float: left;
     top: 80px;
     width: 30px;
     display: flex;
     flex-direction: column;
-    
+
 }
 
-.side-navbar ul {
+.edit-profile-side-navbar ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -227,7 +274,7 @@ export default {
     background-color: rgb(173, 7, 82);
 }
 
-.side-navbar a {
+.edit-profile-side-navbar a {
     display: flex;
     color: white;
     outline-color: #000;
@@ -243,12 +290,12 @@ export default {
 
 }
 
-.side-navbar a:hover {
+.edit-profile-side-navbar a:hover {
     background-color: rgb(182, 50, 109);
 
 }
 
-.home-header {
+.edit-profile-header {
     position: absolute;
     top: 0;
     left: 570px;
@@ -257,30 +304,31 @@ export default {
     flex-direction: row;
     align-items: center;
     height: 140px;
-  
-   
+
+
 
 }
-.title {
+
+.edit-profile-title {
     left: 40px;
     display: flex;
     flex-direction: row;
     align-items: center;
     height: 140px;
-  
-   
+
+
 
 }
 
-.profile-display-top {
+.edit-profile-profile-display-top {
     position: absolute;
     display: flex;
-    
+
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     left: 400px;
-    top:140px;
+    top: 140px;
     padding: 5px;
     height: 100px;
     width: 70%;
@@ -289,69 +337,85 @@ export default {
     outline-width: 1px;
 }
 
-.profile-picture {
+.edit-profile-profile-picture {
     max-height: 80px;
-   
-  
-   
+
+
+
     outline-color: #000;
     outline-style: solid;
     outline-width: 1px;
     padding: 2px;
-   
+
+}
+
+.edit-profile-name-input-container {
+    display: flex;
+    max-height: 8px;
+    height: 10px;
+    border-radius: 0px;
+    padding: 2px;
+}
+
+.edit-profile-year-input-container {
+    display: flex;
+    max-height: 8px;
+    height: 10px;
+    border-radius: 0px;
+    padding: 2px;
 }
 
 .username {
     max-height: 80px;
-    
-  
-   
+
+
+
     height: auto;
 
     border-radius: 0px;
- 
+
     padding: 2px;
-    
+
 }
 
 .year {
     max-height: 80px;
-  
+
 
     height: auto;
-   
+
     border-radius: 0px;
-    
+
     padding: 2px;
-  
+
 }
 
 
 
-.edit-button-div {
+.edit-profile-edit-button-div {
     max-height: 100px;
 
     height: auto;
-   
+
     border-radius: 0px;
-   
+
     padding-right: 50px;
-   
+
 }
 
 
 
 /* Wrapper div for content */
-.home-content-wrapper {
+.edit-profile-content-wrapper {
 
     position: absolute;
     display: flex;
-    
+
     flex-direction: row;
-   
-    
+
+
     left: 400px;
-    top:250px;
+    top: 250px;
     padding: 5px;
     height: 100%;
     width: 70%;
@@ -361,8 +425,8 @@ export default {
 
 }
 
-.bio-content-container {
-    
+.edit-profile-bio-content-container {
+
     flex-direction: row;
     display: flex;
     flex-wrap: wrap;
@@ -375,7 +439,7 @@ export default {
     background-color: #b5b5b5;
 }
 
-.subjects-content-container {
+.edit-profile-subjects-content-container {
     flex-direction: row;
     display: flex;
     flex-wrap: wrap;
@@ -397,7 +461,7 @@ export default {
 
 
 
-.home-content-container label {
+.edit-profile-content-container label {
     font-size: 1rem;
     font-weight: 500;
     color: #000;
@@ -448,8 +512,8 @@ export default {
     background-color: rgb(255, 117, 179);
 }
 
-/* home-footer section */
-.home-footer {
+/* edit-profile-footer section */
+.edit-profile-footer {
     background-color: #242526;
     height: 100px;
     width: 100%;
@@ -459,7 +523,7 @@ export default {
     padding: 10px;
 }
 
-.home-footer-text {
+.edit-profile-footer-text {
     color: #ffffff;
     font-size: .9rem;
     font-weight: 400;
