@@ -68,7 +68,7 @@
                 <div class="edit-profile-edit-button-div">
                     
                         <button class="edit-profile-button"
-                            @click=handleEditProfile>Edit Profile</button>
+                            @click=handleDiscardChanges>Discard Changes</button>
                     
                    
                             <button @click="updateUserProfile">Update Profile</button><br>
@@ -143,6 +143,7 @@ import { getFirestore, doc, collection, getDoc, getDocs } from "firebase/firesto
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebaseApp from "../api/firebase"; // Import the Firebase app instance
 
+
 export default {
     name: "NewEditProfilePage",
     data() {
@@ -200,8 +201,8 @@ export default {
                 console.log("No such document!");
             }
         },
-        handleEditProfile() {
-            this.$router.push('/ProfileTestPage');
+        handleDiscardChanges() { // method called when user wishes to discard changes via button
+            this.$router.push('/homepage'); // returns to homepage
         }
     }
 };
