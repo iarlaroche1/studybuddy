@@ -33,8 +33,6 @@
         <br>
         <br>
         <button @click="updateUserProfile">Update Profile</button><br>
-        <button @click="checkProfile">Check Profile</button>
-
     </div>
 </template>
 
@@ -103,28 +101,20 @@ export default {
             try {
                 await this.uploadImage();
                 await this.editSubjects();
-                await setDoc(userDocRef, {
-                    email: this.user.email,
-                    fullName: this.fullName,
-                    photoURL: this.url,
-                    year: this.year
-                });
+
+                // dynamically construct the update object (to avoid potential file overwrite)
+                const updateData = {};
+                if (this.user.email) updateData.email = this.user.email;
+                if (this.fullName) updateData.fullName = this.fullName;
+                if (this.url) updateData.photoURL = this.url;
+                if (this.year) updateData.year = this.year;
+
+                // update the user document without overwriting other fields
+                await setDoc(userDocRef, updateData, { merge: true });
+
                 console.log('Profile updated successfully');
             } catch (error) {
                 console.error("Error updating profile:", error);
-            }
-        },
-        checkProfile() {
-            if (this.user !== null) {
-                this.user.providerData.forEach((profile) => {
-                console.log("  Sign-in provider: " + profile.providerId);
-                console.log("  Provider-specific UID: " + profile.uid);
-                console.log("  Name: " + profile.displayName);
-                console.log("  Email: " + profile.email);
-                console.log("  Photo URL: " + profile.photoURL);
-            });
-            } else if (this.user == null) {
-                console.log("User is null");
             }
         },
         preview() {
