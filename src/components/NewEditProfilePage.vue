@@ -77,21 +77,7 @@
 
             </div>
 
-            <div>
-
-
-                <table id="subjectAdd">
-                </table>
-
-                <br>
-                <button @click="addSubject" id="addSubject">Add Subject</button>
-
-                <br>
-                <br>
-             
-               
-
-            </div>
+           
 
 
 
@@ -99,31 +85,22 @@
             <div class="edit-profile-content-wrapper">
 
 
-                <div class="edit-profile-bio-content-container">
+               
 
-                    <h1>Bio</h1>
-                    <p>Mister Study man, cant do integrals , currently studying Calculus.</p>
+                    <table id="subjectAdd">
+                </table>
 
-                </div>
+                <br>
+                <button class="addSubjectButton" @click="addSubject" id="addSubject">Add Subject</button>
+
+                <br>
+                <br>
+             
+
+               
 
 
-                <div class="edit-profile-subjects-content-container">
-
-                    <h1>Subjects</h1>
-                    <h4>Needs to Study</h4>
-                    <li v-for="subject in subjects.filter(s => s.priority == 3)" :key=subject.id>
-                        {{ subject.id }}
-                    </li>
-                    <h4>Could Study</h4>
-                    <li v-for="subject in subjects.filter(s => s.priority == 2)" :key=subject.id>
-                        {{ subject.id }}
-                    </li>
-                    <h4>Doesn't Need to Study</h4>
-                    <li v-for="subject in subjects.filter(s => s.priority == 1)" :key=subject.id>
-                        {{ subject.id }}
-                    </li>
-
-                </div>
+                
             </div>
         </div><!--rightside container end-->
 
