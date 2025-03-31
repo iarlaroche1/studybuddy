@@ -22,6 +22,7 @@
                     <li><a href="">-</a></li>
                     <li><a href="">-</a></li>
                     <li><a href="">-</a></li>
+                    
 
 
                 </ul>
@@ -93,23 +94,20 @@
             <div class="edit-profile-content-wrapper">
 
 
+                <button class="addSubjectButton" @click=addSubject(0) id="addSubject">Add Subject</button>
 
-
+                <br><br>
                 <table id="subjectAdd">
-        </table>
-        
-        <br>
-        <button class="addSubjectButton" @click=addSubject(0) id="addSubject">Add Subject</button>
+                </table>
 
-                <br>
-                <br>
-
-
+                
 
 
 
 
             </div>
+
+
         </div><!--rightside container end-->
 
 
@@ -184,8 +182,8 @@ export default {
                 try {
                     this.url = await getDownloadURL(storageRef); // get the download URL
                 } catch (error) {
-                console.error("Error retrieving photo URL:", error);
-                this.url = await await getDownloadURL(ref(storage, "profileImages/blank.jpg")); // default to blank.jpg if no photo exists
+                    console.error("Error retrieving photo URL:", error);
+                    this.url = await await getDownloadURL(ref(storage, "profileImages/blank.jpg")); // default to blank.jpg if no photo exists
                 }
 
                 // get user subjects
@@ -200,7 +198,7 @@ export default {
                         const subjectDoc = await getDoc(subjectDocRef);
 
                         // push subject object to array with id, priority and name
-                        this.userSubjects.push({"id": userSubjectDoc.id, "priority": userSubjectDoc.data().priority, "name": subjectDoc.data().name, "optional": subjectDoc.data().optional});
+                        this.userSubjects.push({ "id": userSubjectDoc.id, "priority": userSubjectDoc.data().priority, "name": subjectDoc.data().name, "optional": subjectDoc.data().optional });
                     }
                 }
 
@@ -275,7 +273,7 @@ export default {
                 console.error("Error uploading file:", error);
             }
         },
-        
+
         async editSubjects() {
             const db = getFirestore(firebaseApp);
             const userDocRef = doc(db, "users", this.username);
@@ -293,7 +291,7 @@ export default {
                 }
             } catch (error) {
                 console.error("Error deleting collection:", error);
-            }   
+            }
 
             // then add subjects again
             var table = document.getElementById("subjectAdd");
@@ -314,16 +312,16 @@ export default {
             const querySnapshot = await getDocs(subjectsCollectionRef);
 
             if (!querySnapshot.empty) {
-                  querySnapshot.forEach((doc) => {
+                querySnapshot.forEach((doc) => {
                     this.subjects.push({
                         "id": doc.id,
                         "name": doc.data().name,
                         "optional": doc.data().optional,
                         "year": doc.data().year
                     });
-                  });
+                });
             }
-            
+
             // populate list with each user subject
             // first non-optional, then optional
             this.userSubjects.forEach(subject => {
@@ -344,7 +342,7 @@ export default {
             // get table and create new row
             var table = document.getElementById("subjectAdd");
             var row = document.createElement("tr");
-            
+
             // create the first cell for the course
             var courseCell = document.createElement("td");
             var courseName;
@@ -357,7 +355,7 @@ export default {
                 // create course input field
                 courseName = document.createElement("select");
                 courseName.className = "course";
-                
+
                 // create default option selection
                 const defaultOption = document.createElement("option");
                 defaultOption.value = subject.id || ""; // subject id or blank if none provided
@@ -368,7 +366,7 @@ export default {
                 this.subjects.forEach(subjectOption => {
                     if (subjectOption.optional == true && subjectOption.year == this.year && subject.id != subjectOption.id) {
                         let option = document.createElement("option");
-                        
+
                         option.value = subjectOption.id;
                         option.text = subjectOption.name;
                         courseName.appendChild(option);
@@ -404,10 +402,10 @@ export default {
             priorityInput.max = "3";
             priorityInput.value = subject.priority || "2"; // if no priority provided, default to 2
             priorityInput.className = "priority";
-           
+
             priorityCell.appendChild(priorityInput);
             row.appendChild(priorityCell);
-            
+
             // append third cell
             deleteCell.appendChild(deleteButton);
             row.appendChild(deleteCell);
@@ -415,7 +413,7 @@ export default {
             // add row to table
             table.appendChild(row);
         },
-        
+
         resetSubjectTable() {
             const table = document.getElementById("subjectAdd");
             // clear table
@@ -473,31 +471,44 @@ export default {
 
 }
 
-.subjectAdd {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+./* Style for the subjects list */
+#subjectAdd {
     width: 100%;
-    height: 100%;
-    background-color: #b5b5b5;
-    border-radius: 0px;
-    padding: 2px;
-    margin: 2px;
+    border-collapse: collapse;
+    margin-top: 10px;
 }
-.addSubjectButton{
+
+#subjectAdd tr {
     display: flex;
-    flex-direction: row;
-    justify-content: left;
-    align-items: left;
-    width: 90px;
-    height: 10%;
-    background-color: #b5b5b5;
-    border-radius: 0px;
-    padding: 2px;
-    margin: 2px;
-    position: absolute;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #ddd;
 }
+
+#subjectAdd td {
+    flex: 1;
+    padding: 0 5px;
+}
+
+/* Style for priority slider */
+#subjectAdd input[type="range"] {
+    width: 100%;
+}
+
+/* Style for the add subject button */
+.addSubjectButton {
+    position: relative; /* Change from absolute */
+    width: 100px;
+    height: 100px;
+    margin: 10px 0;
+    padding: 8px 15px;
+    background-color: rgb(66, 58, 62);
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
 .edit-profile-rightside-container {
 
     display: flex;
@@ -548,8 +559,13 @@ export default {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 
@@ -736,7 +752,7 @@ export default {
     outline-color: #000;
     outline-style: solid;
     outline-width: 1px;
-
+    overflow-y: auto; /* Add scroll when content overflows */
 }
 
 .edit-profile-bio-content-container {
@@ -754,12 +770,17 @@ export default {
 }
 
 .edit-profile-subjects-content-container {
-    flex-direction: row;
+    flex-direction: column;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    height: 100%;
-    width: 50%;
+    justify-content: flex-start; /* Changed from center to flex-start */
+    /* Remove fixed height */
+    height: auto;
+    max-height: 100%;
+    width: 100%;
+    overflow-y: auto; /* Add scroll if needed */
+    padding: 10px;
+    box-sizing: border-box;
     outline-color: #000;
     outline-style: solid;
     outline-width: 1px;
