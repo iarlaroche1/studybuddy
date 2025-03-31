@@ -61,7 +61,7 @@ export default {
                     let userData = userDoc.data();
                     
                     let subjectsCollectionRef = collection(userDocRef, "subjects"); 
-                    let subjects = await this.getSubjects(subjectsCollectionRef);
+                    let subjects = await this.getUserSubjects(subjectsCollectionRef);
                     
                     // only run correlation check if user is not user logged in
                     let correlation = await this.getCorrelation(subjects);
@@ -76,7 +76,7 @@ export default {
                   }
             }
         },
-        async getSubjects(ref) {
+        async getUserSubjects(ref) {
             const querySnapshot = await getDocs(ref);
             let subjects = [];
 
@@ -93,11 +93,11 @@ export default {
         },
         async getCorrelation(user2Subjects) {
             // user1 is the user that's currently logged in
-            // if user1Subjects has not yet been populated, use getSubjects to populate it
+            // if user1Subjects has not yet been populated, use getUserSubjects to populate it
             if (this.user1Subjects.length == 0) {
                 const db = getFirestore(firebaseApp);
                 const userDocRef = doc(db, "users", this.username);
-                this.user1Subjects = await this.getSubjects(collection(userDocRef, "subjects"));
+                this.user1Subjects = await this.getUserSubjects(collection(userDocRef, "subjects"));
             }
 
             let correlation = 0;
