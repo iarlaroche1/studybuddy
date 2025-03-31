@@ -1,15 +1,18 @@
 <template>
     <div>
+        
         <!-- NOTE most of this is temporary, in final product only fullName should be shown -->
          <!-- would also be neat to make the names clickable links to profile pages, and have an "Add Friend" button beside each -->
         <li v-for="user in users" :key="user.id">
-            {{ user.fullName }}, Correlation: {{ user.correlation }}
+            <router-link :to="'/user/' + user.id">{{ user.fullName }}</router-link> Correlation: {{ user.correlation }}
+            <!-- TEMP: show subjects and priority for each user - simply for the case of checking correlation system -->
+            <!--
             <ul>
                 <li v-for="subject in user.subjects" :key="subject.id">
                     {{ subject.id }}, Priority: {{ subject.priority }}
                 </li>
             </ul>
-            
+            -->
         </li>
     </div>
 </template>
@@ -75,6 +78,9 @@ export default {
                     });
                   }
             }
+
+            this.users.sort((a,b) => (a.correlation > b.correlation) ? -1 : ((b.correlation > a.correlation) ? 1 : 0))
+            //this.users.sort(compare()); // sort users based on correlation, using compare function (see below)
         },
         async getUserSubjects(ref) {
             const querySnapshot = await getDocs(ref);
@@ -126,6 +132,15 @@ export default {
                 }                
             }
             return correlation / ((prioritySum1 + prioritySum2) / 2);
+        },
+        compare(a,b) {
+            if ( a.correlation < b.correlation ){
+                return -1;
+            }
+            if ( a.correlation > b.correlation ){
+                return 1;
+            }
+            return 0;
         }
     }
 };

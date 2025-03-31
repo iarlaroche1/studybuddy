@@ -14,7 +14,7 @@ import LoginPage from './components/LoginPage.vue';
 import BuddyFinderPage from './components/BuddyFinderPage.vue';
 import BuddiesListPage from './components/BuddiesListPage.vue';
 import ProfileTestPage from './components/ProfileTestPage.vue';
-// import ProfilePage from './components/ProfilePage.vue'
+import ProfilePage from './components/ProfilePage.vue'
 import HomePage from './components/HomePage.vue';
 import NotFoundPage from './components/NotFoundPage.vue';
 import HelloWorld from './components/HelloWorld.vue';
@@ -27,7 +27,7 @@ const routes = [
   { path: '/buddyfinder', component: BuddyFinderPage },
   { path: '/profiletestpage', component: ProfileTestPage },
   { path: '/buddies', component: BuddiesListPage },
-  // { path: '/user/:id', component: ProfilePage }, TODO
+  { path: '/user/:id', component: ProfilePage }, // TODO
   { path: '/homepage', component: HomePage },
   { path: '/helloworld', component: HelloWorld },
   { path: '/neweditprofile', component: NewEditProfilePage },
