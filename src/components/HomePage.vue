@@ -2,7 +2,7 @@
 
     <div class="page-container">
 
-        
+
         <img class="home-header-image" alt="Header" :src="header" />
 
         <div class="side-navbar-container">
@@ -33,7 +33,9 @@
         <div class="rightside-container">
 
             <div class="home-header">
-               <div><h1 class="title">Study Buddy Finder: Home</h1></div>
+                <div>
+                    <h1 class="title">Study Buddy Finder: Home</h1>
+                </div>
             </div>
 
             <div class="profile-display-top">
@@ -41,10 +43,12 @@
                 <img class="profile-picture" alt="ProfilePic" :src=url />
 
 
-                <div class="username-year"><span id="name">Name: {{ fullName }}<br><span id="year">Year: {{ year }}</span></span></div>
-                
-                <div class="edit-button-div"><span><button class="edit-profile-button" @click=handleEditProfile>Edit Profile</button></span></div>
-                
+                <div class="username-year"><span id="name">Name: {{ fullName }}<br><span id="year">Year: {{ year
+                            }}</span></span></div>
+
+                <div class="edit-button-div"><span><button class="edit-profile-button" @click=handleEditProfile>Edit
+                            Profile</button></span></div>
+
             </div>
 
 
@@ -62,21 +66,17 @@
 
 
                 <div class="subjects-content-container">
-                    
-                    <h1>Subjects</h1>
-                    <h4>Needs to Study</h4>
-                    <li v-for="subject in subjects.filter(s => s.priority == 3)" :key=subject.id>
-                        {{ subject.id }}
-                    </li>
-                    <h4>Could Study</h4>
-                    <li v-for="subject in subjects.filter(s => s.priority == 2)" :key=subject.id>
-                        {{ subject.id }}
-                    </li>
-                    <h4>Doesn't Need to Study</h4>
-                    <li v-for="subject in subjects.filter(s => s.priority == 1)" :key=subject.id>
-                        {{ subject.id }}
-                    </li>
 
+                    <template>
+                        <div>
+                            <h2>Subjects</h2>
+                            <ul>
+                                <li v-for="subject in subjects" :key="subject.id">
+                                    {{ subject.name }} (Year {{ subject.year }})
+                                </li>
+                            </ul>
+                        </div>
+                    </template>
                 </div>
             </div>
         </div><!--rightside container end-->
@@ -94,7 +94,7 @@
 //import { db, auth } from '@/api/firebase'; // Import Firebase services
 //import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // import { getFunctions, httpsCallable } from "firebase/functions";
-import { getFirestore, doc, collection,  getDoc, getDocs } from "firebase/firestore";
+import { getFirestore, doc, collection, getDoc, getDocs } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebaseApp from "../api/firebase"; // Import the Firebase app instance
 
@@ -146,7 +146,7 @@ export default {
                 this.subjects = []; // clear the array before loading
                 if (!querySnapshot.empty) {
                     querySnapshot.forEach((doc) => {
-                        this.subjects.push({"id": doc.id, "priority": doc.data().priority});
+                        this.subjects.push({ "id": doc.id, "priority": doc.data().priority });
                     });
                 }
 
@@ -155,6 +155,38 @@ export default {
                 console.log("No such document!");
             }
         },
+        async getSubjects() {
+            const db = getFirestore(firebaseApp);
+
+            // var table = document.getElementById("subjectAdd");
+
+            //Fetches all documents from the "subjects" collection in one batch read
+            const subjectsCollectionRef = collection(db, "subjects");
+            const querySnapshot = await getDocs(subjectsCollectionRef);
+
+            if (!querySnapshot.empty) { //Checks if any subjects exist
+                querySnapshot.forEach((doc) => {
+                    this.subjects.push({ // add to subject array
+                        "id": doc.id, // firestore id 
+                        "name": doc.data().name, // name of subject
+                        "priority": doc.data().priority, // priority of subject
+                        "optional": doc.data().optional, // optional or not
+                        "year": doc.data().year // year of subject
+                    });
+                });
+            }
+
+            // call addSubject for each subject
+            this.subjects.forEach(subject => {
+                if (subject.optional == false && subject.year == this.year) {
+                    console.log(subject.id);
+                    this.addSubject(subject); // for each matching subject to display it in UI
+                }
+            });
+        },
+
+
+
         handleEditProfile() {
             this.$router.push('/neweditprofile');
         }
@@ -187,26 +219,26 @@ export default {
     /* 30% of the viewport height */
     object-fit: fill;
     border-radius: 0px;
-   
+
     position: absolute;
     top: 0;
     left: 0;
     width: auto;
     height: 150px;
-    
+
 }
 
 .rightside-container {
 
     display: flex;
     flex-direction: row;
-    
+
     flex-wrap: wrap;
-   
-   width: 70px;
-   
- 
-    
+
+    width: 70px;
+
+
+
 
 }
 
@@ -217,7 +249,7 @@ export default {
     width: 30px;
     display: flex;
     flex-direction: column;
-    
+
 }
 
 .side-navbar ul {
@@ -259,30 +291,31 @@ export default {
     flex-direction: row;
     align-items: center;
     height: 140px;
-  
-   
+
+
 
 }
+
 .title {
     left: 40px;
     display: flex;
     flex-direction: row;
     align-items: center;
     height: 140px;
-  
-   
+
+
 
 }
 
 .profile-display-top {
     position: absolute;
     display: flex;
-    
+
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     left: 400px;
-    top:140px;
+    top: 140px;
     padding: 5px;
     height: 100px;
     width: 70%;
@@ -293,50 +326,52 @@ export default {
 
 .profile-picture {
     height: 80px;
-    width:80px;
-   
-  
-   
+    width: 80px;
+
+
+
     outline-color: #000;
     outline-style: solid;
     outline-width: 1px;
     padding: 2px;
-   
+
 }
 
 .username {
     max-height: 80px;
-    
-  
-   
+
+
+
     height: auto;
 
     border-radius: 0px;
- 
+
     padding: 2px;
-    
+
 }
+
 .name {
     max-height: 80px;
-  
+
 
     height: auto;
-   
+
     border-radius: 0px;
-    
+
     padding: 2px;
-  
+
 }
+
 .year {
     max-height: 80px;
-  
+
 
     height: auto;
-   
+
     border-radius: 0px;
-    
+
     padding: 2px;
-  
+
 }
 
 
@@ -345,11 +380,11 @@ export default {
     max-height: 100px;
 
     height: auto;
-   
+
     border-radius: 0px;
-   
+
     padding-right: 50px;
-   
+
 }
 
 
@@ -359,12 +394,12 @@ export default {
 
     position: absolute;
     display: flex;
-    
+
     flex-direction: row;
-   
-    
+
+
     left: 400px;
-    top:250px;
+    top: 250px;
     padding: 5px;
     height: 100%;
     width: 70%;
@@ -375,7 +410,7 @@ export default {
 }
 
 .bio-content-container {
-    
+
     flex-direction: row;
     display: flex;
     flex-wrap: wrap;

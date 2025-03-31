@@ -125,7 +125,7 @@
 //import { db, auth } from '@/api/firebase'; // Import Firebase services
 //import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // import { getFunctions, httpsCallable } from "firebase/functions";
-import { getFirestore, doc, getDoc, setDoc, collection } from "firebase/firestore";
+import { getFirestore, doc, getDoc, getDocs, setDoc, collection } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebaseApp from "../api/firebase"; // Import the Firebase app instance
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -279,6 +279,33 @@ export default {
 
             // add row to table
             table.appendChild(row);
+        },
+        async getSubjects() {
+            const db = getFirestore(firebaseApp);
+
+            // var table = document.getElementById("subjectAdd");
+
+            const subjectsCollectionRef = collection(db, "subjects");
+            const querySnapshot = await getDocs(subjectsCollectionRef);
+
+            if (!querySnapshot.empty) {
+                  querySnapshot.forEach((doc) => {
+                    this.subjects.push({
+                        "id": doc.id,
+                        "name": doc.data().name,
+                        "optional": doc.data().optional,
+                        "year": doc.data().year
+                    });
+                  });
+            }
+
+            // call addSubject for each subject
+            this.subjects.forEach(subject => {
+                if (subject.optional == false && subject.year == this.year) {
+                    console.log(subject.id);
+                    this.addSubject(subject);
+                }
+            });
         },
         handleDiscardChanges() { // method called when user wishes to discard changes via button
             this.$router.push('/homepage'); // returns to homepage
