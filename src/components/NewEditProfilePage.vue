@@ -99,7 +99,7 @@
         </table>
         
         <br>
-        <button @click=addSubject(0) id="addSubject">Add Subject</button>
+        <button class="addSubjectButton" @click=addSubject(0) id="addSubject">Add Subject</button>
 
                 <br>
                 <br>
@@ -484,6 +484,19 @@ export default {
     border-radius: 0px;
     padding: 2px;
     margin: 2px;
+}
+.addSubjectButton{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: left;
+    width: 90px;
+    height: 10%;
+    background-color: #b5b5b5;
+    border-radius: 0px;
+    padding: 2px;
+    margin: 2px;
+    position: absolute;
 }
 .edit-profile-rightside-container {
 
