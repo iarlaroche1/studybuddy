@@ -84,7 +84,6 @@
 
         <div class="home-footer">
             <div class="home-footer-text">© 2025 Study-Buddy App. All Rights Reserved.</div>
-
         </div>
     </div>
 
@@ -392,10 +391,10 @@ export default {
 
 .bio-content-container {
     
-    flex-direction: row;
+    flex-direction: column;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    /* justify-content: center; */
     height: 100%;
     width: 50%;
     outline-color: #000;
