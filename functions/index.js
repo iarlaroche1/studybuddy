@@ -26,7 +26,7 @@ exports.createUser = onCall(async (data, context) => {
    const res = await db.collection('users').doc(id).set({ // create document with document ID = id
            email,
            fullName,
-           photoURL: "https://firebasestorage.googleapis.com/v0/b/ct216project-75856.firebasestorage.app/o/profileImages%2Fblank.jpg?alt=media&token=1901e6c2-a4f4-4831-a4af-597538f7318c", // by default blank photo url
+           bio: '', // by default blank bio
            year: 0
             });
          }

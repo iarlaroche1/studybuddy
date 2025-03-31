@@ -123,7 +123,6 @@
 
 <script>
 //import { db, auth } from '@/api/firebase'; // Import Firebase services
-//import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // import { getFunctions, httpsCallable } from "firebase/functions";
 import { getFirestore, doc, getDoc, getDocs, setDoc, collection } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -171,9 +170,17 @@ export default {
             if (userDoc.exists()) {
                 const userData = userDoc.data();
                 this.fullName = userData.fullName;
-                this.url = userData.photoURL;
                 this.year = userData.year;
 
+                // retrieve the photo URL from Firebase Storage
+                const storage = getStorage();
+                const storageRef = ref(storage, `profileImages/${this.username}`);
+                try {
+                    this.url = await getDownloadURL(storageRef); // get the download URL
+                } catch (error) {
+                console.error("Error retrieving photo URL:", error);
+                this.url = await await getDownloadURL(ref(storage, "profileImages/blank.jpg")); // default to blank.jpg if no photo exists
+                }
             } else {
                 console.log("No such document!");
             }

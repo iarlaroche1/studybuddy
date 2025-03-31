@@ -60,13 +60,26 @@
                 <div class="bio-content-container">
 
                     <h1>Bio</h1>
-                    <p>Mister Study man, cant do integrals , currently studying Calculus.</p>
+                    <p>{{ bio }}</p>
 
                 </div>
 
 
-                <div class="subjects-content-container">
-
+                <div class="subjects-content-container">                    
+                    <h1>Subjects</h1>
+                    <h4>Needs to Study</h4>
+                    <li v-for="subject in subjects.filter(s => s.priority == 3)" :key=subject.id>
+                        {{ subject.name }}
+                    </li>
+                    <h4>Could Study</h4>
+                    <li v-for="subject in subjects.filter(s => s.priority == 2)" :key=subject.id>
+                        {{ subject.name }}
+                    </li>
+                    <h4>Doesn't Need to Study</h4>
+                    <li v-for="subject in subjects.filter(s => s.priority == 1)" :key=subject.id>
+                        {{ subject.name }}
+                    </li>
+<!--
                     <template>
                         <div>
                             <h2>Subjects</h2>
@@ -76,7 +89,7 @@
                                 </li>
                             </ul>
                         </div>
-                    </template>
+                    </template> -->
                 </div>
             </div>
         </div><!--rightside container end-->
@@ -92,7 +105,7 @@
 
 <script>
 //import { db, auth } from '@/api/firebase'; // Import Firebase services
-//import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 // import { getFunctions, httpsCallable } from "firebase/functions";
 import { getFirestore, doc, collection, getDoc, getDocs } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -105,7 +118,7 @@ export default {
             header: require('@/assets/header.jpg'),
             jackiechan: require('@/assets/jackiechan.jpg'),
             fullName: '',
-            bio: 'Mister Study man, can\'t do integrals, currently studying Calculus.',
+            bio: '',
             user: null,
             username: '',
             year: '',
@@ -136,18 +149,32 @@ export default {
 
                 // load profile info
                 this.fullName = userData.fullName;
-                this.url = userData.photoURL;
                 this.year = userData.year;
 
-                // list subjects - TEMP CODE to be updated when 
-                const subjectsCollectionRef = collection(userDocRef, "subjects");
+                // retrieve the photo URL from Firebase Storage
+                const storage = getStorage();
+                const storageRef = ref(storage, `profileImages/${this.username}`);
+                try {
+                    this.url = await getDownloadURL(storageRef); // get the download URL
+                } catch (error) {
+                console.error("Error retrieving photo URL:", error);
+                this.url = await await getDownloadURL(ref(storage, "profileImages/blank.jpg")); // default to blank.jpg if no photo exists
+                }
 
-                const querySnapshot = await getDocs(subjectsCollectionRef);
+                // list subjects
+                const userSubjectsCollectionRef = collection(userDocRef, "subjects");
+
+                const querySnapshot = await getDocs(userSubjectsCollectionRef);
                 this.subjects = []; // clear the array before loading
                 if (!querySnapshot.empty) {
-                    querySnapshot.forEach((doc) => {
-                        this.subjects.push({ "id": doc.id, "priority": doc.data().priority });
-                    });
+                    for (const userSubjectDoc of querySnapshot.docs) {
+                        // get corresponding entry in root/subjects database
+                        const subjectDocRef = doc(db, "subjects", userSubjectDoc.id);
+                        const subjectDoc = await getDoc(subjectDocRef);
+
+                        // push subject object to array with id, priority and name
+                        this.subjects.push({"id": userSubjectDoc.id, "priority": userSubjectDoc.data().priority, "name": subjectDoc.data().name});
+                    }
                 }
 
 
