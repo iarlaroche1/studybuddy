@@ -66,18 +66,24 @@
 
 
                 <div class="subjects-content-container">                    
-                    <h1>Subjects</h1>
+                    <h1>{{ fullName }}'s Subjects: </h1>
+                    
                     <h4>Needs to Study</h4>
+                    
                     <li v-for="subject in subjects.filter(s => s.priority == 3)" :key=subject.id>
                         {{ subject.name }}
                     </li>
+                    
+                    
                     <h4>Could Study</h4>
                     <li v-for="subject in subjects.filter(s => s.priority == 2)" :key=subject.id>
-                        {{ subject.name }}
+                        <br>{{ subject.name }}
                     </li>
+                    
+                    
                     <h4>Doesn't Need to Study</h4>
                     <li v-for="subject in subjects.filter(s => s.priority == 1)" :key=subject.id>
-                        {{ subject.name }}
+                         {{ subject.name }}
                     </li>
 <!--
                     <template>
@@ -451,7 +457,7 @@ export default {
 }
 
 .subjects-content-container {
-    flex-direction: row;
+    flex-direction: column;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;

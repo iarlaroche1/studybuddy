@@ -204,7 +204,7 @@ export default {
         async getSubjects() {
             const db = getFirestore(firebaseApp);
 
-            // var table = document.getElementById("subjectAdd");
+           
 
             const subjectsCollectionRef = collection(db, "subjects");
             const querySnapshot = await getDocs(subjectsCollectionRef);

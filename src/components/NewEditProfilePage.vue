@@ -96,10 +96,10 @@
 
 
                 <table id="subjectAdd">
-                </table>
-
-                <br>
-                <button class="addSubjectButton" @click="addSubject" id="addSubject">Add Subject</button>
+        </table>
+        
+        <br>
+        <button @click=addSubject(0) id="addSubject">Add Subject</button>
 
                 <br>
                 <br>
@@ -124,7 +124,7 @@
 <script>
 //import { db, auth } from '@/api/firebase'; // Import Firebase services
 // import { getFunctions, httpsCallable } from "firebase/functions";
-import { getFirestore, doc, getDoc, getDocs, setDoc, collection } from "firebase/firestore";
+import { getFirestore, doc, getDoc, getDocs, deleteDoc, setDoc, collection } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebaseApp from "../api/firebase"; // Import the Firebase app instance
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -136,7 +136,7 @@ export default {
             header: require('@/assets/header.jpg'),
             jackiechan: require('@/assets/jackiechan.jpg'),
             fullName: '',
-            bio: 'Mister Study man, can\'t do integrals, currently studying Calculus.',
+            bio: '',
             user: null,
             username: '',
             year: '',
@@ -166,10 +166,11 @@ export default {
             const userDocRef = doc(db, "users", this.username);
             const userDoc = await getDoc(userDocRef);
 
-            // if it exists then set the locally saved variables to the data in there
             if (userDoc.exists()) {
+                // if it exists then set the locally saved variables to the data in there
                 const userData = userDoc.data();
                 this.fullName = userData.fullName;
+                //this.url = userData.photoURL;
                 this.year = userData.year;
 
                 // retrieve the photo URL from Firebase Storage
@@ -181,6 +182,23 @@ export default {
                 console.error("Error retrieving photo URL:", error);
                 this.url = await await getDownloadURL(ref(storage, "profileImages/blank.jpg")); // default to blank.jpg if no photo exists
                 }
+
+                // get user subjects
+                const userSubjectsCollectionRef = collection(userDocRef, "subjects");
+
+                const querySnapshot = await getDocs(userSubjectsCollectionRef);
+                this.userSubjects = []; // clear the array before loading
+                if (!querySnapshot.empty) {
+                    for (const userSubjectDoc of querySnapshot.docs) {
+                        // get corresponding entry in root/subjects database
+                        const subjectDocRef = doc(db, "subjects", userSubjectDoc.id);
+                        const subjectDoc = await getDoc(subjectDocRef);
+
+                        // push subject object to array with id, priority and name
+                        this.userSubjects.push({"id": userSubjectDoc.id, "priority": userSubjectDoc.data().priority, "name": subjectDoc.data().name, "optional": subjectDoc.data().optional});
+                    }
+                }
+
             } else {
                 console.log("No such document!");
             }
@@ -249,10 +267,27 @@ export default {
                 console.error("Error uploading file:", error);
             }
         },
+        
         async editSubjects() {
             const db = getFirestore(firebaseApp);
             const userDocRef = doc(db, "users", this.username);
 
+            const userSubjectsCollectionRef = collection(userDocRef, "subjects");
+
+            // empty current subjects list: delete subjects subcollection of user
+            try {
+                const querySnapshot = await getDocs(userSubjectsCollectionRef);
+                if (!querySnapshot.empty) {
+                    for (const userSubjectDoc of querySnapshot.docs) {
+                        const docRef = doc(userSubjectsCollectionRef, userSubjectDoc.id); // Reference to the document
+                        await deleteDoc(docRef); // Delete the document
+                    }
+                }
+            } catch (error) {
+                console.error("Error deleting collection:", error);
+            }   
+
+            // then add subjects again
             var table = document.getElementById("subjectAdd");
 
             for (var i = 0; i < table.rows.length; i++) {
@@ -263,26 +298,77 @@ export default {
                 await setDoc(subjectsDocRef, { priority });
             }
         },
-        addSubject() {
+        addSubject(subject) {
             // get table and create new row
             var table = document.getElementById("subjectAdd");
             var row = document.createElement("tr");
+            
+            // create the first cell for the course
+            var courseCell = document.createElement("td");
+            var courseName;
 
-            // create course input field
-            var courseInput = document.createElement("input");
-            courseInput.className = "course";
-            row.appendChild(document.createTextNode("Subject: "));
-            row.appendChild(courseInput);
+            // create third cell for delete button (if applicable)
+            var deleteCell = document.createElement("td");
+            var deleteButton;
 
-            // create priority input field as a slider
+            if (subject == 0 || subject.optional == true) { // if subject == 0, that means user is adding an optional subject and a dropdown subject is needed  
+                // create course input field
+                courseName = document.createElement("select");
+                courseName.className = "course";
+                
+                // create default option selection
+                const defaultOption = document.createElement("option");
+                defaultOption.value = subject.id || ""; // subject id or blank if none provided
+                defaultOption.text = subject.name || "Select a subject"; // subject name or "Select a subject" if none provided
+                courseName.appendChild(defaultOption);
+
+                // for each optional subject in that year, create an option for it
+                this.subjects.forEach(subjectOption => {
+                    if (subjectOption.optional == true && subjectOption.year == this.year && subject.id != subjectOption.id) {
+                        let option = document.createElement("option");
+                        
+                        option.value = subjectOption.id;
+                        option.text = subjectOption.name;
+                        courseName.appendChild(option);
+                    }
+                });
+
+                // create delete button
+                deleteButton = document.createElement("button");
+                deleteButton.innerHTML = "Delete";
+                deleteButton.addEventListener("click", () => {
+                    table.removeChild(row);
+                });
+
+            } else { // function has been passed by getSubjects with a parameter, we simply print out the subject name
+                // create text element with course name
+                courseName = document.createElement("div");
+                courseName.className = "course";
+                courseName.value = subject.id;
+                courseName.style.textAlign = "left"; // align text to the left
+                courseName.innerHTML = subject.name;
+
+                deleteButton = document.createElement("p")
+            }
+            // append first cell
+            courseCell.appendChild(courseName);
+            row.appendChild(courseCell);
+
+            // create the second cell for the priority slider
+            var priorityCell = document.createElement("td");
             var priorityInput = document.createElement("input");
             priorityInput.type = "range";
             priorityInput.min = "1";
             priorityInput.max = "3";
-            priorityInput.value = "2";
+            priorityInput.value = subject.priority || "2"; // if no priority provided, default to 2
             priorityInput.className = "priority";
-            row.appendChild(document.createTextNode("Priority: "));
-            row.appendChild(priorityInput);
+           
+            priorityCell.appendChild(priorityInput);
+            row.appendChild(priorityCell);
+            
+            // append third cell
+            deleteCell.appendChild(deleteButton);
+            row.appendChild(deleteCell);
 
             // add row to table
             table.appendChild(row);
@@ -290,7 +376,7 @@ export default {
         async getSubjects() {
             const db = getFirestore(firebaseApp);
 
-            // var table = document.getElementById("subjectAdd");
+           
 
             const subjectsCollectionRef = collection(db, "subjects");
             const querySnapshot = await getDocs(subjectsCollectionRef);
@@ -305,15 +391,23 @@ export default {
                     });
                   });
             }
-
-            // call addSubject for each subject
-            this.subjects.forEach(subject => {
-                if (subject.optional == false && subject.year == this.year) {
+            
+            // populate list with each user subject
+            // first non-optional, then optional
+            this.userSubjects.forEach(subject => {
+                if (!subject.optional) {
+                    console.log(subject.id);
+                    this.addSubject(subject);
+                }
+            });
+            this.userSubjects.forEach(subject => {
+                if (subject.optional) {
                     console.log(subject.id);
                     this.addSubject(subject);
                 }
             });
         },
+
         handleDiscardChanges() { // method called when user wishes to discard changes via button
             this.$router.push('/homepage'); // returns to homepage
         }
@@ -355,6 +449,18 @@ export default {
 
 }
 
+.subjectAdd {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: #b5b5b5;
+    border-radius: 0px;
+    padding: 2px;
+    margin: 2px;
+}
 .edit-profile-rightside-container {
 
     display: flex;
