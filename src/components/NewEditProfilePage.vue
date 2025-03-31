@@ -55,7 +55,7 @@
                         <br>
                         <span>
                             <div class="edit-profile-year-input-container">
-                                <select id="year" v-model="year" class="input-field">
+                                <select id="year" v-model="year" class="input-field" @change="resetSubjectTable()">
                                     <option disabled value="">Select your year</option>
                                     <option v-for="n in 4" :key="n" :value="n">{{ n }}</option>
                                 </select>
