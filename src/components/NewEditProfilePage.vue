@@ -40,7 +40,8 @@
 
             <div class="edit-profile-profile-display-top">
 
-                <img class="profile-picture" v-if="url !== '' && url !== null" id="preview" height="100" width="100" :src="url">
+                <img class="profile-picture" v-if="url !== '' && url !== null" id="preview" height="100" width="100"
+                    :src="url">
                 <input type="file" @change="preview" accept="image/*" id="input1">
                 <!-- commenting out the below button because it isn't really necessary, updateProfile does the same thing -->
                 <!-- <button @click="uploadImage">Upload</button> -->
@@ -48,7 +49,8 @@
                 <div class="edit-profile-username-year">
                     <span>
                         <div class="edit-profile-name-input-container">
-                            <input id="full-name" v-model="fullName" type="text" placeholder="Enter your full name" class="input-field" />
+                            <input id="full-name" v-model="fullName" type="text" placeholder="Enter your full name"
+                                class="input-field" />
                         </div>
                         <br>
                         <span>
@@ -65,19 +67,25 @@
 
 
                 </div>
-
                 <div class="edit-profile-edit-button-div">
-                    
-                        <button class="edit-profile-button"
-                            @click=handleDiscardChanges>Discard Changes</button>
-                    
-                   
-                            <button @click="updateUserProfile">Update Profile</button><br>
-                        </div>
+                    <template v-if="!isUpdating">
+                        <button class="edit-profile-button" @click="handleDiscardChanges">
+                            {{ profileUpdated ? 'Return Home' : 'Discard Changes' }}
+                        </button>
+                        <button class="edit-profile-button" @click="updateUserProfile">
+                            Update Profile
+                        </button>
+                    </template>
 
+                    <div v-else class="edit-profile-loader">
+                        <!-- You can use any loader/spinner here -->
+                        <div class="spinner"></div>
+                        <span>Saving changes...</span>
+                    </div>
+                </div>
             </div>
 
-           
+
 
 
 
@@ -85,9 +93,9 @@
             <div class="edit-profile-content-wrapper">
 
 
-               
 
-                    <table id="subjectAdd">
+
+                <table id="subjectAdd">
                 </table>
 
                 <br>
@@ -95,12 +103,12 @@
 
                 <br>
                 <br>
-             
-
-               
 
 
-                
+
+
+
+
             </div>
         </div><!--rightside container end-->
 
@@ -116,7 +124,7 @@
 <script>
 //import { db, auth } from '@/api/firebase'; // Import Firebase services
 // import { getFunctions, httpsCallable } from "firebase/functions";
-import { getFirestore, doc, getDoc, setDoc, collection } from "firebase/firestore";
+import { getFirestore, doc, getDoc, getDocs, setDoc, collection } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebaseApp from "../api/firebase"; // Import the Firebase app instance
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -133,7 +141,10 @@ export default {
             username: '',
             year: '',
             subjects: [], // Array to hold dynamic subject data
-            url: ''
+            url: '',
+            profileUpdated: false,
+            isUpdating: false
+
         };
     },
     created() {
@@ -170,44 +181,48 @@ export default {
                 console.error("Error retrieving photo URL:", error);
                 this.url = await await getDownloadURL(ref(storage, "profileImages/blank.jpg")); // default to blank.jpg if no photo exists
                 }
-
-                
             } else {
                 console.log("No such document!");
             }
         },
         async updateUserProfile() {
-            const db = getFirestore(firebaseApp);
-            const userDocRef = doc(db, "users", this.username);
-
+            this.isUpdating = true;
             try {
-                if (!this.year) {
-                    console.error("Year is not selected");
-                    return;
+                const file = document.getElementById("input1").files[0];
+                if (file) {
+                    await this.uploadImage();
                 }
 
-                await this.uploadImage();
                 await this.editSubjects();
+
+                const db = getFirestore(firebaseApp);
+                const userDocRef = doc(db, "users", this.username);
+
                 await setDoc(userDocRef, {
                     email: this.user.email,
                     fullName: this.fullName,
                     photoURL: this.url,
                     year: this.year
                 });
+
+                this.profileUpdated = true;
+                this.$router.push('/HomePage');
                 console.log('Profile updated successfully');
             } catch (error) {
                 console.error("Error updating profile:", error);
+            } finally {
+                this.isUpdating = false;
             }
         },
         checkProfile() {
             if (this.user !== null) {
                 this.user.providerData.forEach((profile) => {
-                console.log("  Sign-in provider: " + profile.providerId);
-                console.log("  Provider-specific UID: " + profile.uid);
-                console.log("  Name: " + profile.displayName);
-                console.log("  Email: " + profile.email);
-                console.log("  Photo URL: " + profile.photoURL);
-            });
+                    console.log("  Sign-in provider: " + profile.providerId);
+                    console.log("  Provider-specific UID: " + profile.uid);
+                    console.log("  Name: " + profile.displayName);
+                    console.log("  Email: " + profile.email);
+                    console.log("  Photo URL: " + profile.photoURL);
+                });
             } else if (this.user == null) {
                 console.log("User is null");
             }
@@ -219,13 +234,13 @@ export default {
         },
         async uploadImage() {
             const file = document.getElementById("input1").files[0];
-              if (!file) return;
+            if (!file) return;
 
             const storage = getStorage();
             this.username = this.user.email.split('@')[0];
             const storageRef = ref(storage, `profileImages/${this.username}`);
 
-            try {   
+            try {
                 const snapshot = await uploadBytes(storageRef, file);
                 const uploadURL = await getDownloadURL(snapshot.ref);
                 console.log("File available at", uploadURL);
@@ -252,7 +267,7 @@ export default {
             // get table and create new row
             var table = document.getElementById("subjectAdd");
             var row = document.createElement("tr");
-            
+
             // create course input field
             var courseInput = document.createElement("input");
             courseInput.className = "course";
@@ -268,9 +283,36 @@ export default {
             priorityInput.className = "priority";
             row.appendChild(document.createTextNode("Priority: "));
             row.appendChild(priorityInput);
-            
+
             // add row to table
             table.appendChild(row);
+        },
+        async getSubjects() {
+            const db = getFirestore(firebaseApp);
+
+            // var table = document.getElementById("subjectAdd");
+
+            const subjectsCollectionRef = collection(db, "subjects");
+            const querySnapshot = await getDocs(subjectsCollectionRef);
+
+            if (!querySnapshot.empty) {
+                  querySnapshot.forEach((doc) => {
+                    this.subjects.push({
+                        "id": doc.id,
+                        "name": doc.data().name,
+                        "optional": doc.data().optional,
+                        "year": doc.data().year
+                    });
+                  });
+            }
+
+            // call addSubject for each subject
+            this.subjects.forEach(subject => {
+                if (subject.optional == false && subject.year == this.year) {
+                    console.log(subject.id);
+                    this.addSubject(subject);
+                }
+            });
         },
         handleDiscardChanges() { // method called when user wishes to discard changes via button
             this.$router.push('/homepage'); // returns to homepage
@@ -346,6 +388,29 @@ export default {
     background-color: rgb(173, 7, 82);
 }
 
+.edit-profile-loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.spinner {
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top: 3px solid #ad0752;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+
 .edit-profile-side-navbar a {
     display: flex;
     color: white;
@@ -383,17 +448,22 @@ export default {
 
 
 .input-field {
-    width: 100%; /* Make the input field take full width */
+    width: 100%;
+    /* Make the input field take full width */
     padding: 8px;
     box-sizing: border-box;
-    font-size: 1rem; /* Ensure the text is readable */
+    font-size: 1rem;
+    /* Ensure the text is readable */
 }
 
 .edit-profile-year-input-container select {
-    width: 100%; /* Ensure the dropdown is wide enough */
+    width: 100%;
+    /* Ensure the dropdown is wide enough */
     padding: 8px;
-    font-size: 1rem; /* Ensure the selected year is visible */
-    height: auto; /* Adjust height to fit content */
+    font-size: 1rem;
+    /* Ensure the selected year is visible */
+    height: auto;
+    /* Adjust height to fit content */
     box-sizing: border-box;
 }
 
@@ -436,17 +506,18 @@ export default {
     padding: 2px;
 
 }
+
 .profile-picture {
     height: 80px;
-    width:80px;
-   
-  
-   
+    width: 80px;
+
+
+
     outline-color: #000;
     outline-style: solid;
     outline-width: 1px;
     padding: 2px;
-   
+
 }
 
 .edit-profile-name-input-container {
