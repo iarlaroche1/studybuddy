@@ -40,7 +40,8 @@
 
             <div class="edit-profile-profile-display-top">
 
-                <img class="profile-picture" v-if="url !== '' && url !== null" id="preview" height="100" width="100" :src="url">
+                <img class="profile-picture" v-if="url !== '' && url !== null" id="preview" height="100" width="100"
+                    :src="url">
                 <input type="file" @change="preview" accept="image/*" id="input1">
                 <!-- commenting out the below button because it isn't really necessary, updateProfile does the same thing -->
                 <!-- <button @click="uploadImage">Upload</button> -->
@@ -48,7 +49,8 @@
                 <div class="edit-profile-username-year">
                     <span>
                         <div class="edit-profile-name-input-container">
-                            <input id="full-name" v-model="fullName" type="text" placeholder="Enter your full name" class="input-field" />
+                            <input id="full-name" v-model="fullName" type="text" placeholder="Enter your full name"
+                                class="input-field" />
                         </div>
                         <br>
                         <span>
@@ -65,19 +67,18 @@
 
 
                 </div>
-
                 <div class="edit-profile-edit-button-div">
-                    
-                        <button class="edit-profile-button"
-                            @click=handleDiscardChanges>Discard Changes</button>
-                    
-                   
-                            <button @click="updateUserProfile">Update Profile</button><br>
-                        </div>
+                    <button class="edit-profile-button" @click="handleDiscardChanges">
+                        {{ profileUpdated ? 'Return Home' : 'Discard Changes' }}
+                    </button>
 
+                    <button class="edit-profile-button" @click="updateUserProfile">
+                        Update Profile
+                    </button>
+                </div>
             </div>
 
-           
+
 
 
 
@@ -85,9 +86,9 @@
             <div class="edit-profile-content-wrapper">
 
 
-               
 
-                    <table id="subjectAdd">
+
+                <table id="subjectAdd">
                 </table>
 
                 <br>
@@ -95,12 +96,12 @@
 
                 <br>
                 <br>
-             
-
-               
 
 
-                
+
+
+
+
             </div>
         </div><!--rightside container end-->
 
@@ -134,7 +135,9 @@ export default {
             username: '',
             year: '',
             subjects: [], // Array to hold dynamic subject data
-            url: ''
+            url: '',
+            profileUpdated: false
+
         };
     },
     created() {
@@ -162,7 +165,7 @@ export default {
                 this.fullName = userData.fullName;
                 this.url = userData.photoURL;
                 this.year = userData.year;
-                
+
             } else {
                 console.log("No such document!");
             }
@@ -185,6 +188,7 @@ export default {
                     photoURL: this.url,
                     year: this.year
                 });
+                this.profileUpdated = true;
                 console.log('Profile updated successfully');
             } catch (error) {
                 console.error("Error updating profile:", error);
@@ -193,12 +197,12 @@ export default {
         checkProfile() {
             if (this.user !== null) {
                 this.user.providerData.forEach((profile) => {
-                console.log("  Sign-in provider: " + profile.providerId);
-                console.log("  Provider-specific UID: " + profile.uid);
-                console.log("  Name: " + profile.displayName);
-                console.log("  Email: " + profile.email);
-                console.log("  Photo URL: " + profile.photoURL);
-            });
+                    console.log("  Sign-in provider: " + profile.providerId);
+                    console.log("  Provider-specific UID: " + profile.uid);
+                    console.log("  Name: " + profile.displayName);
+                    console.log("  Email: " + profile.email);
+                    console.log("  Photo URL: " + profile.photoURL);
+                });
             } else if (this.user == null) {
                 console.log("User is null");
             }
@@ -210,13 +214,13 @@ export default {
         },
         async uploadImage() {
             const file = document.getElementById("input1").files[0];
-              if (!file) return;
+            if (!file) return;
 
             const storage = getStorage();
             this.username = this.user.email.split('@')[0];
             const storageRef = ref(storage, `profileImages/${this.username}`);
 
-            try {   
+            try {
                 const snapshot = await uploadBytes(storageRef, file);
                 const uploadURL = await getDownloadURL(snapshot.ref);
                 console.log("File available at", uploadURL);
@@ -243,7 +247,7 @@ export default {
             // get table and create new row
             var table = document.getElementById("subjectAdd");
             var row = document.createElement("tr");
-            
+
             // create course input field
             var courseInput = document.createElement("input");
             courseInput.className = "course";
@@ -259,7 +263,7 @@ export default {
             priorityInput.className = "priority";
             row.appendChild(document.createTextNode("Priority: "));
             row.appendChild(priorityInput);
-            
+
             // add row to table
             table.appendChild(row);
         },
@@ -374,17 +378,22 @@ export default {
 
 
 .input-field {
-    width: 100%; /* Make the input field take full width */
+    width: 100%;
+    /* Make the input field take full width */
     padding: 8px;
     box-sizing: border-box;
-    font-size: 1rem; /* Ensure the text is readable */
+    font-size: 1rem;
+    /* Ensure the text is readable */
 }
 
 .edit-profile-year-input-container select {
-    width: 100%; /* Ensure the dropdown is wide enough */
+    width: 100%;
+    /* Ensure the dropdown is wide enough */
     padding: 8px;
-    font-size: 1rem; /* Ensure the selected year is visible */
-    height: auto; /* Adjust height to fit content */
+    font-size: 1rem;
+    /* Ensure the selected year is visible */
+    height: auto;
+    /* Adjust height to fit content */
     box-sizing: border-box;
 }
 
@@ -427,17 +436,18 @@ export default {
     padding: 2px;
 
 }
+
 .profile-picture {
     height: 80px;
-    width:80px;
-   
-  
-   
+    width: 80px;
+
+
+
     outline-color: #000;
     outline-style: solid;
     outline-width: 1px;
     padding: 2px;
-   
+
 }
 
 .edit-profile-name-input-container {
