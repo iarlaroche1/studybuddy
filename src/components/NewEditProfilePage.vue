@@ -68,13 +68,20 @@
 
                 </div>
                 <div class="edit-profile-edit-button-div">
-                    <button class="edit-profile-button" @click="handleDiscardChanges">
-                        {{ profileUpdated ? 'Return Home' : 'Discard Changes' }}
-                    </button>
+                    <template v-if="!isUpdating">
+                        <button class="edit-profile-button" @click="handleDiscardChanges">
+                            {{ profileUpdated ? 'Return Home' : 'Discard Changes' }}
+                        </button>
+                        <button class="edit-profile-button" @click="updateUserProfile">
+                            Update Profile
+                        </button>
+                    </template>
 
-                    <button class="edit-profile-button" @click="updateUserProfile">
-                        Update Profile
-                    </button>
+                    <div v-else class="edit-profile-loader">
+                        <!-- You can use any loader/spinner here -->
+                        <div class="spinner"></div>
+                        <span>Saving changes...</span>
+                    </div>
                 </div>
             </div>
 
@@ -136,7 +143,8 @@ export default {
             year: '',
             subjects: [], // Array to hold dynamic subject data
             url: '',
-            profileUpdated: false
+            profileUpdated: false,
+            isUpdating: false
 
         };
     },
@@ -171,27 +179,32 @@ export default {
             }
         },
         async updateUserProfile() {
-            const db = getFirestore(firebaseApp);
-            const userDocRef = doc(db, "users", this.username);
-
+            this.isUpdating = true;
             try {
-                if (!this.year) {
-                    console.error("Year is not selected");
-                    return;
+                const file = document.getElementById("input1").files[0];
+                if (file) {
+                    await this.uploadImage();
                 }
 
-                await this.uploadImage();
                 await this.editSubjects();
+
+                const db = getFirestore(firebaseApp);
+                const userDocRef = doc(db, "users", this.username);
+
                 await setDoc(userDocRef, {
                     email: this.user.email,
                     fullName: this.fullName,
                     photoURL: this.url,
                     year: this.year
                 });
+
                 this.profileUpdated = true;
+                this.$router.push('/HomePage');
                 console.log('Profile updated successfully');
             } catch (error) {
                 console.error("Error updating profile:", error);
+            } finally {
+                this.isUpdating = false;
             }
         },
         checkProfile() {
@@ -340,6 +353,29 @@ export default {
     overflow: hidden;
     background-color: rgb(173, 7, 82);
 }
+
+.edit-profile-loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.spinner {
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top: 3px solid #ad0752;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
 
 .edit-profile-side-navbar a {
     display: flex;
