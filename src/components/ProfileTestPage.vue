@@ -16,6 +16,12 @@
             </select>
         </div>
 
+        <!-- bio input field section -->
+        <div class="input-container">
+        <label for="full-name">Bio:</label>
+        <textarea id="full-name" v-model="bio" type="text" placeholder="Enter your full name" class="input-field"></textarea>
+        </div>
+
         <!-- pfp input field section -->
         <div>
             <img v-if="url !== '' && url !== null" id="preview" height="100" width="100" :src="url">
@@ -23,6 +29,8 @@
            <!-- commenting out the below button because it isn't really necessary, updateProfile does the same thing -->
            <!-- <button @click="uploadImage">Upload</button> -->
         </div>
+
+
                 
         <table id="subjectAdd">
         </table>
@@ -53,7 +61,7 @@ export default {
     data() {
         return {
             fullName: '',
-            url: '',
+            bio: '',
             user: null,
             username: '',
             year: '',
@@ -89,7 +97,7 @@ export default {
                 // if it exists then set the locally saved variables to the data in there
                 const userData = userDoc.data();
                 this.fullName = userData.fullName;
-                //this.url = userData.photoURL;
+                this.bio = userData.bio;
                 this.year = userData.year;
 
                 // retrieve the photo URL from Firebase Storage
@@ -98,8 +106,8 @@ export default {
                 try {
                     this.url = await getDownloadURL(storageRef); // get the download URL
                 } catch (error) {
-                console.error("Error retrieving photo URL:", error);
-                this.url = await await getDownloadURL(ref(storage, "profileImages/blank.jpg")); // default to blank.jpg if no photo exists
+                    console.error("Error retrieving photo URL:", error);
+                    this.url = await await getDownloadURL(ref(storage, "profileImages/blank.jpg")); // default to blank.jpg if no photo exists
                 }
 
                 // get user subjects
@@ -136,6 +144,7 @@ export default {
                 if (this.user.email) updateData.email = this.user.email;
                 if (this.fullName) updateData.fullName = this.fullName;
                 if (this.year) updateData.year = this.year;
+                if (this.bio) updateData.bio = this.bio;
 
                 // update the user document without overwriting other fields
                 await setDoc(userDocRef, updateData, { merge: true });
@@ -164,7 +173,6 @@ export default {
                 const snapshot = await uploadBytes(storageRef, file);
                 const uploadURL = await getDownloadURL(snapshot.ref);
                 console.log("File available at", uploadURL);
-                this.url = uploadURL;
             } catch (error) {
                 console.error("Error uploading file:", error);
             }
@@ -203,8 +211,6 @@ export default {
 
         async getSubjects() {
             const db = getFirestore(firebaseApp);
-
-           
 
             const subjectsCollectionRef = collection(db, "subjects");
             const querySnapshot = await getDocs(subjectsCollectionRef);
