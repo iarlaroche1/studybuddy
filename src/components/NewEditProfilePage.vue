@@ -471,12 +471,7 @@ export default {
 
 }
 
-./* Style for the subjects list */
-#subjectAdd {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-}
+
 
 #subjectAdd tr {
     display: flex;
