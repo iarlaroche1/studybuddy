@@ -153,7 +153,12 @@ export default {
             if (user) {
                 this.user = user;
                 this.username = user.email.split('@')[0]; // Extract username from email
-                this.loadUserProfile();
+                this.loadUserProfile().then(() => {
+                    this.getSubjects();
+                    console.log("User profile loaded successfully");
+                }).catch((error) => {
+                    console.error("Error loading user profile:", error);
+                });
             } else {
                 console.log("No user is signed in");
             }
@@ -216,12 +221,16 @@ export default {
                 const db = getFirestore(firebaseApp);
                 const userDocRef = doc(db, "users", this.username);
 
-                await setDoc(userDocRef, {
-                    email: this.user.email,
-                    fullName: this.fullName,
-                    photoURL: this.url,
-                    year: this.year
-                });
+                // dynamically construct the update object (to avoid potential file overwrite)
+                const updateData = {};
+                if (this.user.email) updateData.email = this.user.email;
+                if (this.fullName) updateData.fullName = this.fullName;
+                if (this.year) updateData.year = this.year;
+                if (this.bio) updateData.bio = this.bio;
+
+                // update the user document without overwriting other fields
+                await setDoc(userDocRef, updateData, { merge: true });
+
 
                 this.profileUpdated = true;
                 this.$router.push('/HomePage');
@@ -262,7 +271,6 @@ export default {
                 const snapshot = await uploadBytes(storageRef, file);
                 const uploadURL = await getDownloadURL(snapshot.ref);
                 console.log("File available at", uploadURL);
-                this.url = uploadURL;
             } catch (error) {
                 console.error("Error uploading file:", error);
             }
@@ -298,6 +306,40 @@ export default {
                 await setDoc(subjectsDocRef, { priority });
             }
         },
+
+        async getSubjects() {
+            const db = getFirestore(firebaseApp);
+
+            const subjectsCollectionRef = collection(db, "subjects");
+            const querySnapshot = await getDocs(subjectsCollectionRef);
+
+            if (!querySnapshot.empty) {
+                  querySnapshot.forEach((doc) => {
+                    this.subjects.push({
+                        "id": doc.id,
+                        "name": doc.data().name,
+                        "optional": doc.data().optional,
+                        "year": doc.data().year
+                    });
+                  });
+            }
+            
+            // populate list with each user subject
+            // first non-optional, then optional
+            this.userSubjects.forEach(subject => {
+                if (!subject.optional) {
+                    console.log(subject.id);
+                    this.addSubject(subject);
+                }
+            });
+            this.userSubjects.forEach(subject => {
+                if (subject.optional) {
+                    console.log(subject.id);
+                    this.addSubject(subject);
+                }
+            });
+        },
+
         addSubject(subject) {
             // get table and create new row
             var table = document.getElementById("subjectAdd");
@@ -373,35 +415,17 @@ export default {
             // add row to table
             table.appendChild(row);
         },
-        async getSubjects() {
-            const db = getFirestore(firebaseApp);
-
-           
-
-            const subjectsCollectionRef = collection(db, "subjects");
-            const querySnapshot = await getDocs(subjectsCollectionRef);
-
-            if (!querySnapshot.empty) {
-                  querySnapshot.forEach((doc) => {
-                    this.subjects.push({
-                        "id": doc.id,
-                        "name": doc.data().name,
-                        "optional": doc.data().optional,
-                        "year": doc.data().year
-                    });
-                  });
+        
+        resetSubjectTable() {
+            const table = document.getElementById("subjectAdd");
+            // clear table
+            while (table.firstChild) {
+                table.removeChild(table.firstChild);
             }
-            
-            // populate list with each user subject
-            // first non-optional, then optional
-            this.userSubjects.forEach(subject => {
-                if (!subject.optional) {
-                    console.log(subject.id);
-                    this.addSubject(subject);
-                }
-            });
-            this.userSubjects.forEach(subject => {
-                if (subject.optional) {
+
+            // call addSubject for each subject
+            this.subjects.forEach(subject => {
+                if (subject.optional == false && subject.year == this.year) {
                     console.log(subject.id);
                     this.addSubject(subject);
                 }
