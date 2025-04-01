@@ -18,6 +18,7 @@ import ProfilePage from './components/ProfilePage.vue'
 import HomePage from './components/HomePage.vue';
 import NotFoundPage from './components/NotFoundPage.vue';
 import HelloWorld from './components/HelloWorld.vue';
+import ChatPageLuke from './components/ChatPageLuke.vue';
 import NewEditProfilePage from './components/NewEditProfilePage.vue';
 import ChatPage from './components/ChatPage.vue';
 
@@ -33,6 +34,8 @@ const routes = [
   { path: '/helloworld', component: HelloWorld },
   { path: '/neweditprofile', component: NewEditProfilePage },
   { path: '/chat', component: ChatPage },
+  { path: '/chatLuke', component: ChatPageLuke },
+  { path: '/app', component: App },
   { path: "/:notFound", component: NotFoundPage } // 404 page, currently just directs to login
 ];
 

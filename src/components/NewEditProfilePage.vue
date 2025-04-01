@@ -3,33 +3,9 @@
     <div class="page-container">
 
 
-        <img class="edit-profile-header-image" alt="Header" :src="header" />
+        
 
-        <div class="edit-profile-side-navbar-container">
-            <!-- Header image -->
-            <nav class="edit-profile-side-navbar">
-                <ul>
-                    <br><br>
-                    <li><a href="">Buddies</a></li>
-                    <li><a href="">Chat</a></li>
-                    <li><a href="">Calendar</a></li>
-                    <li><a href="">-</a></li>
-                    <li><a href="">-</a></li>
-                    <li><a href="">-</a></li>
-                    <li><a href="">-</a></li>
-                    <li><a href="">-</a></li>
-                    <li><a href="">-</a></li>
-                    <li><a href="">-</a></li>
-                    <li><a href="">-</a></li>
-                    <li><a href="">-</a></li>
-                    
-
-
-                </ul>
-            </nav>
-
-
-        </div> <!-- end of side navbar  -->
+        
 
         <div class="edit-profile-rightside-container">
 
@@ -438,7 +414,7 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 /* Change the background color of the navbar */
 .pos-f-t {
     background-color: rgb(173, 7, 82);
@@ -472,7 +448,15 @@ export default {
 }
 
 
-
+.edit-profile-button {
+  background-color: rgb(173, 7, 82);
+  color: white;
+  padding: 1px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
 #subjectAdd tr {
     display: flex;
     justify-content: space-between;
@@ -503,6 +487,7 @@ export default {
     border: none;
     cursor: pointer;
 }
+
 
 .edit-profile-rightside-container {
 
