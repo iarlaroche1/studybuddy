@@ -181,14 +181,14 @@ export default {
 
             const querySnapshot = await getDocs(conversationsCollectionRef);
 
-            querySnapshot.forEach((doc) => {
+            querySnapshot.forEach((doc) => { // go thru conversations collection and try to find one between the two given users
                 if (doc.data().participants.includes(this.username) && doc.data().participants.includes(this.receiver)) {
                     conversationRef = doc.ref;
                     conversationId = doc.id;
                 }
             });
 
-            if (conversationId == null) {
+            if (conversationId == null) { // if there is no existing conversation between two users
                 conversationRef = doc(conversationsCollectionRef); // auto-generate an ID for the conversation
                 conversationId = conversationRef.id;
             
