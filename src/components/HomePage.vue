@@ -61,24 +61,20 @@
                 </div>
 
 
-                <div class="subjects-content-container">                    
-                    <h1>{{ fullName }}'s Subjects: </h1>
+                <div class="subjects-content-container">
                     
-                    <h4>Needs to Study</h4>                    
+                    <h1>Subjects</h1>
+                    <h4>Needs to Study</h4>
                     <li v-for="subject in subjects.filter(s => s.priority == 3)" :key=subject.id>
                         {{ subject.name }}
                     </li>
-                    
-                    
                     <h4>Could Study</h4>
                     <li v-for="subject in subjects.filter(s => s.priority == 2)" :key=subject.id>
-                        <br>{{ subject.name }}
+                        {{ subject.name }}
                     </li>
-                    
-                    
                     <h4>Doesn't Need to Study</h4>
                     <li v-for="subject in subjects.filter(s => s.priority == 1)" :key=subject.id>
-                         {{ subject.name }}
+                        {{ subject.name }}
                     </li>
 
                 </div>
@@ -370,8 +366,6 @@ export default {
     padding-right: 50px;
    
 }
-
-
 
 /* Wrapper div for content */
 .home-content-wrapper {
