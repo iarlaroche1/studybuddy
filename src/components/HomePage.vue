@@ -209,6 +209,8 @@ export default {
   margin-left: auto;
 }
 
+
+/* Wrapper div for content */
 .home-content-wrapper {
   display: flex;
   gap: 20px;

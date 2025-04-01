@@ -57,30 +57,33 @@ export default {
             const querySnapshot = await getDocs(usersCollectionRef);
 
             this.users = []; // clear the array before loading
+            const currentUser = await getDoc(doc(db, "users", this.username)); 
             if (!querySnapshot.empty) {
                 // go thru each user document in users collection
                 for (const userDoc of querySnapshot.docs) {
-                    let userDocRef = doc(db, "users", userDoc.id);
-                    let userData = userDoc.data();
-                    
-                    let subjectsCollectionRef = collection(userDocRef, "subjects"); 
-                    let subjects = await this.getUserSubjects(subjectsCollectionRef);
-                    
-                    // only run correlation check if user is not user logged in
-                    let correlation = await this.getCorrelation(subjects);
-                    console.log(userDoc.id);
+                    if (userDoc.data().year == currentUser.data().year) { // if user is in same year as user logged in
+                        let userDocRef = doc(db, "users", userDoc.id);
+                        let userData = userDoc.data();
+                        
+                        let subjectsCollectionRef = collection(userDocRef, "subjects"); 
+                        let subjects = await this.getUserSubjects(subjectsCollectionRef);
+                        
+                        // only run correlation check if user is not user logged in
+                        let correlation = await this.getCorrelation(subjects);
+                        console.log(userDoc.id);
 
-                    this.users.push({
-                        "id": userDoc.id, 
-                        "fullName": userData.fullName,
-                        "subjects": subjects,
-                        "correlation": correlation
-                    });
+                        this.users.push({
+                            "id": userDoc.id, 
+                            "fullName": userData.fullName,
+                            "subjects": subjects,
+                            "correlation": correlation
+                        });
+                    }
                   }
             }
 
+            // sort based on which correlation is higher
             this.users.sort((a,b) => (a.correlation > b.correlation) ? -1 : ((b.correlation > a.correlation) ? 1 : 0))
-            //this.users.sort(compare()); // sort users based on correlation, using compare function (see below)
         },
         async getUserSubjects(ref) {
             const querySnapshot = await getDocs(ref);
@@ -132,15 +135,6 @@ export default {
                 }                
             }
             return correlation / ((prioritySum1 + prioritySum2) / 2);
-        },
-        compare(a,b) {
-            if ( a.correlation < b.correlation ){
-                return -1;
-            }
-            if ( a.correlation > b.correlation ){
-                return 1;
-            }
-            return 0;
         }
     }
 };
