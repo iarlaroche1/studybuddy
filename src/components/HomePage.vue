@@ -104,6 +104,7 @@ export default {
         this.loadUserProfile();
       } else {
         console.log("No user is signed in");
+        this.$router.push('/login');
       }
     });
   },
@@ -162,7 +163,6 @@ export default {
   flex-direction: column;
   height: auto;
   min-width: 100%;
-  
 }
 
 .home-content-wrapper {

@@ -21,7 +21,7 @@ import HelloWorld from './components/HelloWorld.vue';
 import NewEditProfilePage from './components/NewEditProfilePage.vue';
 import ConversationsListLuke from './components/ConversationsListLuke.vue';
 import ConversationPageLuke from './components/ConversationPageLuke.vue';
-
+import ChatPageLuke from './components/ChatPageLuke.vue';
 
 
 const routes = [
@@ -40,7 +40,6 @@ const routes = [
   // Main layout routes (uses App.vue)
   {
     path: '/',
-    component: App,
     meta: { requiresAuth: true },
     children: [
       { path: '/buddyfinder', component: BuddyFinderPage },

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div >
         
         <!-- NOTE most of this is temporary, in final product only fullName should be shown -->
          <!-- would also be neat to make the names clickable links to profile pages, and have an "Add Friend" button beside each -->
@@ -44,6 +44,7 @@ export default {
                 this.username = user.email.split('@')[0]; // Extract username from email
             } else {
                 console.log("No user is signed in");
+                this.$router.push('/login');
             }
         });
 
