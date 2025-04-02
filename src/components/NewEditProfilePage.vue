@@ -1,28 +1,16 @@
 <template>
 
     <div class="page-container">
-
-
-        
-
-        
-
         <div class="edit-profile-rightside-container">
 
-            <div class="edit-profile-header">
-                <div>
-                    <h1 class="edit-profile-title">Study Buddy Finder: Home</h1>
-                </div>
-            </div>
+        
 
             <div class="edit-profile-profile-display-top">
 
                 <img class="profile-picture" v-if="url !== '' && url !== null" id="preview" height="100" width="100"
                     :src="url">
                 <input type="file" @change="preview" accept="image/*" id="input1">
-                <!-- commenting out the below button because it isn't really necessary, updateProfile does the same thing -->
-                <!-- <button @click="uploadImage">Upload</button> -->
-
+            
                 <div class="edit-profile-username-year">
                     <span>
                         <div class="edit-profile-name-input-container">
@@ -55,7 +43,7 @@
                     </template>
 
                     <div v-else class="edit-profile-loader">
-                        <!-- You can use any loader/spinner here -->
+                       
                         <div class="spinner"></div>
                         <span>Saving changes...</span>
                     </div>
