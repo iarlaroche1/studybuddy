@@ -115,12 +115,9 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 
-/* Change the background color of the navbar */
-.pos-f-t {
-  background-color: rgb(173, 7, 82); /* Change this color to your preferred color */
-}
+
 /* Main container for the page */
 .main-container {
     /*background-color: #cccccc;*/

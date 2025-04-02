@@ -155,12 +155,14 @@ export default {
 
 <style scoped>
 
+
 .home-page-content {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  overflow: hidden;
+  height: auto;
+  min-width: 100%;
+  
 }
 
 .home-content-wrapper {
@@ -168,6 +170,7 @@ export default {
   gap: 20px;
   flex: 1;
   min-height: 0;
+  height: auto;
 }
 
 .bio-content-container,
@@ -176,9 +179,10 @@ export default {
   padding: 15px;
   background-color: #f5f5f5;
   border: 1px solid #ddd;
-  overflow-y: auto;
+ 
   min-height: 0;
-  height:120%;
+  height:auto;
+  overflow: visible
 }
 
 
