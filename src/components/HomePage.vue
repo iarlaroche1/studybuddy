@@ -163,6 +163,8 @@ export default {
   flex-direction: column;
   height: auto;
   min-width: 100%;
+  width:10%;
+
 }
 
 .home-content-wrapper {
@@ -184,7 +186,7 @@ export default {
   height:120%;
   white-space: pre-wrap; /* preserve newlines/spaces */
   height:auto;
-  overflow: visible
+ 
 }
 
 
@@ -195,7 +197,7 @@ export default {
 .profile-display-top {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 1px;
   margin-bottom: 20px;
   padding: 10px;
 
@@ -267,5 +269,7 @@ export default {
   position: relative;
   bottom: 0;
   text-align: center;
+}
+@media (orientation: portrait) {
 }
 </style>

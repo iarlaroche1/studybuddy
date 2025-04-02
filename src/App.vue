@@ -23,7 +23,10 @@
             <li><a href="">-</a></li>
             <li><a href="">-</a></li>
             <li><a href="">-</a></li>
-            <li><a href="">-</a></li>
+            <li class="logged-in-container">
+              <span class="loggedInText">Logged in as {{ fullName }}</span>
+              <button class="sign-out-button" @click="handleSignOut">Sign Out</button>
+            </li>
             
           </ul>
         </nav>
@@ -58,7 +61,61 @@ export default {
 }
 
 
-.page-container {
+
+
+
+
+.side-navbar {
+  position: relative;
+  float: left;
+  top: 30%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.side-navbar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background: rgb(173, 7, 82);
+  width: 100%;
+  background-color: rgb(173, 7, 82);
+}
+.sign-out-button {
+  background-color: rgb(173, 7, 82);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+
+.side-navbar a:hover {
+  background-color: rgb(182, 50, 109);
+}
+
+
+
+.home-footer {
+  background-color: #242526;
+  height: 100px;
+  width: 100%;
+  position: relative;
+  bottom: 0;
+  text-align: center;
+  padding: 0px;
+}
+
+.home-footer-text {
+  color: #ffffff;
+  font-size: .9rem;
+  font-weight: 400;
+}
+
+
+  .page-container {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -71,8 +128,8 @@ export default {
   top: 0px;
   display: flex;
   flex-direction: column;
-  width: 25%; /* Flexible width */
-  min-width: 30%; /* Minimum width before collapsing */
+  width: 28%; /* Flexible width */
+  min-width: 20%; /* Minimum width before collapsing */
 }
 
 .home-header-image {
@@ -86,14 +143,8 @@ export default {
   object-fit: cover;
 }
 
-.side-navbar {
-  position: relative;
-  float: left;
-  top: 30%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-}
+
+
 
 .side-navbar ul {
   list-style: none;
@@ -120,18 +171,16 @@ export default {
 }
 
 
-.side-navbar a:hover {
-  background-color: rgb(182, 50, 109);
-}
+
 
 .rightside-container {
+  
   flex: 1; /* Takes remaining space */
   padding: 20px;
   min-width: 0px;
   max-width: 100%;
   height: auto;
-  overflow-x: hidden; /* Disable horizontal scrolling */
-  overflow-y: auto;
+ 
   display:flex;
   flex-direction: column;
   justify-content: space-between;
@@ -155,19 +204,27 @@ export default {
   font-weight: 400;
 }
 
-@media (max-width: 500px) {
 
-
-}
-
-@media (orientation: landscape) {
-    .page-container {
+@media (orientation: portrait) {
+  .page-container {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     width: 100%;
+    height: 100vh; /* Full height of the viewport */
+    box-sizing: border-box;
   }
 
+  .home-header-image {
+ 
+ border-radius: 0px;
+ position: relative;
+ top: 0px;
+ left: 0;
+ width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
   .side-navbar-container {
     position: fixed;
     float: left;
@@ -230,35 +287,12 @@ export default {
   }
 
   .rightside-container {
-    
-    flex: 1; /* Takes remaining space */
-    padding: 20px;
-    min-width: 0px;
-    max-width: 100%;
-    height: auto;
-    overflow-x: hidden; /* disable horizontal scrolling */
-    overflow-y: auto;
-    display:flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-sizing: border-box; /* Include padding in width calculations */
+  padding: 20px;
+  
+    width: 10%;
+    box-sizing: border-box;
+    margin-bottom: 60px; /* Add space above the navbar to prevent overlap */
 
-  }
-
-  .home-footer {
-    background-color: #242526;
-    height: 100px;
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    text-align: center;
-    padding: 0px;
-  }
-
-  .home-footer-text {
-    color: #ffffff;
-    font-size: .9rem;
-    font-weight: 400;
   }
 }
 

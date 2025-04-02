@@ -19,6 +19,8 @@ import HomePage from './components/HomePage.vue';
 import NotFoundPage from './components/NotFoundPage.vue';
 import HelloWorld from './components/HelloWorld.vue';
 import NewEditProfilePage from './components/NewEditProfilePage.vue';
+import ChatPage from './components/ChatPage.vue';
+import NewLogin from './components/NewLogin.vue';
 import ConversationsListLuke from './components/ConversationsListLuke.vue';
 import ConversationPageLuke from './components/ConversationPageLuke.vue';
 import ChatPageLuke from './components/ChatPageLuke.vue';
@@ -40,6 +42,7 @@ const routes = [
   // Main layout routes (uses App.vue)
   {
     path: '/',
+    //component: App,
     meta: { requiresAuth: true },
     children: [
       { path: '/buddyfinder', component: BuddyFinderPage },
@@ -51,6 +54,7 @@ const routes = [
       { path: '/neweditprofile', component: NewEditProfilePage },
       // { path: '/chat', component: ChatPage },
       { path: '/chatLuke', component: ChatPageLuke },
+      { path: '/newlogin', component: NewLogin },
       { path: '/chat', component: ConversationsListLuke },
       { path: '/chat/:id', component: ConversationPageLuke },
 

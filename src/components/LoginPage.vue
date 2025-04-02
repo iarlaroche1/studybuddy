@@ -1,21 +1,5 @@
 <template>
-    
-
-    <div class="pos-f-t">
-  <div class="collapse" id="navbarToggleExternalContent">
-    <div class="bg-custom p-4">
-      <h5 class="text-white h4">Collapsed content</h5>
-      <span class="text-muted">Toggleable via the navbar brand.</span>
-    </div>
-  </div>
-  <nav class="navbar navbar-dark bg-custom">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  </nav>
-</div>
-
-    <!-- Main container for the page -->
+<!-- Main container for the page -->
     <div class="main-container">
 
         <!-- Wrapper div for the content and header image -->
@@ -78,7 +62,7 @@
     </div>
 </template>
 
-<script>
+<script> /*
 import app from "../api/firebase"
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
@@ -112,7 +96,7 @@ export default {
             });
         }
     }
-};
+};*/
 </script>
 
 <style scoped>
