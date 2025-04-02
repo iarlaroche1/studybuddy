@@ -24,8 +24,10 @@
             <li><a href="">-</a></li>
             <li><a href="">-</a></li>
             <li class="logged-in-container">
-              <span class="loggedInText">Logged in as {{ fullName }}</span>
-              <button class="sign-out-button" @click="handleSignOut">Sign Out</button>
+                <span class="loggedInText" v-if="user">Logged in as {{ username }}</span>
+                <span class="loggedInText" v-else>Not logged in</span>
+              <button class="sign-out-button" v-if="user" @click="handleSignOut">Sign Out</button>
+              <button class="sign-in-button" v-else @click="this.$router.push('../login')">Login</button>
             </li>
             
           </ul>
@@ -41,12 +43,29 @@
 </template>
 
 <script>
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import firebaseApp from "./api/firebase"; // Import the Firebase app instance
+
 export default {
   name: 'App',
   data() {
     return {
-      header: require('@/assets/header.jpg')
+      header: require('@/assets/header.jpg'),
+      user: '',
+      username: ''
     }
+  },
+  created() {
+    const auth = getAuth(firebaseApp); // Use the Firebase app instance
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                this.user = user;
+                this.username = user.email.split('@')[0]; // Extract username from email
+            } else {
+                console.log("No user is signed in");
+            }
+        });
+
   }
 }
 </script>

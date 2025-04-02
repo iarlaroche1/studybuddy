@@ -19,7 +19,7 @@ import HomePage from './components/HomePage.vue';
 import NotFoundPage from './components/NotFoundPage.vue';
 import HelloWorld from './components/HelloWorld.vue';
 import NewEditProfilePage from './components/NewEditProfilePage.vue';
-import ChatPage from './components/ChatPage.vue';
+// import ChatPage from './components/ChatPage.vue';
 import NewLogin from './components/NewLogin.vue';
 import ConversationsListLuke from './components/ConversationsListLuke.vue';
 import ConversationPageLuke from './components/ConversationPageLuke.vue';
