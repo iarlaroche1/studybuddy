@@ -82,7 +82,8 @@ export default {
             profileUsername: '',
             year: '',
             subjects: [], // Array to hold dynamic subject data
-            url: ''
+            url: '',
+            isBuddy: false
         };
     },
     created() {
@@ -93,6 +94,7 @@ export default {
                 this.username = user.email.split('@')[0];
                 this.profileUsername = this.$route.params.id; // get username from link
                 this.loadUserProfile();
+                this.checkIfBuddy();
             } else {
                 console.log("No user is signed in");
             }
@@ -142,11 +144,31 @@ export default {
 
             } else {
                 console.log("User does not exist!");
-
+                this.$router.push('../:notfound');
             }
         },
-        handleEditProfile() {
-            this.$router.push('/neweditprofile');
+        async checkIfBuddy() {
+            const db = getFirestore(firebaseApp);
+
+            // reference to the conversations collection
+            const buddiesCollectionRef = collection(db, "buddies");
+
+            const querySnapshot = await getDocs(buddiesCollectionRef);
+
+            for (const doc of querySnapshot.docs) { // go thru conversations collection and try to find one between the two given users
+                if (doc.data().buddies.includes(this.username) && doc.data().buddies.includes(this.profileUsername)) {
+                    this.isBuddy = true;
+                    console.log(this.profileUsername + " is a buddy of " + this.username);
+                    return;
+                }
+            }
+            
+            console.log(this.profileUsername + " is not a buddy of " + this.username);
+            this.isBuddy = false;
+            return;
+        },
+        async addBuddy() {
+            
         }
     }
 };

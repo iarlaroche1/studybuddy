@@ -34,7 +34,7 @@
                 </div>
                 <div class="edit-profile-edit-button-div">
                     <template v-if="!isUpdating">
-                        <button class="edit-profile-button" @click="handleDiscardChanges">
+                        <button class="edit-profile-button" @click="this.$router.push('../home')">
                             {{ profileUpdated ? 'Return Home' : 'Discard Changes' }}
                         </button>
                         <button class="edit-profile-button" @click="updateUserProfile">
@@ -190,7 +190,7 @@ export default {
 
 
                 this.profileUpdated = true;
-                this.$router.push('/HomePage');
+                this.$router.push('/home');
                 console.log('Profile updated successfully');
             } catch (error) {
                 console.error("Error updating profile:", error);
@@ -387,10 +387,6 @@ export default {
                     this.addSubject(subject);
                 }
             });
-        },
-
-        handleDiscardChanges() { // method called when user wishes to discard changes via button
-            this.$router.push('/homepage'); // returns to homepage
         }
     }
 };

@@ -49,9 +49,9 @@ const routes = [
       { path: '/profiletestpage', component: ProfileTestPage },
       { path: '/buddies', component: BuddiesListPage },
       { path: '/user/:id', component: ProfilePage }, // TODO
-      { path: '/homepage', component: HomePage },
+      { path: '/home', component: HomePage },
       { path: '/helloworld', component: HelloWorld },
-      { path: '/neweditprofile', component: NewEditProfilePage },
+      { path: '/home/edit', component: NewEditProfilePage },
       // { path: '/chat', component: ChatPage },
       { path: '/chatLuke', component: ChatPageLuke },
       { path: '/newlogin', component: NewLogin },
