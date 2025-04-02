@@ -173,7 +173,6 @@ export default {
             if (!querySnapshot.empty) {
                 // go thru each user document in users collection
                 for (const userDoc of querySnapshot.docs) {
-                    let userDocRef = doc(db, "users", userDoc.id);
                     let userData = userDoc.data();
                     
                     let option = document.createElement("option");

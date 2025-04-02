@@ -19,8 +19,12 @@ if user does not exist it should display 404, if user is the user logged in go t
 
                 <div class="username-year"><span id="name">Name: {{ fullName }}<br><span id="year">Year: {{ year }}</span></span></div>
                 
-                <!-- TODO add friend -->
-                <div class="edit-button-div"><span><button class="edit-profile-button" @click=handleEditProfile>Add Buddy</button></span></div>
+                <div class="edit-button-div">
+                    <span>
+                        <button class="edit-profile-button" v-if="!isBuddy" @click="addBuddy()">Add Buddy</button>
+                        <button class="edit-profile-button" v-else @click="removeBuddy()">Unbuddy</button>
+                    </span>
+                </div>
             </div>
 
 
@@ -65,7 +69,7 @@ if user does not exist it should display 404, if user is the user logged in go t
 //import { db, auth } from '@/api/firebase'; // Import Firebase services
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 // import { getFunctions, httpsCallable } from "firebase/functions";
-import { getFirestore, doc, collection,  getDoc, getDocs } from "firebase/firestore";
+import { getFirestore, doc, collection,  getDoc, getDocs, setDoc, deleteDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebaseApp from "../api/firebase"; // Import the Firebase app instance
 
@@ -150,12 +154,12 @@ export default {
         async checkIfBuddy() {
             const db = getFirestore(firebaseApp);
 
-            // reference to the conversations collection
+            // reference to the buddies collection
             const buddiesCollectionRef = collection(db, "buddies");
 
             const querySnapshot = await getDocs(buddiesCollectionRef);
 
-            for (const doc of querySnapshot.docs) { // go thru conversations collection and try to find one between the two given users
+            for (const doc of querySnapshot.docs) { // go thru buddies collection and try to find one between the two given users
                 if (doc.data().buddies.includes(this.username) && doc.data().buddies.includes(this.profileUsername)) {
                     this.isBuddy = true;
                     console.log(this.profileUsername + " is a buddy of " + this.username);
@@ -168,7 +172,36 @@ export default {
             return;
         },
         async addBuddy() {
+            const db = getFirestore(firebaseApp);
             
+            // add the buddies document
+            await setDoc(doc(db, "buddies", this.username + "-" + this.profileUsername), {
+                    buddies: [this.username, this.profileUsername]
+            }).then(() => {
+                console.log("Buddy successfully added!");
+                this.isBuddy = true;
+            }).catch((error) => {
+                console.error("Error adding buddy:", error);
+            });
+        },
+        async removeBuddy() {
+            const db = getFirestore(firebaseApp);
+
+            // reference to the buddies collection
+            const buddiesCollectionRef = collection(db, "buddies");
+
+            const querySnapshot = await getDocs(buddiesCollectionRef);
+            
+            for (const doc of querySnapshot.docs) { // go thru buddies collection and try to find one between the two given users
+                if (doc.data().buddies.includes(this.username) && doc.data().buddies.includes(this.profileUsername)) {
+                    await deleteDoc(doc.ref).then(() => { // delete the document
+                        console.log("Buddy successfully removed!");
+                        this.isBuddy = false;
+                    }).catch((error) => {
+                        console.error("Error adding buddy:", error);
+                    }) 
+                }
+            }
         }
     }
 };
