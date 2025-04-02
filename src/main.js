@@ -22,22 +22,47 @@ import NewEditProfilePage from './components/NewEditProfilePage.vue';
 import ConversationsListLuke from './components/ConversationsListLuke.vue';
 import ConversationPageLuke from './components/ConversationPageLuke.vue';
 
-// Define routes for Vue Router
+
+
 const routes = [
-  { path: '/signup', component: SignUpPage },
-  { path: '/login', component: LoginPage },
-  { path: '/buddyfinder', component: BuddyFinderPage },
-  { path: '/profiletestpage', component: ProfileTestPage },
-  { path: '/buddies', component: BuddiesListPage },
-  { path: '/user/:id', component: ProfilePage },
-  { path: '/homepage', component: HomePage },
-  { path: '/helloworld', component: HelloWorld },
-  { path: '/neweditprofile', component: NewEditProfilePage },
-  { path: '/chat', component: ConversationsListLuke },
-  { path: '/chat/:id', component: ConversationPageLuke },
-  { path: '/app', component: App },
-  { path: "/:notFound", component: NotFoundPage } // 404 page, currently just directs to login
+  // Full-page routes (won't use App.vue layout)
+  {
+    path: '/login',
+    component: LoginPage,
+    meta: { requiresAuth: false, fullPage: true }
+  },
+  {
+    path: '/signup', 
+    component: SignUpPage,
+    meta: { requiresAuth: false, fullPage: true }
+  },
+
+  // Main layout routes (uses App.vue)
+  {
+    path: '/',
+    component: App,
+    meta: { requiresAuth: true },
+    children: [
+      { path: '/buddyfinder', component: BuddyFinderPage },
+      { path: '/profiletestpage', component: ProfileTestPage },
+      { path: '/buddies', component: BuddiesListPage },
+      { path: '/user/:id', component: ProfilePage }, // TODO
+      { path: '/homepage', component: HomePage },
+      { path: '/helloworld', component: HelloWorld },
+      { path: '/neweditprofile', component: NewEditProfilePage },
+      // { path: '/chat', component: ChatPage },
+      { path: '/chatLuke', component: ChatPageLuke },
+      { path: '/chat', component: ConversationsListLuke },
+      { path: '/chat/:id', component: ConversationPageLuke },
+
+    ] 
+  },
+  
+  // 404 page
+  { path: "/:notFound", component: NotFoundPage }
 ];
+
+
 
 // Create the Vue Router instance with history mode
 const router = createRouter({

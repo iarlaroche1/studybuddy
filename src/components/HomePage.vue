@@ -1,8 +1,6 @@
 <template>
   <div class="home-page-content">
-    <div class="home-header">
-      <h1 class="title">Study Buddy Finder: Home</h1>
-    </div>
+    
 
     <div class="profile-display-top">
       <img class="profile-picture" alt="ProfilePic" :src="url" />
@@ -20,6 +18,7 @@
     </div>
 
     <div class="home-content-wrapper">
+
       <div class="bio-content-container">
         <h1>Bio</h1>
         <p>{{ bio }}</p>
@@ -71,7 +70,9 @@
           </dd>
         </div>
       </div>
+      
     </div>
+    
   </div>
 </template>
 
@@ -154,12 +155,14 @@ export default {
 
 <style scoped>
 
+
 .home-page-content {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  overflow: hidden;
+  height: auto;
+  min-width: 100%;
+  
 }
 
 .home-content-wrapper {
@@ -167,6 +170,7 @@ export default {
   gap: 20px;
   flex: 1;
   min-height: 0;
+  height: auto;
 }
 
 .bio-content-container,
@@ -175,10 +179,12 @@ export default {
   padding: 15px;
   background-color: #f5f5f5;
   border: 1px solid #ddd;
-  overflow-y: auto;
+ 
   min-height: 0;
   height:120%;
   white-space: pre-wrap; /* preserve newlines/spaces */
+  height:auto;
+  overflow: visible
 }
 
 
@@ -210,8 +216,6 @@ export default {
   margin-left: auto;
 }
 
-
-/* Wrapper div for content */
 .home-content-wrapper {
   display: flex;
   gap: 20px;
@@ -254,5 +258,14 @@ export default {
 
 .edit-profile-button:hover {
   background-color: rgb(160, 6, 75);
+}
+
+.home-footer{
+  background-color: #242526;
+  height: 100px;
+  width: 100%;
+  position: relative;
+  bottom: 0;
+  text-align: center;
 }
 </style>

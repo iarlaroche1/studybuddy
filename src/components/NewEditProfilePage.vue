@@ -86,11 +86,6 @@
 
         </div><!--rightside container end-->
 
-<!--
-        <div class="edit-profile-footer">
-            <div class="edit-profile-footer-text">© 2025 Study-Buddy App. All Rights Reserved.</div>
-
-        </div> -->
     </div>
 
 </template>
