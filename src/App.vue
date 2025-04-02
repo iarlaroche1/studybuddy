@@ -38,8 +38,6 @@
         <router-view></router-view>
         
       </div>
-
-      
     </div>
   </div>
 </template>
@@ -200,7 +198,7 @@ export default {
   background-color: #242526;
   height: 100px;
   width: 100%;
-  position: relative;
+  position: absolute;
   bottom: 0;
   text-align: center;
   padding: 0px;

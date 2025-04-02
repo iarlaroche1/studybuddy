@@ -1,5 +1,4 @@
 <template>
-
 <div class="home-page-content">
      
   
@@ -30,12 +29,11 @@
             <label for="message">Message:</label>
             <textarea id="messageContent" v-model="messageContent" type="text" placeholder="Message" class="input-field"></textarea>
             <button class="sendMessageButton" @click="sendMessage()"><img class="msg-logo" alt="Send" src="@/assets/send_logo.jpg" /></button>
-            <button class="sampleConversationButton" @click="sendSampleConversation()">Create Sample Conversation</button>
         </div>
 
+        <!-- TEMP -->
         <li v-for="conversation in conversations" :key="conversation.id">
             Participants: {{ conversation.participants }}
-            <!-- TEMP: show subjects and priority for each user - simply for the case of checking correlation system -->
             <ul>
                 <li v-for="message in conversation.messages" :key="message.timestamp">
                     <b>{{ message.sender }}</b>: {{ message.content }} <i>({{ message.timestamp }})</i>
@@ -74,7 +72,7 @@ export default {
        
         username: '',
         receiver: '',
-        messageContent: '',
+        messageContent: "",
         conversations: [],
         unsubscribeConversations: null, // to store the unsubscribe function for conversations
         unsubscribeMessages: {} // to store unsubscribe functions for each conversation's messages
@@ -299,6 +297,8 @@ export default {
                         lastMessageAt: createdAt,
                         lastMessageBy: this.username,
             }, { merge: true }); // use merge: true to preserve existing data);
+            
+            this.messageContent = "";
         }
     }
 };
