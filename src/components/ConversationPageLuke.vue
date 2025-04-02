@@ -11,10 +11,11 @@
         </li>
 
         <!-- message input + send button -->
-        <div class="input-container">
+        <div class="message-input-container">
             <textarea id="messageContent" v-model="messageContent" type="text" placeholder="Message" class="input-field"></textarea>
+            <button class="sendMessageButton" @click="sendMessage()"><img class="msg-logo" alt="Send" src="@/assets/send_logo.jpg" /></button>
         </div>
-        <button @click="sendMessage()">Send Message</button>
+
     </div>
 </template>
 
@@ -52,6 +53,7 @@ export default {
                 this.getMessagesRealtime();
             } else {
                 console.log("No user is signed in");
+                this.$router.push('/login');
             }
         });
     },
@@ -183,3 +185,128 @@ export default {
     }
 };
 </script>
+
+<style>
+.home-page-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .message-input-container {
+    margin-bottom: 15px;
+  }
+  .receiver-input-container {
+    margin-bottom: 15px;
+  }
+  .input-container label {
+      font-size: 18px;
+      font-weight: 500;
+      color: #000;
+      margin-bottom: 8px;
+      /* space between label and input */
+  }
+  .home-content-wrapper {
+    display: flex;
+    gap: 20px;
+    flex: 1;
+    min-height: 0;
+  }
+  .msg-logo {
+      height: 20px;
+      width: 30px;
+      
+     
+  }
+  .bio-content-container,
+  .subjects-content-container {
+    flex: 1;
+    padding: 15px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    overflow-y: auto;
+    min-height: 0;
+  }
+  
+  
+  .home-header {
+    margin-bottom: 20px;
+  }
+  
+  .profile-display-top {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
+  
+  .profile-picture {
+    height: 80px;
+    width: 80px;
+    border: 1px solid #000;
+    padding: 2px;
+  }
+  
+  .username-year {
+    flex-grow: 1;
+  }
+  
+  .edit-button-div {
+    margin-left: auto;
+  }
+  
+  .home-content-wrapper {
+    display: flex;
+    gap: 20px;
+  }
+  
+  
+  .sendMessageButton{
+     
+    
+     
+      cursor: pointer;
+      transition: background-color 0.3s;
+  }
+  
+  .priority-group {
+    margin-bottom: 15px;
+    padding: 5px;
+    /* Remove fixed height */
+    height: auto; /* Let content determine height */
+  }
+  .priority-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .subject-item {
+    margin-left: 20px;
+    padding: 5px 0;
+  }
+  
+  .empty-message {
+    color: #666;
+    font-style: italic;
+    margin-left: 20px;
+  }
+  
+  .edit-profile-button {
+    background-color: rgb(173, 7, 82);
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .edit-profile-button:hover {
+    background-color: rgb(160, 6, 75);
+  }
+  </style>
+  
