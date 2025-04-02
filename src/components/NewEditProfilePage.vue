@@ -566,23 +566,31 @@ export default {
 
 
 .input-field {
-    width: 100%;
-    /* Make the input field take full width */
-    padding: 8px;
-    box-sizing: border-box;
-    font-size: 1rem;
-    /* Ensure the text is readable */
+  width: 80%; /* Make the input field wider */
+  padding: 10px; /* Add padding for better usability */
+  font-size: 1rem; /* Ensure the text is readable */
+  border: 1px solid #ccc; /* Add a subtle border */
+  border-radius: 4px; /* Slightly round the corners */
+  box-sizing: border-box; /* Include padding in width calculation */
+}
+
+.edit-profile-name-input-container,
+.edit-profile-year-input-container {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  width: 100%; /* Take full width of the container */
+  margin: 10px 0; /* Add spacing between fields */
 }
 
 .edit-profile-year-input-container select {
-    width: 100%;
-    /* Ensure the dropdown is wide enough */
-    padding: 8px;
-    font-size: 1rem;
-    /* Ensure the selected year is visible */
-    height: auto;
-    /* Adjust height to fit content */
-    box-sizing: border-box;
+  width: 80%; /* Ensure the dropdown is wide enough */
+  padding: 10px; /* Add padding for better usability */
+  font-size: 1rem; /* Ensure the selected year is visible */
+  height: auto; /* Adjust height to fit content */
+  border: 1px solid #ccc; /* Add a subtle border */
+  border-radius: 4px; /* Slightly round the corners */
+  box-sizing: border-box; /* Include padding in width calculation */
 }
 
 .edit-profile-title {

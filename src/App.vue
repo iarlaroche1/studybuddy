@@ -23,13 +23,10 @@
             <li><a href="">-</a></li>
             <li><a href="">-</a></li>
             <li><a href="">-</a></li>
-            <li class="logged-in-container">
-                <span class="loggedInText" v-if="user">Logged in as {{ username }}</span>
-                <span class="loggedInText" v-else>Not logged in</span>
-              <button class="sign-out-button" v-if="user" @click="handleSignOut">Sign Out</button>
-              <button class="sign-in-button" v-else @click="this.$router.push('../login')">Login</button>
+            <li class="side-navbar-item logged-in-container">
+              <span class="loggedInText">Logged in as {{ fullName }}</span>
+              <span class="sign-out-link" @click="handleSignOut">Sign Out</span>
             </li>
-            
           </ul>
         </nav>
       </div>
@@ -52,7 +49,8 @@ export default {
     return {
       header: require('@/assets/header.jpg'),
       user: '',
-      username: ''
+      username: '',
+      fullName: '' // Added fullName property
     }
   },
   created() {
@@ -61,11 +59,26 @@ export default {
             if (user) {
                 this.user = user;
                 this.username = user.email.split('@')[0]; // Extract username from email
+                this.fullName = user.displayName || this.username; // Use displayName or fallback to username
             } else {
                 console.log("No user is signed in");
             }
         });
 
+  },
+  methods: {
+    handleSignOut() {
+      const auth = getAuth(firebaseApp);
+      auth.signOut().then(() => {
+        this.user = '';
+        this.username = '';
+        this.fullName = '';
+        console.log("User signed out");
+      }).catch((error) => {
+        console.error("Error signing out: ", error);
+      });
+      this.$router.push('/login'); // Redirect to login page after sign out
+    }
   }
 }
 </script>
@@ -105,7 +118,8 @@ export default {
   background-color: rgb(173, 7, 82);
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 11px 20px;
+  padding-left: 50px;
   cursor: pointer;
   font-size: 1rem;
 }
@@ -163,7 +177,16 @@ export default {
 }
 
 
+.loggedInText{
+  color: white;
+  font-size: 1rem;
+  
+ padding-left: 10%;;
+  text-align: left;
+  min-height: 10px;
+  max-height: auto;
 
+}
 
 .side-navbar ul {
   list-style: none;
@@ -223,6 +246,67 @@ export default {
   font-weight: 400;
 }
 
+.logged-in-container {
+  display: flex; /* Align items horizontally */
+  align-items: center; /* Vertically center the text and link */
+  gap: 10px; /* Add spacing between the text and the link */
+}
+
+.loggedInText {
+  color: white;
+  font-size: 1rem;
+}
+
+.sign-out-link {
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: underline; /* Make it look like a link */
+  transition: color 0.3s ease; /* Smooth color transition on hover */
+}
+
+.sign-out-link:hover {
+  color: rgb(182, 50, 109); /* Change color on hover */
+}
+
+/* General styling for navbar items */
+.side-navbar-item {
+  padding: 15px;
+  text-align: center;
+  display: flex;
+  justify-content: space-between; /* Space out the text and link */
+  align-items: center; /* Vertically center the content */
+  background-color: rgb(173, 7, 82); /* Match the navbar background */
+  color: white;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Add a subtle divider */
+}
+
+/* Hover effect for all navbar items */
+.side-navbar-item:hover {
+  background-color: rgb(182, 50, 109); /* Match hover effect */
+}
+
+/* Specific styling for the "Logged in as" text */
+.loggedInText {
+  font-size: 1rem;
+  color: white;
+  flex: 1; /* Allow it to take up space */
+  text-align: left; /* Align text to the left */
+}
+
+/* Specific styling for the "Sign Out" link */
+.sign-out-link {
+  font-size: 1rem;
+  color: white;
+  cursor: pointer;
+  text-decoration: underline; /* Make it look like a link */
+  transition: color 0.3s ease; /* Smooth color transition on hover */
+}
+
+/* Hover effect for the "Sign Out" link */
+.sign-out-link:hover {
+  color: rgba(255, 255, 255, 0.8); /* Slightly lighter color on hover */
+}
 
 @media (orientation: portrait) {
   .page-container {
