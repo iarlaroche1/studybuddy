@@ -61,7 +61,7 @@
               console.log(user);
               
               // Programmatically navigate to "/buddyfinder" route after successful login
-              this.$router.push('/HomePage');
+              this.$router.push('/home');
               
               }).catch((error) => {
               let errorCode = error.code;

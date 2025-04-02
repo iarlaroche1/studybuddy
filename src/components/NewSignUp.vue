@@ -34,7 +34,7 @@
             class="input-field" />
         </div>
         <p class="login-prompt">
-          <router-link to="/newlogin">Already have an account? Login here</router-link>
+          <router-link to="/login">Already have an account? Login here</router-link>
 
         </p>
 

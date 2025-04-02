@@ -9,9 +9,9 @@ import App from './App.vue';  // Import the main App component
 import { createRouter, createWebHistory } from 'vue-router';  // Import Vue Router for Vue 3
 
 // Import the components for the routes
-import SignUpPage from './components/SignUpPage.vue';
+
 import NewSignUpPage from './components/NewSignUp.vue';
-import LoginPage from './components/LoginPage.vue';
+
 import BuddyFinderPage from './components/BuddyFinderPage.vue';
 import BuddiesListPage from './components/BuddiesListPage.vue';
 import ProfileTestPage from './components/ProfileTestPage.vue';
@@ -29,15 +29,9 @@ import ChatPageLuke from './components/ChatPageLuke.vue';
 
 const routes = [
   // Full-page routes (won't use App.vue layout)
+ 
   {
-    path: '/login',
-    component: LoginPage,
-    meta: { requiresAuth: false, fullPage: true }
-  },
-  {
-    path: '/signup', 
-    component: SignUpPage,
-    meta: { requiresAuth: false, fullPage: true }
+    
   },
 
   // Main layout routes (uses App.vue)
@@ -55,7 +49,7 @@ const routes = [
       { path: '/home/edit', component: NewEditProfilePage },
       // { path: '/chat', component: ChatPage },
       { path: '/chatLuke', component: ChatPageLuke },
-      { path: '/newlogin', component: NewLogin },
+      { path: '/login', component: NewLogin },
       { path: '/newsignup', component: NewSignUpPage },
       { path: '/chat', component: ConversationsListLuke },
       { path: '/chat/:id', component: ConversationPageLuke },
