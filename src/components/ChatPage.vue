@@ -1,8 +1,6 @@
 <template>
     <div class="home-page-content">
-      <div class="home-header">
-        <h1 class="title">Study Buddy Finder: Home</h1>
-      </div>
+     
   
       <div class="profile-display-top">
         <img class="profile-picture" alt="ProfilePic" :src="url" />

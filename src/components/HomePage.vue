@@ -1,8 +1,6 @@
 <template>
   <div class="home-page-content">
-    <div class="home-header">
-      <h1 class="title">Study Buddy Finder: Home</h1>
-    </div>
+    
 
     <div class="profile-display-top">
       <img class="profile-picture" alt="ProfilePic" :src="url" />
@@ -20,6 +18,7 @@
     </div>
 
     <div class="home-content-wrapper">
+
       <div class="bio-content-container">
         <h1>Bio</h1>
         <p>{{ bio }}</p>
@@ -71,7 +70,9 @@
           </dd>
         </div>
       </div>
+      
     </div>
+    
   </div>
 </template>
 
@@ -209,8 +210,6 @@ export default {
   margin-left: auto;
 }
 
-
-/* Wrapper div for content */
 .home-content-wrapper {
   display: flex;
   gap: 20px;
@@ -253,5 +252,14 @@ export default {
 
 .edit-profile-button:hover {
   background-color: rgb(160, 6, 75);
+}
+
+.home-footer{
+  background-color: #242526;
+  height: 100px;
+  width: 100%;
+  position: relative;
+  bottom: 0;
+  text-align: center;
 }
 </style>

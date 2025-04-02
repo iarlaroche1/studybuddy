@@ -1,26 +1,30 @@
 <template>
   <div id="app">
+
     <div class="home-header">
-      <h1 class="title">Study Buddy Finder: Home</h1>
+      <h1 class="title">Study Buddy Finder</h1>
     </div>
+
     <div class="page-container">
-      <img class="home-header-image" alt="Header" :src="header" />
 
       <div class="side-navbar-container">
+        <!-- Header image with link to homepage -->
+        <router-link to="/homepage">
+          <img class="home-header-image" alt="Header" :src="header" />
+        </router-link>
+
+
         <nav class="side-navbar">
           <ul>
-            <br><br>
-            <li><router-link to="/homepage">Buddies</router-link></li>
-            <li><router-link to="/chat">Chat</router-link></li>
+            <li><router-link to="/buddies">Buddies</router-link></li>
             <li><router-link to="/homepage">home</router-link></li>
+            <li><router-link to="/chatLuke">Chat</router-link></li>
             <li><a href="">-</a></li>
             <li><a href="">-</a></li>
             <li><a href="">-</a></li>
             <li><a href="">-</a></li>
             <li><a href="">-</a></li>
-            <li><a href="">-</a></li>
-            <li><a href="">-</a></li>
-            <li><a href="">-</a></li>
+            
           </ul>
         </nav>
       </div>
@@ -28,11 +32,10 @@
       <!-- Dynamic content area -->
       <div class="rightside-container">
         <router-view></router-view>
+        
       </div>
 
-      <div class="home-footer">
-        <div class="home-footer-text">© 2025 Study-Buddy App. All Rights Reserved.</div>
-      </div>
+      
     </div>
   </div>
 </template>
@@ -49,7 +52,6 @@ export default {
 </script>
 
 <style scoped>
-
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -62,43 +64,52 @@ export default {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  width: 101%;
-}
-
-.home-header-image {
-  max-height: auto;
-  max-width: auto;
-  min-height: 20%;
-  min-width: 20%;
-  display: flex;
-  object-fit: fill;
-  border-radius: 0px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: auto;
-  height: 150px;
+  width: 100%;
 }
 
 .side-navbar-container {
+  position: fixed;
+  float: left;
+  top: 0px;
+  display: flex;
+  flex-direction: column;
+  width: 25%; /* Flexible width */
+  min-width: 30%; /* Minimum width before collapsing */
+}
+
+.home-header-image {
+ 
+ border-radius: 0px;
+ position: relative;
+ top: 0px;
+ left: 0;
+ width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.side-navbar {
   position: relative;
   float: left;
-  top: 140px; /* Match this with your header image height */
+  top: 30%;
+  width: 100%;
   display: flex;
   flex-direction: column;
 }
 
+
+
 .side-navbar ul {
-  list-style-type: none;
-  margin: 0;
+  list-style: none;
   padding: 0;
-  width: 400px;
-  overflow: hidden;
+  margin: 0;
+  background: rgb(173, 7, 82);
+  width: 100%;
   background-color: rgb(173, 7, 82);
 }
 
 .side-navbar a {
-  display: flex;
+  
   color: white;
   outline-color: #000;
   outline-style: solid;
@@ -112,15 +123,16 @@ export default {
   max-height: auto;
 }
 
+
 .side-navbar a:hover {
   background-color: rgb(182, 50, 109);
 }
 
 .rightside-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 70px;
+  flex: 1; /* Takes remaining space */
+  padding: 20px;
+  min-width: 20px;
+  height: auto;
 }
 
 .home-footer {
