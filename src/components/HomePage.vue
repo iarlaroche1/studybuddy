@@ -178,6 +178,7 @@ export default {
   overflow-y: auto;
   min-height: 0;
   height:120%;
+  white-space: pre-wrap; /* preserve newlines/spaces */
 }
 
 

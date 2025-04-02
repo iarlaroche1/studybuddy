@@ -18,9 +18,9 @@ import ProfilePage from './components/ProfilePage.vue'
 import HomePage from './components/HomePage.vue';
 import NotFoundPage from './components/NotFoundPage.vue';
 import HelloWorld from './components/HelloWorld.vue';
-import ChatPageLuke from './components/ChatPageLuke.vue';
 import NewEditProfilePage from './components/NewEditProfilePage.vue';
-import ChatPage from './components/ChatPage.vue';
+import ConversationsListLuke from './components/ConversationsListLuke.vue';
+import ConversationPageLuke from './components/ConversationPageLuke.vue';
 
 // Define routes for Vue Router
 const routes = [
@@ -29,12 +29,12 @@ const routes = [
   { path: '/buddyfinder', component: BuddyFinderPage },
   { path: '/profiletestpage', component: ProfileTestPage },
   { path: '/buddies', component: BuddiesListPage },
-  { path: '/user/:id', component: ProfilePage }, // TODO
+  { path: '/user/:id', component: ProfilePage },
   { path: '/homepage', component: HomePage },
   { path: '/helloworld', component: HelloWorld },
   { path: '/neweditprofile', component: NewEditProfilePage },
-  { path: '/chat', component: ChatPage },
-  { path: '/chatLuke', component: ChatPageLuke },
+  { path: '/chat', component: ConversationsListLuke },
+  { path: '/chat/:id', component: ConversationPageLuke },
   { path: '/app', component: App },
   { path: "/:notFound", component: NotFoundPage } // 404 page, currently just directs to login
 ];

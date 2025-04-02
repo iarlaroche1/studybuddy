@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="home-content-wrapper" style="flex-direction:column;">
         <!-- bio input field section -->
         <div class="input-container">
             <label for="message">Receiver:</label>
@@ -9,12 +9,11 @@
             <label for="message">Message:</label>
             <textarea id="messageContent" v-model="messageContent" type="text" placeholder="Message" class="input-field"></textarea>
             <button @click="sendMessage()">Send Message</button>
-            <button @click="sendSampleConversation()">Create Sample Conversation</button>
         </div>
 
+        <!-- TEMP -->
         <li v-for="conversation in conversations" :key="conversation.id">
             Participants: {{ conversation.participants }}
-            <!-- TEMP: show subjects and priority for each user - simply for the case of checking correlation system -->
             <ul>
                 <li v-for="message in conversation.messages" :key="message.timestamp">
                     <b>{{ message.sender }}</b>: {{ message.content }} <i>({{ message.timestamp }})</i>
@@ -41,7 +40,7 @@ export default {
         user: null,
         username: '',
         receiver: '',
-        messageContent: '',
+        messageContent: "",
         conversations: [],
         unsubscribeConversations: null, // to store the unsubscribe function for conversations
         unsubscribeMessages: {} // to store unsubscribe functions for each conversation's messages
@@ -224,6 +223,8 @@ export default {
                         lastMessageAt: createdAt,
                         lastMessageBy: this.username,
             }, { merge: true }); // use merge: true to preserve existing data);
+            
+            this.messageContent = "";
         }
     }
 };

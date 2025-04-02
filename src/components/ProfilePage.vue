@@ -123,7 +123,7 @@ export default {
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 this.user = user;
-                this.username = this.$route.params.id; // Extract username from email
+                this.username = this.$route.params.id; // get username from link
                 this.loadUserProfile();
             } else {
                 console.log("No user is signed in");
@@ -151,7 +151,7 @@ export default {
                     this.url = await getDownloadURL(storageRef); // get the download URL
                 } catch (error) {
                 console.error("Error retrieving photo URL:", error);
-                this.url = await await getDownloadURL(ref(storage, "profileImages/blank.jpg")); // default to blank.jpg if no photo exists
+                this.url = await getDownloadURL(ref(storage, "profileImages/blank.jpg")); // default to blank.jpg if no photo exists
                 }
 
                 // list subjects
@@ -173,7 +173,8 @@ export default {
 
 
             } else {
-                console.log("No such document!");
+                console.log("User does not exist!");
+
             }
         },
         handleEditProfile() {

@@ -120,8 +120,8 @@ export default {
                 let priority1 = user1Subject.priority;
                 prioritySum1 += priority1;
                 
-                // if user2 does not take subject, treat it as if their priority for the subject was 0
-                let priority2 = 0;
+                // if user2 does not take subject, treat it as if their priority for the subject was 1
+                let priority2 = 1;
                 if (user2Subject) {
                     priority2 = user2Subject.priority;
                 }

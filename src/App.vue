@@ -29,7 +29,6 @@
       <div class="rightside-container">
         <router-view></router-view>
       </div>
-
       <div class="home-footer">
         <div class="home-footer-text">© 2025 Study-Buddy App. All Rights Reserved.</div>
       </div>
@@ -73,7 +72,7 @@ export default {
   display: flex;
   object-fit: fill;
   border-radius: 0px;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: auto;
@@ -81,7 +80,7 @@ export default {
 }
 
 .side-navbar-container {
-  position: relative;
+  position: fixed;
   float: left;
   top: 140px; /* Match this with your header image height */
   display: flex;
@@ -127,7 +126,7 @@ export default {
   background-color: #242526;
   height: 100px;
   width: 100%;
-  position: relative;
+  position: absolute;
   bottom: 0;
   text-align: center;
   padding: 0px;
