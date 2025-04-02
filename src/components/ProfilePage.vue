@@ -7,34 +7,6 @@ if user does not exist it should display 404, if user is the user logged in go t
 
     <div class="page-container">
 
-        
-        <img class="home-header-image" alt="Header" :src="header" />
-
-        <div class="side-navbar-container">
-            <!-- Header image -->
-            <nav class="side-navbar">
-                <ul>
-                    <br><br>
-                    <li><a href="">Buddies</a></li>
-                    <li><a href="">Chat</a></li>
-                    <li><a href="">Calendar</a></li>
-                    <li><a href="">-</a></li>
-                    <li><a href="">-</a></li>
-                    <li><a href="">-</a></li>
-                    <li><a href="">-</a></li>
-                    <li><a href="">-</a></li>
-                    <li><a href="">-</a></li>
-                    <li><a href="">-</a></li>
-                    <li><a href="">-</a></li>
-                    <li><a href="">-</a></li>
-
-
-                </ul>
-            </nav>
-
-
-        </div> <!-- end of side navbar  -->
-
         <div class="rightside-container">
 
             <div class="home-header">
@@ -45,12 +17,10 @@ if user does not exist it should display 404, if user is the user logged in go t
 
                 <img class="profile-picture" alt="ProfilePic" :src=url />
 
-
                 <div class="username-year"><span id="name">Name: {{ fullName }}<br><span id="year">Year: {{ year }}</span></span></div>
                 
                 <!-- TODO add friend -->
-                <div class="edit-button-div"><span><button class="edit-profile-button" @click=handleEditProfile>Add Friend</button></span></div>
-                
+                <div class="edit-button-div"><span><button class="edit-profile-button" @click=handleEditProfile>Add Buddy</button></span></div>
             </div>
 
 
@@ -87,10 +57,6 @@ if user does not exist it should display 404, if user is the user logged in go t
             </div>
         </div><!--rightside container end-->
 
-
-        <div class="home-footer">
-            <div class="home-footer-text">© 2025 Study-Buddy App. All Rights Reserved.</div>
-        </div>
     </div>
 
 </template>
@@ -113,6 +79,7 @@ export default {
             bio: '',
             user: null,
             username: '',
+            profileUsername: '',
             year: '',
             subjects: [], // Array to hold dynamic subject data
             url: ''
@@ -123,7 +90,8 @@ export default {
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 this.user = user;
-                this.username = this.$route.params.id; // Extract username from email
+                this.username = user.email.split('@')[0];
+                this.profileUsername = this.$route.params.id; // get username from link
                 this.loadUserProfile();
             } else {
                 console.log("No user is signed in");
@@ -133,7 +101,7 @@ export default {
     methods: {
         async loadUserProfile() {
             const db = getFirestore(firebaseApp);
-            const userDocRef = doc(db, "users", this.username);
+            const userDocRef = doc(db, "users", this.profileUsername);
             const userDoc = await getDoc(userDocRef);
 
             if (userDoc.exists()) {
@@ -146,12 +114,12 @@ export default {
 
                 // retrieve the photo URL from Firebase Storage
                 const storage = getStorage();
-                const storageRef = ref(storage, `profileImages/${this.username}`);
+                const storageRef = ref(storage, `profileImages/${this.profileUsername}`);
                 try {
                     this.url = await getDownloadURL(storageRef); // get the download URL
                 } catch (error) {
                 console.error("Error retrieving photo URL:", error);
-                this.url = await await getDownloadURL(ref(storage, "profileImages/blank.jpg")); // default to blank.jpg if no photo exists
+                this.url = await getDownloadURL(ref(storage, "profileImages/blank.jpg")); // default to blank.jpg if no photo exists
                 }
 
                 // list subjects
@@ -173,7 +141,8 @@ export default {
 
 
             } else {
-                console.log("No such document!");
+                console.log("User does not exist!");
+
             }
         },
         handleEditProfile() {

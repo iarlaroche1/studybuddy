@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div >
         
         <!-- NOTE most of this is temporary, in final product only fullName should be shown -->
          <!-- would also be neat to make the names clickable links to profile pages, and have an "Add Friend" button beside each -->
@@ -44,6 +44,7 @@ export default {
                 this.username = user.email.split('@')[0]; // Extract username from email
             } else {
                 console.log("No user is signed in");
+                this.$router.push('/login');
             }
         });
 
@@ -120,8 +121,8 @@ export default {
                 let priority1 = user1Subject.priority;
                 prioritySum1 += priority1;
                 
-                // if user2 does not take subject, treat it as if their priority for the subject was 0
-                let priority2 = 0;
+                // if user2 does not take subject, treat it as if their priority for the subject was 1
+                let priority2 = 1;
                 if (user2Subject) {
                     priority2 = user2Subject.priority;
                 }

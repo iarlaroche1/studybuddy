@@ -104,6 +104,7 @@ export default {
         this.loadUserProfile();
       } else {
         console.log("No user is signed in");
+        this.$router.push('/login');
       }
     });
   },
@@ -163,7 +164,7 @@ export default {
   height: auto;
   min-width: 100%;
   width:10%;
-  
+
 }
 
 .home-content-wrapper {
@@ -182,6 +183,8 @@ export default {
   border: 1px solid #ddd;
  
   min-height: 0;
+  height:120%;
+  white-space: pre-wrap; /* preserve newlines/spaces */
   height:auto;
  
 }
