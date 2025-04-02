@@ -24,7 +24,7 @@
                 </div>
                 <!-- In the login page template -->
                 <p class="login-prompt">
-                    <router-link to="/signup">Don't have an account? Sign up here</router-link>
+                    <router-link to="/newsignup">Don't have an account? Sign up here!</router-link>
                    
                 </p>
                 <!-- Log-in button wrapper -->
@@ -81,113 +81,106 @@
     padding: 20px;
     display: flex;
     flex-direction: column;
-    height: auto;
-    min-width: 100%;
-    width:10%;
-    
-  }
-  
-  .home-content-wrapper {
-    display: flex;
-    gap: 20px;
-    flex: 1;
-    min-height: 0;
-    height: auto;
-  }
-  
-  .bio-content-container,
-  .subjects-content-container {
-    flex: 1;
-    padding: 15px;
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-   
-    min-height: 0;
-    height:auto;
-   
-  }
-  
-  
-  .home-header {
-    margin-bottom: 20px;
+    align-items: center; /* Center content horizontally */
+    justify-content: center; /* Center content vertically */
+    height: 100vh; /* Full height of the viewport */
+    background-color: #f9f9f9; /* Light background color */
   }
   
   .profile-display-top {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 1px;
-    margin-bottom: 20px;
-    padding: 10px;
-  
-  }
-  
-  .profile-picture {
-    height: 80px;
-    width: 80px;
-    border: 1px solid #000;
-    padding: 2px;
-  }
-  
-  .username-year {
-    flex-grow: 1;
-  }
-  
-  .edit-button-div {
-    margin-left: auto;
-  }
-  
-  .home-content-wrapper {
-    display: flex;
     gap: 20px;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for a modern look */
+    width: 100%;
+    max-width: 400px; /* Limit the width for better readability */
   }
   
+  .log-in-text-container {
+    text-align: center;
+    margin-bottom: 20px;
+  }
   
+  .log-in-text {
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+    line-height: 1.4;
+  }
   
-  
-  .priority-group {
+  .input-container {
+    width: 100%;
     margin-bottom: 15px;
-    padding: 5px;
-  
-    height: auto; /* Let content determine height */
-  }
-  .priority-title {
-    font-weight: bold;
-    margin-bottom: 5px;
   }
   
-  .subject-item {
-    margin-left: 20px;
-    padding: 5px 0;
+  .input-container label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 8px;
+    display: block; /* Ensure the label is above the input */
   }
   
-  .empty-message {
-    color: #666;
-    font-style: italic;
-    margin-left: 20px;
+  .input-field {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
   }
   
-  .edit-profile-button {
+  .input-field:focus {
+    border-color: rgb(173, 7, 82); /* Highlight border on focus */
+    outline: none;
+  }
+  
+  .log-in-button-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .log-in-button {
     background-color: rgb(173, 7, 82);
     color: white;
-    padding: 8px 16px;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 10px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
   }
   
-  .edit-profile-button:hover {
+  .log-in-button:hover {
     background-color: rgb(160, 6, 75);
+    transform: scale(1.05); /* Slight zoom effect on hover */
   }
   
-  .home-footer{
-    background-color: #242526;
-    height: 100px;
-    width: 100%;
-    position: relative;
-    bottom: 0;
-    text-align: center;
+  .log-in-button:active {
+    transform: scale(0.95); /* Slight shrink effect on click */
   }
-  @media (orientation: portrait) {
+  
+  .login-prompt {
+    font-size: 14px;
+    text-align: center;
+    color: #555;
+    margin-top: 20px;
+  }
+  
+  .login-prompt a {
+    color: rgb(173, 7, 82);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  
+  .login-prompt a:hover {
+    text-decoration: underline;
   }
   </style>

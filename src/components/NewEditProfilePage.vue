@@ -615,9 +615,6 @@ export default {
 
 .edit-profile-profile-picture {
     max-height: 80px;
-
-
-
     outline-color: #000;
     outline-style: solid;
     outline-width: 1px;

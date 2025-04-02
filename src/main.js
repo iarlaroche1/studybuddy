@@ -10,6 +10,7 @@ import { createRouter, createWebHistory } from 'vue-router';  // Import Vue Rout
 
 // Import the components for the routes
 import SignUpPage from './components/SignUpPage.vue';
+import NewSignUpPage from './components/NewSignUp.vue';
 import LoginPage from './components/LoginPage.vue';
 import BuddyFinderPage from './components/BuddyFinderPage.vue';
 import BuddiesListPage from './components/BuddiesListPage.vue';
@@ -55,6 +56,7 @@ const routes = [
       // { path: '/chat', component: ChatPage },
       { path: '/chatLuke', component: ChatPageLuke },
       { path: '/newlogin', component: NewLogin },
+      { path: '/newsignup', component: NewSignUpPage },
       { path: '/chat', component: ConversationsListLuke },
       { path: '/chat/:id', component: ConversationPageLuke },
 
