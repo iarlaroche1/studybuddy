@@ -86,8 +86,6 @@
 
         </div><!--rightside container end-->
 
-
-        
     </div>
 
 </template>

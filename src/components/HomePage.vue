@@ -181,6 +181,8 @@ export default {
   border: 1px solid #ddd;
  
   min-height: 0;
+  height:120%;
+  white-space: pre-wrap; /* preserve newlines/spaces */
   height:auto;
   overflow: visible
 }
