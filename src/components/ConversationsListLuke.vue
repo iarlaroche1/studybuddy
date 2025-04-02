@@ -73,6 +73,13 @@ export default {
             }
         });
     },
+    mounted() {
+        if (this.$route.path.startsWith('/chat')) { // to ensure loadUsers function won't run anywhere else
+            this.loadUsers().then(() => {
+                this.getMessagesRealtime();
+            });
+        }
+    },
     methods: {
         getMessagesRealtime() {
             const db = getFirestore(firebaseApp);
@@ -165,6 +172,10 @@ export default {
             const usersCollectionRef = collection(db, "users");
 
             const receiverSelection = document.getElementById("receiver"); // receiver selection menu
+            if (!receiverSelection) {
+                console.error("Element with ID 'receiver' not found.");
+                return;
+            }
 
             const querySnapshot = await getDocs(usersCollectionRef);
 

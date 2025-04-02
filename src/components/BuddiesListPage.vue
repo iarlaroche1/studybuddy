@@ -1,8 +1,14 @@
 <template>
-    <div >
-        
+    <div>
         <!-- NOTE most of this is temporary, in final product only fullName should be shown -->
          <!-- would also be neat to make the names clickable links to profile pages, and have an "Add Friend" button beside each -->
+
+        <h1>Your Buddies</h1>
+        <li v-for="buddy in buddies" :key="buddy.id">
+            
+        </li>
+
+        <h1>Find Buddies</h1>
         <li v-for="user in users" :key="user.id">
             <router-link :to="'/user/' + user.id">{{ user.fullName }}</router-link> Correlation: {{ user.correlation }}
             <!-- TEMP: show subjects and priority for each user - simply for the case of checking correlation system -->
