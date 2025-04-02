@@ -88,6 +88,7 @@
   }
   
   .profile-display-top {
+    left: 43%;
     display: flex;
     flex-direction: column;
     align-items: center;

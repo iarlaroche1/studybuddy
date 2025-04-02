@@ -40,6 +40,7 @@ html {
 /* Main container for the page */
 .main-container {
     /*background-color: #cccccc;*/
+    
     display: flex;
     flex-direction: column;
     align-items: center;

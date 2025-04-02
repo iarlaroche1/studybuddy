@@ -34,7 +34,7 @@
             class="input-field" />
         </div>
         <p class="login-prompt">
-          <router-link to="/login">Already have an account? Login here</router-link>
+          <router-link to="/newlogin">Already have an account? Login here</router-link>
 
         </p>
 
@@ -91,7 +91,7 @@ export default {
                 "fullName":this.fullName
             });
           console.log(result);
-          this.$router.push('/buddyfinder');
+          this.$router.push('/NewEditProfilePage');
         })
         
         .catch((error) => {
@@ -109,6 +109,7 @@ export default {
   
   
   .home-page-content {
+    
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -119,6 +120,7 @@ export default {
   }
   
   .profile-display-top {
+    left: 43%;
     display: flex;
     flex-direction: column;
     align-items: center;
