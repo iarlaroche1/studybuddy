@@ -15,19 +15,23 @@
 
             <nav class="side-navbar">
               <ul>
-                <li><a href="">Buddies</a></li>
+                <li><router-link to="/buddies">Buddies</router-link></li>
                 <li><router-link to="/chat">Chat</router-link></li>
                 <li><router-link to="/home">Home</router-link></li>
                 <li><a href="">-</a></li>
                 <li><a href="">-</a></li>
-                <li><a href="">-</a></li>
-                <li><a href="">-</a></li>
+                
+                
                 <li class="side-navbar-item logged-in-container" v-if="user">
-                  <span class="loggedInText">Logged in as {{ fullName }}</span>
-                  <span class="sign-out-link" @click="handleSignOut">Sign Out</span>
+                  <div class="logged-in-wrapper">
+                    <span class="loggedInText">Logged in as {{ fullName }}</span>
+                    <span class="sign-out-link" @click="handleSignOut">Sign Out</span>
+                  </div>
                 </li>
-                <li class="side-navbar-item" v-else>
-                  <span class="loggedInText">Not logged in</span>
+                <li class="side-navbar-item logged-in-container" v-else>
+                  <div class="logged-in-wrapper">
+                    <span class="loggedInText">Not logged in</span>
+                  </div>
                 </li>
               </ul>
             </nav>
@@ -149,13 +153,25 @@ export default {
   color: #2c3e50;
 }
 
-.side-navbar {
-  position: relative;
-  float: left;
-  top: 30%;
-  width: 100%;
+.side-navbar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 28%; /* Flexible width */
+  min-width: 20%; /* Minimum width before collapsing */
+  height: 100vh; /* Full viewport height */
+  overflow-y: auto; /* Enable scrolling if content exceeds height */
+  background-color: rgb(173, 7, 82); /* Match the sidebar background */
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
+}
+
+.side-navbar {
+  flex: 1; /* Allow the navbar to take up remaining space */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Enable scrolling for the navbar content */
 }
 
 .side-navbar ul {
@@ -201,16 +217,6 @@ export default {
   flex-direction: column;
   flex-wrap: wrap;
   width: 100%;
-}
-
-.side-navbar-container {
-  position: fixed;
-  float: left;
-  top: 0px;
-  display: flex;
-  flex-direction: column;
-  width: 28%; /* Flexible width */
-  min-width: 20%; /* Minimum width before collapsing */
 }
 
 .home-header-image {
@@ -284,65 +290,42 @@ export default {
 }
 
 .logged-in-container {
-  display: flex; /* Align items horizontally */
-  align-items: center; /* Vertically center the text and link */
-  gap: 10px; /* Add spacing between the text and link */
-}
-
-.loggedInText {
-  color: white;
-  font-size: 1rem;
-}
-
-.sign-out-link {
-  color: white;
-  font-size: 1rem;
-  cursor: pointer;
-  text-decoration: underline; /* Make it look like a link */
-  transition: color 0.3s ease; /* Smooth color transition on hover */
-}
-
-.sign-out-link:hover {
-  color: rgb(182, 50, 109); /* Change color on hover */
-}
-
-/* General styling for navbar items */
-.side-navbar-item {
+  margin-top: auto; /* Push the "Logged in as" section to the bottom */
   padding: 15px;
-  text-align: center;
+  background-color: #f5f5f5; /* Light background for contrast */
+  border-top: 1px solid rgba(255, 255, 255, 0.2); /* Subtle divider */
+}
+
+.logged-in-wrapper {
   display: flex;
-  justify-content: space-between; /* Space out the text and link */
-  align-items: center; /* Vertically center the content */
-  background-color: rgb(173, 7, 82); /* Match the navbar background */
-  color: white;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Add a subtle divider */
+  flex-direction: column; /* Stack the text and button vertically */
+  align-items: center; /* Center-align the content */
+  gap: 10px; /* Add spacing between the text and button */
+  padding: 15px; /* Add padding for a card-like feel */
+  background-color: #f5f5f5; /* Light background for contrast */
+  border: 1px solid #ddd; /* Subtle border */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a slight shadow */
+  text-align: center; /* Center-align the text */
 }
 
-/* Hover effect for all navbar items */
-.side-navbar-item:hover {
-  background-color: rgb(182, 50, 109); /* Match hover effect */
-}
-
-/* Specific styling for the "Logged in as" text */
 .loggedInText {
   font-size: 1rem;
-  color: white;
-  flex: 1; /* Allow it to take up space */
-  text-align: left; /* Align text to the left */
+  font-weight: bold;
+  color: #333; /* Darker text for contrast */
 }
 
-/* Specific styling for the "Sign Out" link */
 .sign-out-link {
-  font-size: 1rem;
-  color: white;
+  font-size: 0.9rem;
+  color: rgb(173, 7, 82); /* Primary color for the link */
   cursor: pointer;
-  text-decoration: underline; /* Make it look like a link */
-  transition: color 0.3s ease; /* Smooth color transition on hover */
+  text-decoration: none; /* Remove underline */
+  transition: color 0.3s ease, transform 0.2s ease; /* Smooth hover effect */
 }
 
-/* Hover effect for the "Sign Out" link */
 .sign-out-link:hover {
-  color: rgba(255, 255, 255, 0.8); /* Slightly lighter color on hover */
+  color: rgb(150, 6, 75); /* Darker shade on hover */
+  transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
 @media (orientation: portrait) {
