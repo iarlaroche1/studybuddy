@@ -75,12 +75,12 @@ export default {
     mounted() {
         if (this.$route.path.startsWith('/chat')) { // to ensure loadUsers function won't run anywhere else
             this.loadUsers().then(() => {
-                this.getMessagesRealtime();
+                this.getConversationsRealtime();
             });
         }
     },
     methods: {
-        getMessagesRealtime() {
+        getConversationsRealtime() {
             const db = getFirestore(firebaseApp);
             const conversationsDocRef = collection(db, "conversations");
 

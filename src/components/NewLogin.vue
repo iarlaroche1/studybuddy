@@ -39,7 +39,8 @@
   
   <script>
   import app from "../api/firebase"
-  import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+  import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+
   
   export default {
       name: "NewLoginPage",
@@ -51,6 +52,17 @@
               password: '',
               confirmPassword: ''
           };
+      },
+      created() {
+        const auth = getAuth(app); // Use the Firebase app instance
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                this.user = user;
+                this.username = user.email.split('@')[0]; // Extract username from email
+                this.fullName = user.displayName || this.username; // Use displayName or fallback to username
+                this.$router.push('/home');
+            }
+          });
       },
       methods: {
           handleLogIn() {
