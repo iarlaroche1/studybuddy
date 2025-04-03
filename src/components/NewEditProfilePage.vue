@@ -34,10 +34,10 @@
                 </div>
                 <div class="edit-profile-edit-button-div">
                     <template v-if="!isUpdating">
-                        <button class="edit-profile-button discard-button" @click="this.$router.push('../home')">
+                        <button class="edit-profile-button discard-button" v-if="year!=0" @click="this.$router.push('../home')">
                             {{ profileUpdated ? 'Return Home' : 'Discard Changes' }}
                         </button>
-                        <button class="edit-profile-button update-button" @click="updateUserProfile">
+                        <button class="edit-profile-button update-button" v-if="year!=0" @click="updateUserProfile">
                             Update Profile
                         </button>
                     </template>
