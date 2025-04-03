@@ -38,10 +38,10 @@
 
         </p>
 
-                <!-- Log-in button wrapper -->
-                <div class="log-in-button-wrapper">
-                    <button class="log-in-button" @click="createUser">Sign Up</button>   
-                </div>
+        <!-- Log-in button wrapper -->
+        <div class="log-in-button-wrapper">
+            <button class="log-in-button" @click="createUser">Sign Up</button>   
+        </div>
 
       </div>
   
