@@ -1,42 +1,38 @@
 <template>
-    <div class="home-page-content">
-        <div class="home-content-wrapper" style="flex-direction: column;">
-            <!-- NOTE most of this is temporary, in final product only fullName should be shown -->
-            <!-- would also be neat to make the names clickable links to profile pages, and have an "Add Friend" button beside each -->
-
-            <h1>Find Buddies</h1>
-            <li v-for="user in users" :key="user.id">
-                <img :src="user.photoURL" width="50" height="50">
-                <router-link :to="'/user/' + user.id">{{ user.fullName }}</router-link> TEMPCorrelation: {{ user.correlation }}
-                
-                <br><div v-if="user.commonSubjects.filter(s => s.priority == 3).length > 0">
-                    You both need to study 
-                    <span v-for="(subject, index) in user.commonSubjects.filter(s => s.priority == 3)" :key="index">
-                        {{ subject.id }}
-                        <!-- comma if more than one -->
-                        <span v-if="index < user.commonSubjects.filter(s => s.priority == 3).length - 1">, </span>
-                    </span>
-                </div>
-
-                <div v-if="user.commonSubjects.filter(s => s.priority == 2).length > 0">
-                    You both could study 
-                    <span v-for="(subject, index) in user.commonSubjects.filter(s => s.priority == 2)" :key="index">
-                        {{ subject.id }}
-                        <!-- comma if more than one -->
-                        <span v-if="index < user.commonSubjects.filter(s => s.priority == 2).length - 1">, </span>
-                    </span>
-                </div>
-                <!-- TEMP: show subjects and priority for each user - simply for the case of checking correlation system -->
-                <!--
-                <ul>
-                    <li v-for="subject in user.subjects" :key="subject.id">
-                        {{ subject.id }}, Priority: {{ subject.priority }}
-                    </li>
-                </ul>
-                -->
-            </li>
-        </div>
+  <div class="home-page-content">
+    <div class="home-content-wrapper" style="flex-direction: column;">
+      <h1>Find Buddies</h1>
+      <ul class="buddies-list">
+        <li v-for="user in users" :key="user.id" class="buddy-item">
+          <img class="buddy-photo" :src="user.photoURL || 'default-profile.jpg'" alt="Buddy Photo" />
+          <div class="buddy-details">
+            <router-link :to="'/user/' + user.id" class="buddy-link">
+              {{ user.fullName }}
+            </router-link>
+            <p class="buddy-correlation">Correlation: {{ user.correlation.toFixed(2) }}</p>
+            <div v-if="user.commonSubjects.filter(s => s.priority == 3).length > 0">
+              <p class="common-subjects">
+                You both need to study:
+                <span v-for="(subject, index) in user.commonSubjects.filter(s => s.priority == 3)" :key="index">
+                  {{ subject.id }}
+                  <span v-if="index < user.commonSubjects.filter(s => s.priority == 3).length - 1">, </span>
+                </span>
+              </p>
+            </div>
+            <div v-if="user.commonSubjects.filter(s => s.priority == 2).length > 0">
+              <p class="common-subjects">
+                You both could study:
+                <span v-for="(subject, index) in user.commonSubjects.filter(s => s.priority == 2)" :key="index">
+                  {{ subject.id }}
+                  <span v-if="index < user.commonSubjects.filter(s => s.priority == 2).length - 1">, </span>
+                </span>
+              </p>
+            </div>
+          </div>
+        </li>
+      </ul>
     </div>
+  </div>
 </template>
 
 <script>
@@ -199,3 +195,64 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+.buddies-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 400px; /* Set a fixed height for the list */
+  overflow-y: auto; /* Enable vertical scrolling */
+  border: 1px solid #ddd; /* Optional: Add a border for better visibility */
+  border-radius: 8px; /* Optional: Add rounded corners */
+}
+
+.buddy-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  gap: 15px;
+}
+
+.buddy-item:last-child {
+  border-bottom: none; /* Remove the border for the last item */
+}
+
+.buddy-photo {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #ccc;
+}
+
+.buddy-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.buddy-link {
+  font-size: 1rem;
+  font-weight: bold;
+  color: rgb(173, 7, 82);
+  text-decoration: none;
+}
+
+.buddy-link:hover {
+  text-decoration: underline;
+}
+
+.buddy-correlation {
+  font-size: 0.875rem;
+  color: #555;
+  margin-top: 5px;
+}
+
+.common-subjects {
+  font-size: 0.875rem;
+  color: #333;
+  margin-top: 5px;
+}
+</style>
