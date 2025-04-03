@@ -2,35 +2,47 @@
   <div class="home-page-content">
     <div class="home-content-wrapper" style="flex-direction: column;">
       <h1>Find Buddies</h1>
-      <ul class="buddies-list">
-        <li v-for="user in users" :key="user.id" class="buddy-item">
-          <img class="buddy-photo" :src="user.photoURL || 'default-profile.jpg'" alt="Buddy Photo" />
-          <div class="buddy-details">
-            <router-link :to="'/user/' + user.id" class="buddy-link">
-              {{ user.fullName }}
-            </router-link>
-            <p class="buddy-correlation">Correlation: {{ user.correlation.toFixed(2) }}</p>
-            <div v-if="user.commonSubjects.filter(s => s.priority == 3).length > 0">
-              <p class="common-subjects">
-                You both need to study:
-                <span v-for="(subject, index) in user.commonSubjects.filter(s => s.priority == 3)" :key="index">
-                  {{ subject.id }}
-                  <span v-if="index < user.commonSubjects.filter(s => s.priority == 3).length - 1">, </span>
-                </span>
-              </p>
+
+      <!-- Loading Spinner -->
+      <template v-if="loading">
+        <div class="loading-container">
+          <div class="spinner"></div>
+          <span>Loading buddies...</span>
+        </div>
+      </template>
+
+      <!-- Buddies List -->
+      <template v-else>
+        <ul class="buddies-list">
+          <li v-for="user in users" :key="user.id" class="buddy-item">
+            <img class="buddy-photo" :src="user.photoURL || 'default-profile.jpg'" alt="Buddy Photo" />
+            <div class="buddy-details">
+              <router-link :to="'/user/' + user.id" class="buddy-link">
+                {{ user.fullName }}
+              </router-link>
+              <p class="buddy-correlation">Correlation: {{ user.correlation.toFixed(2) }}</p>
+              <div v-if="user.commonSubjects.filter(s => s.priority == 3).length > 0">
+                <p class="common-subjects">
+                  You both need to study:
+                  <span v-for="(subject, index) in user.commonSubjects.filter(s => s.priority == 3)" :key="index">
+                    {{ subject.id }}
+                    <span v-if="index < user.commonSubjects.filter(s => s.priority == 3).length - 1">, </span>
+                  </span>
+                </p>
+              </div>
+              <div v-if="user.commonSubjects.filter(s => s.priority == 2).length > 0">
+                <p class="common-subjects">
+                  You both could study:
+                  <span v-for="(subject, index) in user.commonSubjects.filter(s => s.priority == 2)" :key="index">
+                    {{ subject.id }}
+                    <span v-if="index < user.commonSubjects.filter(s => s.priority == 2).length - 1">, </span>
+                  </span>
+                </p>
+              </div>
             </div>
-            <div v-if="user.commonSubjects.filter(s => s.priority == 2).length > 0">
-              <p class="common-subjects">
-                You both could study:
-                <span v-for="(subject, index) in user.commonSubjects.filter(s => s.priority == 2)" :key="index">
-                  {{ subject.id }}
-                  <span v-if="index < user.commonSubjects.filter(s => s.priority == 2).length - 1">, </span>
-                </span>
-              </p>
-            </div>
-          </div>
-        </li>
-      </ul>
+          </li>
+        </ul>
+      </template>
     </div>
   </div>
 </template>
@@ -51,7 +63,8 @@ export default {
         user: null,
         username: '',
         users: [],
-        user1Subjects: []
+        user1Subjects: [],
+        loading: true, // Add a loading state
         };
     },
     created() {
@@ -70,29 +83,30 @@ export default {
     },
     methods: {
         async loadUsers() {
+            this.loading = true; // Set loading to true
             const db = getFirestore(firebaseApp);
             const usersCollectionRef = collection(db, "users");
 
             const querySnapshot = await getDocs(usersCollectionRef);
 
-            this.users = []; // clear the array before loading
-            const currentUser = await getDoc(doc(db, "users", this.username)); 
+            this.users = []; // Clear the array before loading
+            const currentUser = await getDoc(doc(db, "users", this.username));
             if (!querySnapshot.empty) {
-                // go thru each user document in users collection
+                // Go through each user document in the users collection
                 for (const userDoc of querySnapshot.docs) {
-                    if (userDoc.data().year == currentUser.data().year) { // if user is in same year as user logged in
+                    if (userDoc.id !== this.username && userDoc.data().year == currentUser.data().year) {
+                        // Exclude the logged-in user and only include users in the same year
                         let userDocRef = doc(db, "users", userDoc.id);
                         let userData = userDoc.data();
-                        
-                        let subjectsCollectionRef = collection(userDocRef, "subjects"); 
-                        let subjects = await this.getUserSubjects(subjectsCollectionRef);
-                        
-                        // only run correlation check if user is not user logged in
-                        let correlation = await this.getCorrelation(subjects);
-                        let commonSubjects = await this.getCommonSubjects(subjects)
-                        console.log(userDoc.id);
 
-                        // get profile photo
+                        let subjectsCollectionRef = collection(userDocRef, "subjects");
+                        let subjects = await this.getUserSubjects(subjectsCollectionRef);
+
+                        // Only run correlation check if the user is not the logged-in user
+                        let correlation = await this.getCorrelation(subjects);
+                        let commonSubjects = await this.getCommonSubjects(subjects);
+
+                        // Get profile photo
                         const storage = getStorage();
                         const storageRef = ref(storage, `profileImages/${userDoc.id}`);
                         let photoURL = null;
@@ -102,21 +116,23 @@ export default {
                             photoURL = await getDownloadURL(ref(storage, "profileImages/blank.jpg"));
                         }
 
-                        console.log(photoURL);
                         this.users.push({
-                            "id": userDoc.id, 
-                            "fullName": userData.fullName,
-                            "subjects": subjects,
-                            "commonSubjects": commonSubjects,
-                            "correlation": correlation,
-                            "photoURL": photoURL
+                            id: userDoc.id,
+                            fullName: userData.fullName,
+                            subjects: subjects,
+                            commonSubjects: commonSubjects,
+                            correlation: correlation,
+                            photoURL: photoURL,
                         });
                     }
+                }
 
-                    // sort based on which correlation is higher
-                    this.users.sort((a,b) => (a.correlation > b.correlation) ? -1 : ((b.correlation > a.correlation) ? 1 : 0))
-                  }
+                // Sort based on which correlation is higher
+                this.users.sort((a, b) =>
+                    a.correlation > b.correlation ? -1 : b.correlation > a.correlation ? 1 : 0
+                );
             }
+            this.loading = false; // Set loading to false after loading is complete
         },
         async getUserSubjects(ref) {
             const querySnapshot = await getDocs(ref);
@@ -254,5 +270,32 @@ export default {
   font-size: 0.875rem;
   color: #333;
   margin-top: 5px;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px; /* Adjust height as needed */
+  gap: 10px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-top: 5px solid rgb(173, 7, 82); /* Spinner color */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
