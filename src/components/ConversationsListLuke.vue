@@ -1,30 +1,40 @@
 <template>
-    <div class="home-content-wrapper">
+  <div class="home-page-content">
+    <div class="profile-display-top">
      
-        <div class="chat-box-button-wrapper">
-         
-        <!-- create chat button -->
-        <select  id="receiver" v-model="receiver" class="input-field">
-            <option disabled value="">Select a user</option>
+
+      <div class="chat-box-button-wrapper">
+        <select id="receiver" v-model="receiver" class="input-field">
+          <option disabled value="">Select a user</option>
         </select>
-        <button class="chat-button" @click="newChat()">Chat</button>
-
-        </div>
-
-        <!-- conversations list -->
-        <li v-for="conversation in conversations" :key="conversation.id">
-            <img height=50 width=50 :src=conversation.receiver.photoURL>
-            <router-link :to="'/chat/' + conversation.id">{{ conversation.receiver.fullName }} ({{ conversation.receiver.id }})</router-link> <!-- get user that isn't this.username (i.e. other participant involved), and display that -->
-            <br><b>{{ conversation.lastMessageBy }}:</b> {{ conversation.lastMessage }} <i>({{ conversation.lastMessageAt }})</i>
-            <!--
-            <ul>
-                <li v-for="message in conversation.messages" :key="message.timestamp">
-                    <b>{{ message.sender }}</b>: {{ message.content }} <i>({{ message.timestamp }})</i>
-                </li>
-            </ul>
-            -->
-        </li>
+        <button class="chat-button" @click="newChat()">Start Chat</button>
+      </div>
     </div>
+
+    <div class="home-content-wrapper">
+      
+
+      <div class="conversations-list">
+        <h2>Your Conversations</h2>
+        <ul>
+          <li v-for="conversation in conversations" :key="conversation.id" class="conversation-item">
+            <img class="conversation-photo" :src="conversation.receiver.photoURL || 'default-profile.jpg'" alt="Receiver Photo" />
+            <div class="conversation-details">
+              <router-link :to="'/chat/' + conversation.id" class="conversation-link">
+                {{ conversation.receiver.fullName }}
+              </router-link>
+              <p class="conversation-last-message">
+                <b>{{ conversation.lastMessageBy }}:</b> {{ conversation.lastMessage }}
+              </p>
+              <p class="conversation-timestamp">
+                {{ conversation.lastMessageAt.toLocaleString() }}
+              </p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </template>
 
 
@@ -202,41 +212,130 @@ export default {
 </script>
 
 <style scoped>
-
-.home-content-wrapper {
+/* General page layout */
+.home-page-content {
+  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  flex: 1;
-  min-height: 0;
-  height: auto;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* Profile display section */
+.profile-display-top {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.profile-picture {
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  object-fit: cover;
+}
+
+.username-year {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Chat box and button wrapper */
+.chat-box-button-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 .input-field {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
-    transition: border-color 0.3s;
-  }
-  .chat-box-button-wrapper {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-  }
-  .chat-button {
-    background-color: rgb(173, 7, 82);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-  }
-  .chat-button:hover {
-    background-color: rgb(150, 6, 75);
-  }
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+.chat-button {
+  background-color: rgb(173, 7, 82);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.chat-button:hover {
+  background-color: rgb(150, 6, 75);
+}
+
+/* Conversations list */
+.conversations-list {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.conversations-list h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.conversation-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.conversation-item:last-child {
+  border-bottom: none;
+}
+
+.conversation-photo {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+
+.conversation-details {
+  flex: 1;
+}
+
+.conversation-link {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: rgb(173, 7, 82);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.conversation-link:hover {
+  color: rgb(150, 6, 75);
+}
+
+.conversation-last-message {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 5px 0;
+}
+
+.conversation-timestamp {
+  font-size: 0.8rem;
+  color: #999;
+}
 </style>
