@@ -11,7 +11,7 @@
       </div>
       
       <div class="edit-button-div">
-        <button class="edit-profile-button" @click="handleEditProfile">
+        <button class="edit-profile-button" @click="this.$router.push('home/edit')">
           Edit Profile
         </button>
       </div>
@@ -145,9 +145,6 @@ export default {
       } else {
         console.log("No such document!");
       }
-    },
-    handleEditProfile() {
-      this.$router.push('/neweditprofile');
     }
   }
 };

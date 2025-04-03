@@ -4,10 +4,11 @@
      
 
       <div class="chat-box-button-wrapper">
+        <div>Start a new chat:</div>
         <select id="receiver" v-model="receiver" class="input-field">
           <option disabled value="">Select a user</option>
         </select>
-        <button class="chat-button" @click="newChat()">Start Chat</button>
+        <button class="chat-button" v-if="receiver" @click="newChat()">Chat</button>
       </div>
     </div>
 
@@ -15,7 +16,7 @@
       
 
       <div class="conversations-list">
-        <h2>Your Conversations</h2>
+        <h2>Recent Conversations</h2>
         <ul>
           <li v-for="conversation in conversations" :key="conversation.id" class="conversation-item">
             <img class="conversation-photo" :src="conversation.receiver.photoURL || 'default-profile.jpg'" alt="Receiver Photo" />

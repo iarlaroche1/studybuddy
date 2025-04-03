@@ -50,39 +50,8 @@
                 </div>
             </div>
 
-                <!-- Table rendered with v-for -->
-                <table id="subjectAdd">
-                <thead>
-                    <tr>
-                        <th>Subject</th>
-                        <th>Priority</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(subject, index) in subjects" :key="index">
-                        <td>
-                            <template v-if="subject.optional">
-                                <select v-model="subject.id" class="course">
-                                    <option :value="subject.id" disabled>{{ subject.name || 'Select a subject' }}</option>
-                                    <option v-for="option in optionalSubjects" :key="option.id" :value="option.id">
-                                        {{ option.name }}
-                                    </option>
-                                </select>
-                            </template>
-                            <template v-else>
-                                <div class="course">{{ subject.name }}</div>
-                            </template>
-                        </td>
-                        <td>
-                            <input type="range" min="1" max="3" v-model="subject.priority" class="priority" />
-                        </td>
-                        <td>
-                            <button @click="removeSubject(index)">Delete</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+
+
 
 
 
@@ -97,17 +66,6 @@
                 <button class="addSubjectButton" @click="addSubject(0)" id="addSubject">Add Subject</button>
 
                 <br><br>
-
-                <!-- Edit Bio Section -->
-                <div class="edit-bio-container">
-                    <label for="bio" class="bio-label">Edit Bio:</label>
-                    <textarea
-                        id="bio"
-                        v-model="bio"
-                        class="bio-input"
-                        placeholder="Write something about yourself..."
-                    ></textarea>
-                </div>
 
                 <!-- Subjects Table -->
                 <table id="subjectAdd">
@@ -142,7 +100,6 @@ export default {
             year: '',
             subjects: [], // Array to hold dynamic subject data
             userSubjects: [],
-            editSubjectsArray: [],
             url: '',
             profileUpdated: false,
             isUpdating: false

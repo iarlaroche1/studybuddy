@@ -134,9 +134,11 @@ export default {
                         // get corresponding entry in root/subjects database
                         const subjectDocRef = doc(db, "subjects", userSubjectDoc.id);
                         const subjectDoc = await getDoc(subjectDocRef);
-
-                        // push subject object to array with id, priority and name
-                        this.subjects.push({"id": userSubjectDoc.id, "priority": userSubjectDoc.data().priority, "name": subjectDoc.data().name});
+                        
+                        if (subjectDoc.exists()){
+                            // push subject object to array with id, priority and name
+                            this.subjects.push({"id": userSubjectDoc.id, "priority": userSubjectDoc.data().priority, "name": subjectDoc.data().name});
+                        }
                     }
                 }
 
