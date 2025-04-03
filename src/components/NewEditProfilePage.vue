@@ -56,19 +56,20 @@
 
 
             <div class="edit-profile-content-wrapper">
+                <!-- Explanatory text -->
+                <p class="priority-explanation">
+                    Use the sliders to indicate your study priority for each subject. 
+                    <strong>Left</strong> means "No need to study," and <strong>Right</strong> means "Definitely need to study."
+                </p>
 
-
-                <button class="addSubjectButton" @click=addSubject(0) id="addSubject">Add Subject</button>
+                <!-- Add Subject Button -->
+                <button class="addSubjectButton" @click="addSubject(0)" id="addSubject">Add Subject</button>
 
                 <br><br>
+
+                <!-- Subjects Table -->
                 <table id="subjectAdd">
                 </table>
-
-                
-
-
-
-
             </div>
 
 
@@ -485,15 +486,29 @@ export default {
 
 /* Style for the add subject button */
 .addSubjectButton {
-    position: relative; /* Change from absolute */
-    width: 100px;
-    height: 100px;
-    margin: 10px 0;
-    padding: 8px 15px;
-    background-color: rgb(66, 58, 62);
-    color: white;
-    border: none;
-    cursor: pointer;
+  background-color: rgb(173, 7, 82); /* Primary color */
+  color: white;
+  padding: 8px 12px; /* Compact padding */
+  font-size: 0.9rem; /* Slightly smaller font size */
+  border: none;
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover and click effects */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for a modern look */
+  margin: 10px 0; /* Add spacing around the button */
+  height: auto; /* Ensure the button height adjusts to its content */
+  line-height: normal; /* Prevent text from affecting height */
+  display: inline-block; /* Prevent stretching */
+}
+
+.addSubjectButton:hover {
+  background-color: rgb(150, 6, 75); /* Darker shade on hover */
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.addSubjectButton:active {
+  background-color: rgb(182, 50, 109); /* Slightly lighter shade on click */
+  transform: scale(0.95); /* Slightly shrink on click */
 }
 
 
@@ -782,6 +797,18 @@ export default {
     padding: 20px;
 }
 
+.priority-explanation {
+  font-size: 0.8rem; /* Make the text smaller */
+  color: #555; /* Use a lighter color for subtle emphasis */
+  margin-bottom: 10px; /* Add spacing below the text */
+  text-align: center; /* Center-align the text */
+  position: relative; /* Ensure it stays in the flow of the document */
+  z-index: 10; /* Ensure it appears above other elements */
+  background-color: #fff; /* Add a background to make it stand out */
+  padding: 5px; /* Add padding for better readability */
+  border: 1px solid #ddd; /* Add a subtle border */
+  border-radius: 4px; /* Add rounded corners */
+}
 
 
 
