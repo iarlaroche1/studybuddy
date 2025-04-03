@@ -1,47 +1,58 @@
 <template>
-  <div id="app">
+  <Suspense>
+    <template #default>
+      <div id="app">
+        <div class="home-header">
+          <h1 class="title">Study Buddy Finder</h1>
+        </div>
 
-    <div class="home-header">
-      <h1 class="title">Study Buddy Finder</h1>
-    </div>
+        <div class="page-container">
+          <div class="side-navbar-container">
+            <!-- Header image with link to homepage -->
+            <router-link to="/home">
+              <img class="home-header-image" alt="Header" :src="header" />
+            </router-link>
 
-    <div class="page-container">
+            <nav class="side-navbar">
+              <ul>
+                <li><a href="">Buddies</a></li>
+                <li><router-link to="/chat">Chat</router-link></li>
+                <li><router-link to="/home">Home</router-link></li>
+                <li><a href="">-</a></li>
+                <li><a href="">-</a></li>
+                <li><a href="">-</a></li>
+                <li><a href="">-</a></li>
+                <li class="side-navbar-item logged-in-container">
+                  <span class="loggedInText">Logged in as {{ fullName }}</span>
+                  <span class="sign-out-link" @click="handleSignOut">Sign Out</span>
+                </li>
+              </ul>
+            </nav>
+          </div>
 
-      <div class="side-navbar-container">
-        <!-- Header image with link to homepage -->
-        <router-link to="/homepage">
-          <img class="home-header-image" alt="Header" :src="header" />
-        </router-link>
-
-
-        <nav class="side-navbar">
-          <ul>
-            <li><router-link to="/buddies">Buddies</router-link></li>
-            <li><router-link to="/chat">Chat</router-link></li>
-            <li><router-link to="/homepage">Home</router-link></li>
-            <li><a href="">-</a></li>
-            <li><a href="">-</a></li>
-            <li><a href="">-</a></li>
-            <li><a href="">-</a></li>
-            <li class="side-navbar-item logged-in-container">
-              <span class="loggedInText">Logged in as {{ fullName }}</span>
-              <span class="sign-out-link" @click="handleSignOut">Sign Out</span>
-            </li>
-          </ul>
-        </nav>
+          <!-- Dynamic content area -->
+          <div class="rightside-container">
+            <router-view />
+          </div>
+        </div>
       </div>
+    </template>
 
-      <!-- Dynamic content area -->
-      <div class="rightside-container">
-        <router-view></router-view>
+    <template #fallback>
+      <div class="full-page-loader">
+        <p>Loading...</p>
       </div>
-    </div>
-  </div>
+    </template>
+  </Suspense>
 </template>
 
 <script>
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebaseApp from "./api/firebase"; // Import the Firebase app instance
+//import { createRouter, createWebHistory } from 'vue-router';
+
+
+
 
 export default {
   name: 'App',
@@ -84,6 +95,16 @@ export default {
 </script>
 
 <style scoped>
+
+.full-page-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 20px;
+}
+
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

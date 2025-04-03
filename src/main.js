@@ -24,7 +24,7 @@ import NewEditProfilePage from './components/NewEditProfilePage.vue';
 import NewLogin from './components/NewLogin.vue';
 import ConversationsListLuke from './components/ConversationsListLuke.vue';
 import ConversationPageLuke from './components/ConversationPageLuke.vue';
-import ChatPageLuke from './components/ChatPageLuke.vue';
+//import ChatPageLuke from './components/ChatPageLuke.vue';
 
 
 const routes = [
@@ -48,7 +48,7 @@ const routes = [
       { path: '/helloworld', component: HelloWorld },
       { path: '/home/edit', component: NewEditProfilePage },
       // { path: '/chat', component: ChatPage },
-      { path: '/chatLuke', component: ChatPageLuke },
+      
       { path: '/login', component: NewLogin },
       { path: '/newsignup', component: NewSignUpPage },
       { path: '/chat', component: ConversationsListLuke },

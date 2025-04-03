@@ -1,23 +1,15 @@
 <template>
-    <div class="home-content-wrapper" style="flex-direction:column;">
-        <!-- bio input field section -->
-         <!--
-        <div class="input-container">
-            <label for="message">Receiver:</label>
-            <textarea id="receiver" v-model="receiver" type="text" placeholder="Message" class="input-field"></textarea>
-        </div>
-        <div class="input-container">
-            <label for="message">Message:</label>
-            <textarea id="messageContent" v-model="messageContent" type="text" placeholder="Message" class="input-field"></textarea>
-            <button @click="sendMessage()">Send Message</button>
-        </div>
-        -->
-
+    <div class="home-content-wrapper">
+     
+        <div class="chat-box-button-wrapper">
+         
         <!-- create chat button -->
-        <select id="receiver" v-model="receiver" class="input-field">
+        <select  id="receiver" v-model="receiver" class="input-field">
             <option disabled value="">Select a user</option>
         </select>
-        <button @click="newChat()">Chat</button>
+        <button class="chat-button" @click="newChat()">Chat</button>
+
+        </div>
 
         <!-- conversations list -->
         <li v-for="conversation in conversations" :key="conversation.id">
@@ -203,3 +195,43 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+
+.home-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
+  height: auto;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+  }
+  .chat-box-button-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .chat-button {
+    background-color: rgb(173, 7, 82);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+  .chat-button:hover {
+    background-color: rgb(150, 6, 75);
+  }
+</style>
