@@ -432,11 +432,11 @@ export default {
 .edit-profile-button {
   background-color: rgb(173, 7, 82);
   color: white;
-  padding: 10px 20px;
+  padding: 8px 16px; /* Reduce button size */
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.9rem; /* Slightly smaller font size */
   transition: background-color 0.3s ease;
 }
 
@@ -716,9 +716,10 @@ export default {
 
 .edit-profile-edit-button-div {
   display: flex; /* Use flexbox for alignment */
-  justify-content: center; /* Center the buttons horizontally */
+  justify-content: flex-start; /* Align buttons to the left */
   gap: 10px; /* Add spacing between the buttons */
   margin-top: 20px; /* Add some space above the buttons */
+  padding-left: 20px; /* Move the buttons slightly to the left */
 }
 
 
