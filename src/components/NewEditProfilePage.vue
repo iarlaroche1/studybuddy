@@ -56,27 +56,27 @@
 
 
             <div class="edit-profile-content-wrapper">
-                <!-- Explanatory text -->
+                <!-- Priority Explanation -->
                 <p class="priority-explanation">
-                    Use the sliders to indicate your study priority for each subject. 
-                    <strong>Left</strong> means "No need to study," and <strong>Right</strong> means "Definitely need to study."
+                  Use the sliders to indicate your study priority for each subject. 
+                  <strong>Left</strong> means "No need to study," and <strong>Right</strong> means "Definitely need to study."
                 </p>
-
-                <!-- Add Subject Button -->
-                <button class="addSubjectButton" @click="addSubject(0)" id="addSubject">Add Subject</button>
-
-                <br><br>
 
                 <!-- Edit Bio Section -->
                 <div class="edit-bio-container">
-                    <label for="bio" class="bio-label">Edit Bio:</label>
-                    <textarea
-                        id="bio"
-                        v-model="bio"
-                        class="bio-input"
-                        placeholder="Write something about yourself..."
-                    ></textarea>
+                  <label for="bio" class="bio-label">Edit Bio:</label>
+                  <textarea
+                    id="bio"
+                    v-model="bio"
+                    class="bio-input"
+                    placeholder="Write something about yourself..."
+                  ></textarea>
                 </div>
+
+                <!-- Add Subject Button -->
+                <button class="addSubjectButton" @click="addSubject(0)" id="addSubject">+</button>
+
+                <br><br>
 
                 <!-- Subjects Table -->
                 <table id="subjectAdd">
@@ -499,22 +499,22 @@ export default {
 .addSubjectButton {
   background-color: rgb(173, 7, 82); /* Primary color */
   color: white;
-  padding: 8px 12px; /* Compact padding */
-  font-size: 0.9rem; /* Slightly smaller font size */
+  width: 40px; /* Set width to a small square size */
+  height: 40px; /* Set height to match width */
+  font-size: 1.2rem; /* Adjust font size for better visibility */
   border: none;
-  border-radius: 4px; /* Rounded corners */
+  border-radius: 4px; /* Slightly rounded corners */
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover and click effects */
+  display: flex; /* Center content inside the button */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for a modern look */
-  margin: 10px 0; /* Add spacing around the button */
-  height: auto; /* Ensure the button height adjusts to its content */
-  line-height: normal; /* Prevent text from affecting height */
-  display: inline-block; /* Prevent stretching */
 }
 
 .addSubjectButton:hover {
   background-color: rgb(150, 6, 75); /* Darker shade on hover */
-  transform: scale(1.05); /* Slightly enlarge on hover */
+  transform: scale(1.1); /* Slightly enlarge on hover */
 }
 
 .addSubjectButton:active {

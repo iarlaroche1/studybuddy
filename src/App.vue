@@ -15,9 +15,10 @@
 
             <nav class="side-navbar">
               <ul>
+                <li><router-link to="/home">Home</router-link></li>
                 <li><router-link to="/buddies">Buddies</router-link></li>
                 <li><router-link to="/chat">Chat</router-link></li>
-                <li><router-link to="/home">Home</router-link></li>
+                
                 <li><a href="">-</a></li>
                 <li><a href="">-</a></li>
                 
