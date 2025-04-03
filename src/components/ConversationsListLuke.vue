@@ -215,8 +215,9 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  height: 100%;
+  height: 100vh; /* Full viewport height */
   box-sizing: border-box;
+  overflow: hidden; /* Prevent content from overflowing */
 }
 
 /* Profile display section */
@@ -225,6 +226,7 @@ export default {
   align-items: center;
   gap: 20px;
   margin-bottom: 20px;
+  flex-wrap: wrap; /* Allow wrapping for smaller screens */
 }
 
 .profile-picture {
@@ -239,18 +241,21 @@ export default {
   font-size: 1.2rem;
   font-weight: bold;
   color: #333;
+  flex: 1; /* Allow it to take up remaining space */
+  min-width: 150px; /* Prevent it from shrinking too much */
 }
 
 /* Chat box and button wrapper */
 .chat-box-button-wrapper {
   display: flex;
   align-items: center;
-  gap: 10%;
-  margin-bottom: 0%;
+  gap: 10px;
+  flex-wrap: wrap; /* Allow wrapping for smaller screens */
 }
 
 .input-field {
-  width: 100%;
+  flex: 1; /* Allow the input field to grow */
+  min-width: 200px; /* Prevent it from shrinking too much */
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ddd;
@@ -281,6 +286,8 @@ export default {
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex: 1; /* Allow it to grow and take up remaining space */
+  overflow-y: auto; /* Enable scrolling if content overflows */
 }
 
 .conversations-list h2 {
@@ -311,6 +318,7 @@ export default {
 
 .conversation-details {
   flex: 1;
+  min-width: 0; /* Prevent it from overflowing */
 }
 
 .conversation-link {
@@ -329,10 +337,14 @@ export default {
   font-size: 0.9rem;
   color: #555;
   margin: 5px 0;
+  word-wrap: break-word; /* Ensure long text wraps */
 }
 
 .conversation-timestamp {
   font-size: 0.8rem;
   color: #999;
+  white-space: nowrap; /* Prevent timestamps from wrapping */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Add ellipsis for long timestamps */
 }
 </style>

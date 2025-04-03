@@ -40,7 +40,6 @@
   <script>
   import app from "../api/firebase"
   import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
-
   
   export default {
       name: "NewLoginPage",
@@ -79,7 +78,7 @@
               
               this.$router.push('/home');
               window.location.reload();
-              this.$router.push('/home');
+             
               }).catch((error) => {
               let errorCode = error.code;
               let errorMessage = error.message;

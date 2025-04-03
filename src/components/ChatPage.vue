@@ -93,6 +93,9 @@
         } else {
           console.log("No such document!");
         }
+      },
+      handleEditProfile() {
+        this.$router.push('/neweditprofile');
       }
     }
   };
