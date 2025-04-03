@@ -89,7 +89,9 @@ export default {
           this.username = "";
           this.fullName = "";
           console.log("User signed out");
+          
           this.$router.push("/login"); // Redirect to login page after sign out
+          
         })
         .catch((error) => {
           console.error("Error signing out: ", error);

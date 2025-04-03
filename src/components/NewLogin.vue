@@ -54,15 +54,20 @@
       },
       methods: {
           handleLogIn() {
+            
               const auth = getAuth(app);
               signInWithEmailAndPassword(auth, this.email, this.password).then((userCredential) => {
               // Signed in
               let user = userCredential.user;
+              
               console.log(user);
+
               
               // Programmatically navigate to "/buddyfinder" route after successful login
-              this.$router.push('/home');
               
+              this.$router.push('/home');
+              window.location.reload();
+              this.$router.push('/home');
               }).catch((error) => {
               let errorCode = error.code;
               let errorMessage = error.message;
