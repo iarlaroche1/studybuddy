@@ -1,7 +1,7 @@
 <template>
   <Suspense>
     <template #default>
-      <div id="app">
+      <div v-if="!loading" id="app">
         <div class="home-header">
           <h1 class="title">Study Buddy Finder</h1>
         </div>
@@ -50,49 +50,53 @@
 <script>
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebaseApp from "./api/firebase"; // Import the Firebase app instance
-//import { createRouter, createWebHistory } from 'vue-router';
-
-
-
 
 export default {
-  name: 'App',
+  name: "App",
   data() {
     return {
-      header: require('@/assets/header.jpg'),
-      user: '',
-      username: '',
-      fullName: '' // Added fullName property
-    }
+      header: require("@/assets/header.jpg"),
+      user: null, // Initialize as null
+      username: "",
+      fullName: "",
+      loading: true, // Add a loading state
+    };
   },
   created() {
     const auth = getAuth(firebaseApp); // Use the Firebase app instance
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                this.user = user;
-                this.username = user.email.split('@')[0]; // Extract username from email
-                this.fullName = user.displayName || this.username; // Use displayName or fallback to username
-            } else {
-                console.log("No user is signed in");
-            }
-        });
-
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.user = user;
+        this.username = user.email ? user.email.split("@")[0] : "Unknown"; // Safely extract username
+        this.fullName = user.displayName || this.username; // Use displayName or fallback to username
+      } else {
+        console.log("No user is signed in");
+        this.user = null;
+        this.username = "";
+        this.fullName = "";
+        this.$router.push("/login"); // Redirect to login if no user is signed in
+      }
+      this.loading = false; // Set loading to false after auth state is resolved
+    });
   },
   methods: {
     handleSignOut() {
       const auth = getAuth(firebaseApp);
-      auth.signOut().then(() => {
-        this.user = '';
-        this.username = '';
-        this.fullName = '';
-        console.log("User signed out");
-      }).catch((error) => {
-        console.error("Error signing out: ", error);
-      });
-      this.$router.push('/login'); // Redirect to login page after sign out
-    }
-  }
-}
+      auth
+        .signOut()
+        .then(() => {
+          this.user = null;
+          this.username = "";
+          this.fullName = "";
+          console.log("User signed out");
+          this.$router.push("/login"); // Redirect to login page after sign out
+        })
+        .catch((error) => {
+          console.error("Error signing out: ", error);
+        });
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -140,11 +144,6 @@ export default {
   color: #2c3e50;
 }
 
-
-
-
-
-
 .side-navbar {
   position: relative;
   float: left;
@@ -172,12 +171,9 @@ export default {
   font-size: 1rem;
 }
 
-
 .side-navbar a:hover {
   background-color: rgb(182, 50, 109);
 }
-
-
 
 .home-footer {
   background-color: #242526;
@@ -195,8 +191,7 @@ export default {
   font-weight: 400;
 }
 
-
-  .page-container {
+.page-container {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -214,26 +209,22 @@ export default {
 }
 
 .home-header-image {
- 
- border-radius: 0px;
- position: relative;
- top: 0px;
- left: 0;
- width: 100%;
+  border-radius: 0px;
+  position: relative;
+  top: 0px;
+  left: 0;
+  width: 100%;
   height: auto;
   object-fit: cover;
 }
 
-
-.loggedInText{
+.loggedInText {
   color: white;
   font-size: 1rem;
-  
- padding-left: 10%;;
+  padding-left: 10%;
   text-align: left;
   min-height: 10px;
   max-height: auto;
-
 }
 
 .side-navbar ul {
@@ -246,7 +237,6 @@ export default {
 }
 
 .side-navbar a {
-  
   color: white;
   outline-color: #000;
   outline-style: solid;
@@ -260,22 +250,16 @@ export default {
   max-height: auto;
 }
 
-
-
-
 .rightside-container {
-  
   flex: 1; /* Takes remaining space */
   padding: 20px;
   min-width: 0px;
   max-width: 100%;
   height: auto;
- 
-  display:flex;
+  display: flex;
   flex-direction: column;
   justify-content: space-between;
   box-sizing: border-box; /* Include padding in width calculations */
-
 }
 
 .home-footer {
@@ -367,15 +351,14 @@ export default {
   }
 
   .home-header-image {
- 
- border-radius: 0px;
- position: relative;
- top: 0px;
- left: 0;
- width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+    border-radius: 0px;
+    position: relative;
+    top: 0px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
   .side-navbar-container {
     position: fixed;
     float: left;
@@ -387,12 +370,11 @@ export default {
   }
 
   .home-header-image {
-  
-  border-radius: 0px;
-  position: relative;
-  top: 0px;
-  left: 0;
-  width: 100%;
+    border-radius: 0px;
+    position: relative;
+    top: 0px;
+    left: 0;
+    width: 100%;
     height: auto;
     object-fit: cover;
   }
@@ -406,8 +388,6 @@ export default {
     flex-direction: column;
   }
 
-
-
   .side-navbar ul {
     list-style: none;
     padding: 0;
@@ -418,7 +398,6 @@ export default {
   }
 
   .side-navbar a {
-    
     color: white;
     outline-color: #000;
     outline-style: solid;
@@ -432,90 +411,86 @@ export default {
     max-height: auto;
   }
 
-
   .side-navbar a:hover {
     background-color: rgb(182, 50, 109);
   }
 
   .rightside-container {
-  padding: 20px;
-  
+    padding: 20px;
     width: 10%;
     box-sizing: border-box;
     margin-bottom: 60px; /* Add space above the navbar to prevent overlap */
-
   }
 }
 
-
 @media (orientation: portrait) {
-    .page-container {
-      display: flex;
-      flex-direction: column; /* Stack content vertically */
-      width: 100%;
-      height: 100vh; /* Full height of the viewport */
-      box-sizing: border-box;
-      overflow: hidden; /* Prevent scrolling of the entire page */
-    }
+  .page-container {
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    width: 100%;
+    height: 100vh; /* Full height of the viewport */
+    box-sizing: border-box;
+    overflow: hidden; /* Prevent scrolling of the entire page */
+  }
 
-    .side-navbar-container {
-      position: fixed; /* Fix the navbar to the viewport */
-      bottom: 0; /* Stick to the bottom of the screen */
-      left: 0; /* Align to the left edge */
-      width: 100%; /* Full width of the screen */
-      height: 60px; /* Adjust height as needed */
-      background-color: rgb(173, 7, 82); /* Navbar background color */
-      display: flex;
-      flex-direction: row; /* Horizontal layout for navbar items */
-      justify-content: space-around; /* Space out navbar items evenly */
-      align-items: center; /* Center items vertically */
-      z-index: 10; /* Ensure it stays above other content */
-    }
+  .side-navbar-container {
+    position: fixed; /* Fix the navbar to the viewport */
+    bottom: 0; /* Stick to the bottom of the screen */
+    left: 0; /* Align to the left edge */
+    width: 100%; /* Full width of the screen */
+    height: 60px; /* Adjust height as needed */
+    background-color: rgb(173, 7, 82); /* Navbar background color */
+    display: flex;
+    flex-direction: row; /* Horizontal layout for navbar items */
+    justify-content: space-around; /* Space out navbar items evenly */
+    align-items: center; /* Center items vertically */
+    z-index: 10; /* Ensure it stays above other content */
+  }
 
-    .side-navbar {
-      width: 100%; /* Full width for the navbar */
-      display: flex;
-      flex-direction: row; /* Make the navbar horizontal */
-      justify-content: space-around; /* Space out items evenly */
-      align-items: center; /* Center items vertically */
-    }
+  .side-navbar {
+    width: 100%; /* Full width for the navbar */
+    display: flex;
+    flex-direction: row; /* Make the navbar horizontal */
+    justify-content: space-around; /* Space out items evenly */
+    align-items: center; /* Center items vertically */
+  }
 
-    .side-navbar ul {
-      display: flex; /* Make the list horizontal */
-      flex-direction: row; /* Align list items in a row */
-      padding: 0;
-      margin: 0;
-      list-style: none; /* Remove default list styling */
-      width: 100%; /* Full width of the navbar */
-      justify-content: space-around; /* Space out list items evenly */
-    }
+  .side-navbar ul {
+    display: flex; /* Make the list horizontal */
+    flex-direction: row; /* Align list items in a row */
+    padding: 0;
+    margin: 0;
+    list-style: none; /* Remove default list styling */
+    width: 100%; /* Full width of the navbar */
+    justify-content: space-around; /* Space out list items evenly */
+  }
 
-    .side-navbar li {
-      flex: 1; /* Distribute list items evenly */
-      text-align: center; /* Center text inside each item */
-    }
+  .side-navbar li {
+    flex: 1; /* Distribute list items evenly */
+    text-align: center; /* Center text inside each item */
+  }
 
-    .side-navbar a {
-      color: white;
-      text-decoration: none;
-      font-size: 1rem;
-      padding: 10px;
-      text-align: center;
-      display: block;
-      width: 100%; /* Ensure links take full width of their container */
-    }
+  .side-navbar a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 10px;
+    text-align: center;
+    display: block;
+    width: 100%; /* Ensure links take full width of their container */
+  }
 
-    .side-navbar a:hover {
-      background-color: rgb(182, 50, 109); /* Hover effect */
-    }
+  .side-navbar a:hover {
+    background-color: rgb(182, 50, 109); /* Hover effect */
+  }
 
-    .rightside-container {
-      flex: 1; /* Take up remaining space above the navbar */
-      padding: 20px;
-      overflow-y: auto; /* Allow vertical scrolling if content overflows */
-      width: 100%;
-      box-sizing: border-box;
-      margin-bottom: 60px; /* Add space above the navbar to prevent overlap */
-    }
+  .rightside-container {
+    flex: 1; /* Take up remaining space above the navbar */
+    padding: 20px;
+    overflow-y: auto; /* Allow vertical scrolling if content overflows */
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 60px; /* Add space above the navbar to prevent overlap */
+  }
 }
 </style>

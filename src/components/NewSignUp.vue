@@ -91,7 +91,7 @@ export default {
                 "fullName":this.fullName
             });
           console.log(result);
-          this.$router.push('/NewEditProfilePage');
+          this.$router.push('/home/edit');
         })
         
         .catch((error) => {

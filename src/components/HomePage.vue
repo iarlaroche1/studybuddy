@@ -2,15 +2,21 @@
   <div class="home-page-content">
     <Suspense>
       <template #default>
-        <div v-if="isProfileLoaded">
+        <div v-if="loading">
+          <div class="full-page-loader">
+            <div class="spinner"></div>
+            <p>Loading profile...</p>
+          </div>
+        </div>
+        <div v-else-if="isProfileLoaded">
           <div class="profile-display-top">
             <img class="profile-picture" alt="ProfilePic" :src="url" />
-            
-            <div class="username-year">
-              <span id="name">Name: {{ fullName }}<br>
-              <span id="year">Year: {{ year }}</span></span>
+
+            <div class="profile-info">
+              <h2 class="profile-name">{{ fullName }}</h2>
+              <p class="profile-year">Year: {{ year }}</p>
             </div>
-            
+
             <div class="edit-button-div">
               <button class="edit-profile-button" @click="this.$router.push('/home/edit')">
                 Edit Profile
@@ -26,14 +32,16 @@
 
             <div class="subjects-content-container">
               <h1>{{ fullName }}'s Subjects</h1>
-              <br>
+              <br />
 
               <div class="priority-group">
                 <dt class="priority-title">Needs to Study: </dt>
                 <template v-if="subjects.filter(s => s.priority == 3).length > 0">
-                  <dd v-for="subject in subjects.filter(s => s.priority == 3)" 
-                      :key="subject.id"
-                      class="subject-item">
+                  <dd
+                    v-for="subject in subjects.filter(s => s.priority == 3)"
+                    :key="subject.id"
+                    class="subject-item"
+                  >
                     {{ subject.name }}
                   </dd>
                 </template>
@@ -45,9 +53,11 @@
               <div class="priority-group">
                 <dt class="priority-title">Could Study:</dt>
                 <template v-if="subjects.filter(s => s.priority == 2).length > 0">
-                  <dd v-for="subject in subjects.filter(s => s.priority == 2)" 
-                      :key="subject.id"
-                      class="subject-item">
+                  <dd
+                    v-for="subject in subjects.filter(s => s.priority == 2)"
+                    :key="subject.id"
+                    class="subject-item"
+                  >
                     {{ subject.name }}
                   </dd>
                 </template>
@@ -59,9 +69,11 @@
               <div class="priority-group">
                 <dt class="priority-title">Doesn't Need to Study:</dt>
                 <template v-if="subjects.filter(s => s.priority == 1).length > 0">
-                  <dd v-for="subject in subjects.filter(s => s.priority == 1)" 
-                      :key="subject.id"
-                      class="subject-item">
+                  <dd
+                    v-for="subject in subjects.filter(s => s.priority == 1)"
+                    :key="subject.id"
+                    class="subject-item"
+                  >
                     {{ subject.name }}
                   </dd>
                 </template>
@@ -93,14 +105,15 @@ export default {
   name: "HomePage",
   data() {
     return {
-      fullName: '',
-      bio: '',
+      fullName: "",
+      bio: "",
       user: null,
-      username: '',
-      year: '',
+      username: "",
+      year: "",
       subjects: [],
-      url: '',
-      isProfileLoaded: false // Track if the profile is loaded
+      url: "",
+      isProfileLoaded: false, // Track if the profile is loaded
+      loading: true, // Add a loading state
     };
   },
   created() {
@@ -108,16 +121,16 @@ export default {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         this.user = user;
-        this.username = user.email ? user.email.split('@')[0] : ''; // Safely extract username
+        this.username = user.email ? user.email.split("@")[0] : ""; // Safely extract username
         if (this.username) {
           this.loadUserProfile();
         } else {
           console.error("Username is undefined or empty");
-          this.$router.push('/login'); // Redirect to login if username is invalid
+          this.$router.push("/login"); // Redirect to login if username is invalid
         }
       } else {
         console.log("No user is signed in");
-        this.$router.push('/login');
+        this.$router.push("/login");
       }
     });
   },
@@ -171,8 +184,9 @@ export default {
       }
 
       this.isProfileLoaded = true; // Mark profile as loaded
-    }
-  }
+      this.loading = false; // Mark loading as complete
+    },
+  },
 };
 </script>
 
@@ -232,8 +246,18 @@ export default {
   padding: 2px;
 }
 
-.username-year {
+.profile-info {
   flex-grow: 1;
+}
+
+.profile-name {
+  font-size: 1.5em;
+  margin: 0;
+}
+
+.profile-year {
+  font-size: 1em;
+  margin: 0;
 }
 
 .edit-button-div {
