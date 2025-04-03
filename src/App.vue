@@ -22,9 +22,12 @@
                 <li><a href="">-</a></li>
                 <li><a href="">-</a></li>
                 <li><a href="">-</a></li>
-                <li class="side-navbar-item logged-in-container">
+                <li class="side-navbar-item logged-in-container" v-if="user">
                   <span class="loggedInText">Logged in as {{ fullName }}</span>
                   <span class="sign-out-link" @click="handleSignOut">Sign Out</span>
+                </li>
+                <li class="side-navbar-item" v-else>
+                  <span class="loggedInText">Not logged in</span>
                 </li>
               </ul>
             </nav>
