@@ -28,8 +28,10 @@
                     <span class="sign-out-link" @click="handleSignOut">Sign Out</span>
                   </div>
                 </li>
-                <li class="side-navbar-item" v-else>
-                  <span class="loggedInText">Not logged in</span>
+                <li class="side-navbar-item logged-in-container" v-if="!user">
+                  <div class="logged-in-wrapper">
+                    <span class="loggedInText">Not logged in</span>
+                  </div>
                 </li>
               </ul>
             </nav>
@@ -288,7 +290,7 @@ export default {
 }
 
 .logged-in-container {
-  margin-top: auto; /* Push the "Logged in as" section to the bottom */
+  margin-top: auto; /* Push the section to the bottom */
   padding: 15px;
   background-color: #f5f5f5; /* Light background for contrast */
   border-top: 1px solid rgba(255, 255, 255, 0.2); /* Subtle divider */
@@ -296,9 +298,9 @@ export default {
 
 .logged-in-wrapper {
   display: flex;
-  flex-direction: column; /* Stack the text and button vertically */
+  flex-direction: column; /* Stack the text vertically */
   align-items: center; /* Center-align the content */
-  gap: 10px; /* Add spacing between the text and button */
+  gap: 10px; /* Add spacing between elements */
   padding: 15px; /* Add padding for a card-like feel */
   background-color: #f5f5f5; /* Light background for contrast */
   border: 1px solid #ddd; /* Subtle border */

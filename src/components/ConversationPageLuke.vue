@@ -358,6 +358,11 @@ export default {
   padding: 10px;
   cursor: pointer;
   transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px; /* Set a fixed width */
+  height: 50px; /* Set a fixed height */
 }
 
 .sendMessageButton:hover {
@@ -365,7 +370,8 @@ export default {
 }
 
 .msg-logo {
-  height: 20px;
-  width: 30px;
+  height: 20px; /* Adjust the height of the icon */
+  width: 20px; /* Adjust the width of the icon */
+  object-fit: contain; /* Ensure the icon fits within the button */
 }
 </style>
