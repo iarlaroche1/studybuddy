@@ -9,11 +9,11 @@
                     <p class="log-in-text">Sign Up To Get Started!</p>
                 </div>
         
-        
+              <!--
             <div class="input-container">
           <label for="full-name">Full Name:</label>
           <input id="full-name" v-model="fullName" type="text" placeholder="Enter your full name" class="input-field" />
-        </div>
+        </div> -->
 
         <div class="input-container">
           <label for="email">Email:</label>
