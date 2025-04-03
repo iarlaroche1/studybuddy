@@ -98,6 +98,7 @@ export default {
             username: '',
             year: '',
             subjects: [], // Array to hold dynamic subject data
+            userSubjects: [],
             url: '',
             profileUpdated: false,
             isUpdating: false
