@@ -110,20 +110,18 @@ export default {
             if (user) {
                 this.user = user;
                 this.username = user.email.split('@')[0]; // Extract username from email
+                if (this.$route.path.startsWith('/home/edit')) { // to ensure loadUsers function won't run anywhere else
+                    this.loadUserProfile().then(() => {
+                        this.getSubjects();
+                        console.log("User profile loaded successfully");
+                    }).catch((error) => {
+                        console.error("Error loading user profile:", error);
+                    });
+                }
             } else {
                 console.log("No user is signed in");
             }
         });
-    },
-    mounted() {
-        if (this.$route.path.startsWith('/home/edit')) { // to ensure loadUsers function won't run anywhere else
-            this.loadUserProfile().then(() => {
-                this.getSubjects();
-                console.log("User profile loaded successfully");
-            }).catch((error) => {
-                console.error("Error loading user profile:", error);
-            });
-        }
     },
     methods: {
         async loadUserProfile() {

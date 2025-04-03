@@ -59,7 +59,18 @@ export default {
             const conversationDocRef = doc(db, "conversations", this.conversationId);
             const conversationDoc = await getDoc(conversationDocRef);
 
+            if (!conversationDoc.exists()) {
+                console.error("Conversation document does not exist.");
+                this.$router.push('/chat/'); // redirect to the chat list
+                return;
+            }
+
             const conversationData = conversationDoc.data();
+            if (!conversationData) {
+                console.error("Conversation data is undefined.");
+                this.$router.push('/chat/'); // redirect to the chat list
+                return;
+            }
             if (conversationData.participants.includes(this.username)) {
                 // get conversation info
                 this.conversation = {
@@ -67,7 +78,7 @@ export default {
                     type: conversationData.type,
                     participants: conversationData.participants,
                     createdAt: conversationData.createdAt,
-                    messages: [] // Initialize an empty messages array
+                    messages: [] // initialize an empty messages array
                 };
 
                 // load details for participants
