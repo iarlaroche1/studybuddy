@@ -245,8 +245,8 @@ export default {
 .chat-box-button-wrapper {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 10%;
+  margin-bottom: 0%;
 }
 
 .input-field {
