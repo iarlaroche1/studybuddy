@@ -110,8 +110,7 @@ export default {
                             getDownloadURL(storageRef).then((url) => {
                                 receiver.photoURL = url; // Set the resolved URL
                             })
-                            .catch((error) => {
-                                console.error("Error retrieving photo URL:", error);
+                            .catch(() => {
                                 getDownloadURL(ref(storage, "profileImages/blank.jpg")).then((url) => {
                                         receiver.photoURL = url;
                                     });
@@ -128,44 +127,50 @@ export default {
             });
         },
         async newChat() {
-            const db = getFirestore(firebaseApp);
+            if (this.receiver == '' || this.receiver == null) {
+                console.error("Receiver is null!");
+            }
+            else {
 
-            // reference to the conversations collection
-            const conversationsCollectionRef = collection(db, "conversations");
+                const db = getFirestore(firebaseApp);
 
-            // get current date to store later
-            var createdAt = new Date();
+                // reference to the conversations collection
+                const conversationsCollectionRef = collection(db, "conversations");
 
-            var conversationRef;
-            var conversationId = null;
+                // get current date to store later
+                var createdAt = new Date();
 
-            const querySnapshot = await getDocs(conversationsCollectionRef);
+                var conversationRef;
+                var conversationId = null;
 
-            querySnapshot.forEach((doc) => { // go thru conversations collection and try to find one between the two given users
-                if (doc.data().participants.includes(this.username) && doc.data().participants.includes(this.receiver)) {
-                    conversationRef = doc.ref;
-                    conversationId = doc.id;
-                }
-            });
+                const querySnapshot = await getDocs(conversationsCollectionRef);
 
-            if (conversationId == null) { // if there is no existing conversation between two users
-                conversationRef = doc(conversationsCollectionRef); // auto-generate an ID for the conversation
-                conversationId = conversationRef.id;
-            
-                // add the conversation document
-                await setDoc(conversationRef, {
-                        type: "direct",
-                        participants: [this.username, this.receiver],
-                        lastMessage: "",
-                        lastMessageAt: createdAt,
-                        lastMessageBy: this.username,
-                        createdAt: createdAt
+                querySnapshot.forEach((doc) => { // go thru conversations collection and try to find one between the two given users
+                    if (doc.data().participants.includes(this.username) && doc.data().participants.includes(this.receiver)) {
+                        conversationRef = doc.ref;
+                        conversationId = doc.id;
+                    }
                 });
 
-                console.log(`Conversation created with ID: ${conversationId}`);
-            }
+                if (conversationId == null) { // if there is no existing conversation between two users
+                    conversationRef = doc(conversationsCollectionRef); // auto-generate an ID for the conversation
+                    conversationId = conversationRef.id;
+                
+                    // add the conversation document
+                    await setDoc(conversationRef, {
+                            type: "direct",
+                            participants: [this.username, this.receiver],
+                            lastMessage: "",
+                            lastMessageAt: createdAt,
+                            lastMessageBy: this.username,
+                            createdAt: createdAt
+                    });
 
-            this.$router.push('/chat/' + conversationId);
+                    console.log(`Conversation created with ID: ${conversationId}`);
+                }
+
+                this.$router.push('/chat/' + conversationId);
+            }
         },
         async loadUsers() {
             const db = getFirestore(firebaseApp);
