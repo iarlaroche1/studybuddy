@@ -71,6 +71,7 @@ export default {
                 this.$router.push('/chat/'); // redirect to the chat list
                 return;
             }
+            
             if (conversationData.participants.includes(this.username)) {
                 // get conversation info
                 this.conversation = {
