@@ -28,10 +28,8 @@
                     <span class="sign-out-link" @click="handleSignOut">Sign Out</span>
                   </div>
                 </li>
-                <li class="side-navbar-item logged-in-container" v-else>
-                  <div class="logged-in-wrapper">
-                    <span class="loggedInText">Not logged in</span>
-                  </div>
+                <li class="side-navbar-item" v-else>
+                  <span class="loggedInText">Not logged in</span>
                 </li>
               </ul>
             </nav>

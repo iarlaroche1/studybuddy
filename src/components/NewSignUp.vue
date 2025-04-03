@@ -51,7 +51,7 @@
   <script>
 import app from '../api/firebase';
 import { getFunctions, httpsCallable } from "firebase/functions";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
 export default {
   name: "NewSignUpPage",
@@ -65,7 +65,19 @@ export default {
       confirmPassword: ""
     };
   },
+  created() {
+        const auth = getAuth(app); // Use the Firebase app instance
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                this.user = user;
+                this.username = user.email.split('@')[0]; // Extract username from email
+                this.fullName = user.displayName || this.username; // Use displayName or fallback to username
+                this.$router.push('/home/edit'); // Redirect to home page if user is logged in
+            }
+          });
+      },
   methods: {
+
     async createUser(){
         const auth = getAuth(app);
       // todo alert user if email is invalid
@@ -91,7 +103,9 @@ export default {
                 "fullName":this.fullName
             });
           console.log(result);
+          window.location.reload();
           this.$router.push('/home/edit');
+          window.location.reload();
         })
         
         .catch((error) => {
