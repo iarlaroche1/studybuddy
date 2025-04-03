@@ -67,6 +67,17 @@
 
                 <br><br>
 
+                <!-- Edit Bio Section -->
+                <div class="edit-bio-container">
+                    <label for="bio" class="bio-label">Edit Bio:</label>
+                    <textarea
+                        id="bio"
+                        v-model="bio"
+                        class="bio-input"
+                        placeholder="Write something about yourself..."
+                    ></textarea>
+                </div>
+
                 <!-- Subjects Table -->
                 <table id="subjectAdd">
                 </table>
