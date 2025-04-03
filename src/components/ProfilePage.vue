@@ -173,11 +173,11 @@ export default {
             const db = getFirestore(firebaseApp);
             
             // add the buddies document
-            await setDoc(doc(db, "buddies", this.username + "-" + this.profileUsername), {
-                    buddies: [this.username, this.profileUsername]
+            await setDoc(doc(db, "buddyRequests", this.username + "-" + this.profileUsername), {
+                    "sender": this.username,
+                    "receiver": this.profileUsername
             }).then(() => {
-                console.log("Buddy successfully added!");
-                this.isBuddy = true;
+                console.log("Request sent!");
             }).catch((error) => {
                 console.error("Error adding buddy:", error);
             });

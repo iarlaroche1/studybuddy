@@ -11,6 +11,26 @@
         </div>
       </template>
 
+      <!-- Buddy Requests Section -->
+      <template v-else-if="buddyRequests.length > 0">
+        <h2>Buddy Requests</h2>
+        <ul class="buddy-requests-list">
+          <li v-for="request in buddyRequests" :key="request.id" class="buddy-request-item">
+            <img class="buddy-photo" :src="request.senderPhotoURL || 'default-profile.jpg'" alt="Sender Photo" />
+            <div class="buddy-details">
+              <router-link :to="'/user/' + request.senderUsername" class="buddy-link">
+                {{ request.senderFullName }}
+              </router-link>
+              <p class="buddy-username">@{{ request.senderUsername }}</p>
+              <div class="buddy-request-actions">
+                <button @click="acceptRequest(request)" class="accept-button">Accept</button>
+                <button @click="declineRequest(request)" class="decline-button">Decline</button>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </template>
+
       <!-- Buddies List -->
       <template v-else>
         <ul class="buddies-list">
@@ -36,7 +56,7 @@
                   <span v-for="(subject, index) in user.commonSubjects.filter(s => s.priority == 2)" :key="index">
                     {{ subject.id }}
                     <span v-if="index < user.commonSubjects.filter(s => s.priority == 2).length - 1">, </span>
-                  </span>
+                </span>
                 </p>
               </div>
             </div>
@@ -51,7 +71,7 @@
 /* eslint-disable */
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // import { getFunctions, httpsCallable } from "firebase/functions";
-import { getFirestore, doc, collection, setDoc, getDoc, getDocs } from "firebase/firestore";
+import { getFirestore, doc, collection, setDoc, getDoc, getDocs, deleteDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebaseApp from "../api/firebase"; // Import the Firebase app instance
 
@@ -65,6 +85,7 @@ export default {
         users: [],
         user1Subjects: [],
         loading: true, // Add a loading state
+        buddyRequests: []
         };
     },
     created() {
@@ -73,13 +94,15 @@ export default {
             if (user) {
                 this.user = user;
                 this.username = user.email.split('@')[0]; // Extract username from email
+                this.loadUsers();
+                this.loadBuddyRequests(); // Load buddy requests
+
             } else {
                 console.log("No user is signed in");
                 this.$router.push('/login');
             }
         });
 
-        this.loadUsers();
     },
     methods: {
         async loadUsers() {
@@ -207,6 +230,75 @@ export default {
             }
 
             return commonSubjects;
+        },
+        async loadBuddyRequests() {
+            const db = getFirestore(firebaseApp);
+            const buddyRequestsCollectionRef = collection(db, "buddyRequests");
+
+            const querySnapshot = await getDocs(buddyRequestsCollectionRef);
+            this.buddyRequests = [];
+
+            for (const requestDoc of querySnapshot.docs) {
+                const requestData = requestDoc.data();
+
+                // Only include requests where the logged-in user is the receiver
+                if (requestData.receiver === this.username) {
+                const senderDocRef = doc(db, "users", requestData.sender);
+                const senderDoc = await getDoc(senderDocRef);
+
+                let senderPhotoURL = null;
+                const storage = getStorage();
+                const storageRef = ref(storage, `profileImages/${requestData.sender}`);
+                try {
+                    senderPhotoURL = await getDownloadURL(storageRef);
+                } catch {
+                    senderPhotoURL = "default-profile.jpg";
+                }
+
+                this.buddyRequests.push({
+                    id: requestDoc.id,
+                    senderUsername: requestData.sender,
+                    senderFullName: senderDoc.exists() ? senderDoc.data().fullName : "Unknown User",
+                    senderPhotoURL: senderPhotoURL,
+                });
+                }
+            }
+        },
+        async acceptRequest(request) {
+            const db = getFirestore(firebaseApp);
+
+            try {
+                // Add to buddies collection
+                await setDoc(doc(db, "buddies", request.senderUsername + "-" + this.username), {
+                    buddies: [request.senderUsername, this.username],
+                });
+                console.log("Buddy added successfully!");
+            } catch (error) {
+                console.error("Error adding buddy:", error);
+            }
+
+            try {
+                // Remove the buddy request
+                await deleteDoc(doc(db, "buddyRequests", request.id));
+                console.log("Buddy request deleted successfully!");
+            } catch (error) {
+                console.error("Error deleting buddy request:", error);
+            }
+
+            // Remove the request from the buddyRequests array
+            const index = this.buddyRequests.findIndex((r) => r.id === request.id);
+            if (index !== -1) {
+                this.buddyRequests.splice(index, 1); // Remove the request from the array
+            }
+        },
+        async declineRequest(request) {
+            const db = getFirestore(firebaseApp);
+
+            // Remove the buddy request
+            await deleteDoc(doc(db, "buddyRequests", request.id));
+
+            // Refresh buddy requests
+            this.loadBuddyRequests();
         }
     }
 };
@@ -289,6 +381,61 @@ export default {
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
+
+.buddy-requests-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.buddy-request-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  gap: 15px;
+}
+
+.buddy-request-item:last-child {
+  border-bottom: none;
+}
+
+.buddy-request-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.accept-button {
+  background-color: #4caf50;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.accept-button:hover {
+  background-color: #45a049;
+}
+
+.decline-button {
+  background-color: #f44336;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.decline-button:hover {
+  background-color: #e53935;
+}
+
 
 @keyframes spin {
   0% {
