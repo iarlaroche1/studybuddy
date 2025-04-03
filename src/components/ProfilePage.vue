@@ -9,10 +9,6 @@ if user does not exist it should display 404, if user is the user logged in go t
 
         <div class="rightside-container">
 
-            <div class="home-header">
-               <div><h1 class="title">Study Buddy Finder: Home</h1></div>
-            </div>
-
             <div class="profile-display-top">
 
                 <img class="profile-picture" alt="ProfilePic" :src=url />

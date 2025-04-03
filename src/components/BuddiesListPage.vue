@@ -1,25 +1,41 @@
 <template>
-    <div>
-        <!-- NOTE most of this is temporary, in final product only fullName should be shown -->
-         <!-- would also be neat to make the names clickable links to profile pages, and have an "Add Friend" button beside each -->
+    <div class="home-page-content">
+        <div class="home-content-wrapper" style="flex-direction: column;">
+            <!-- NOTE most of this is temporary, in final product only fullName should be shown -->
+            <!-- would also be neat to make the names clickable links to profile pages, and have an "Add Friend" button beside each -->
 
-        <h1>Your Buddies</h1>
-        <li v-for="buddy in buddies" :key="buddy.id">
-            
-        </li>
+            <h1>Find Buddies</h1>
+            <li v-for="user in users" :key="user.id">
+                <img :src="user.photoURL" width="50" height="50">
+                <router-link :to="'/user/' + user.id">{{ user.fullName }}</router-link> TEMPCorrelation: {{ user.correlation }}
+                
+                <br><div v-if="user.commonSubjects.filter(s => s.priority == 3).length > 0">
+                    You both need to study 
+                    <span v-for="(subject, index) in user.commonSubjects.filter(s => s.priority == 3)" :key="index">
+                        {{ subject.id }}
+                        <!-- comma if more than one -->
+                        <span v-if="index < user.commonSubjects.filter(s => s.priority == 3).length - 1">, </span>
+                    </span>
+                </div>
 
-        <h1>Find Buddies</h1>
-        <li v-for="user in users" :key="user.id">
-            <router-link :to="'/user/' + user.id">{{ user.fullName }}</router-link> Correlation: {{ user.correlation }}
-            <!-- TEMP: show subjects and priority for each user - simply for the case of checking correlation system -->
-            <!--
-            <ul>
-                <li v-for="subject in user.subjects" :key="subject.id">
-                    {{ subject.id }}, Priority: {{ subject.priority }}
-                </li>
-            </ul>
-            -->
-        </li>
+                <div v-if="user.commonSubjects.filter(s => s.priority == 2).length > 0">
+                    You both could study 
+                    <span v-for="(subject, index) in user.commonSubjects.filter(s => s.priority == 2)" :key="index">
+                        {{ subject.id }}
+                        <!-- comma if more than one -->
+                        <span v-if="index < user.commonSubjects.filter(s => s.priority == 2).length - 1">, </span>
+                    </span>
+                </div>
+                <!-- TEMP: show subjects and priority for each user - simply for the case of checking correlation system -->
+                <!--
+                <ul>
+                    <li v-for="subject in user.subjects" :key="subject.id">
+                        {{ subject.id }}, Priority: {{ subject.priority }}
+                    </li>
+                </ul>
+                -->
+            </li>
+        </div>
     </div>
 </template>
 
@@ -77,20 +93,34 @@ export default {
                         
                         // only run correlation check if user is not user logged in
                         let correlation = await this.getCorrelation(subjects);
+                        let commonSubjects = await this.getCommonSubjects(subjects)
                         console.log(userDoc.id);
 
+                        // get profile photo
+                        const storage = getStorage();
+                        const storageRef = ref(storage, `profileImages/${userDoc.id}`);
+                        let photoURL = null;
+                        try {
+                            photoURL = await getDownloadURL(storageRef);
+                        } catch {
+                            photoURL = await getDownloadURL(ref(storage, "profileImages/blank.jpg"));
+                        }
+
+                        console.log(photoURL);
                         this.users.push({
                             "id": userDoc.id, 
                             "fullName": userData.fullName,
                             "subjects": subjects,
-                            "correlation": correlation
+                            "commonSubjects": commonSubjects,
+                            "correlation": correlation,
+                            "photoURL": photoURL
                         });
                     }
+
+                    // sort based on which correlation is higher
+                    this.users.sort((a,b) => (a.correlation > b.correlation) ? -1 : ((b.correlation > a.correlation) ? 1 : 0))
                   }
             }
-
-            // sort based on which correlation is higher
-            this.users.sort((a,b) => (a.correlation > b.correlation) ? -1 : ((b.correlation > a.correlation) ? 1 : 0))
         },
         async getUserSubjects(ref) {
             const querySnapshot = await getDocs(ref);
@@ -142,6 +172,29 @@ export default {
                 }                
             }
             return correlation / ((prioritySum1 + prioritySum2) / 2);
+        },
+        async getCommonSubjects(user2Subjects) {
+            const db = getFirestore(firebaseApp);
+            const commonSubjects = [];
+
+            // go thru each subject user has
+            for (const user1Subject of this.user1Subjects) {
+                let user2Subject = user2Subjects.find((subject) => subject.id === user1Subject.id);
+
+                if (user2Subject && user1Subject.priority == user2Subject.priority) {
+                    // get corresponding entry in root/subjects database
+                    const subjectDocRef = doc(db, "subjects", user1Subject.id);
+                    const subjectDoc = await getDoc(subjectDocRef);
+
+                    commonSubjects.push({
+                        "id": user1Subject.id,
+                        "name": subjectDoc.name,
+                        "priority": user1Subject.priority
+                    });
+                }
+            }
+
+            return commonSubjects;
         }
     }
 };
