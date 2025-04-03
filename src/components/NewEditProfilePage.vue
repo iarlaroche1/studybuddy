@@ -34,10 +34,10 @@
                 </div>
                 <div class="edit-profile-edit-button-div">
                     <template v-if="!isUpdating">
-                        <button class="edit-profile-button" @click="this.$router.push('../home')">
+                        <button class="edit-profile-button discard-button" @click="this.$router.push('../home')">
                             {{ profileUpdated ? 'Return Home' : 'Discard Changes' }}
                         </button>
-                        <button class="edit-profile-button" @click="updateUserProfile">
+                        <button class="edit-profile-button update-button" @click="updateUserProfile">
                             Update Profile
                         </button>
                     </template>
@@ -430,12 +430,38 @@ export default {
 .edit-profile-button {
   background-color: rgb(173, 7, 82);
   color: white;
-  padding: 1px 16px;
+  padding: 10px 20px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
 }
+
+.edit-profile-button:hover {
+  background-color: rgb(150, 6, 75);
+}
+
+.edit-profile-button:active {
+  background-color: rgb(182, 50, 109);
+}
+
+.discard-button {
+  background-color: rgb(200, 0, 0); /* Different color for discard button */
+}
+
+.discard-button:hover {
+  background-color: rgb(180, 0, 0);
+}
+
+.update-button {
+  background-color: rgb(0, 128, 0); /* Different color for update button */
+}
+
+.update-button:hover {
+  background-color: rgb(0, 100, 0);
+}
+
 #subjectAdd tr {
     display: flex;
     justify-content: space-between;
@@ -687,14 +713,10 @@ export default {
 
 
 .edit-profile-edit-button-div {
-    max-height: 100px;
-
-    height: auto;
-
-    border-radius: 0px;
-
-    padding-right: 50px;
-
+  display: flex; /* Use flexbox for alignment */
+  justify-content: center; /* Center the buttons horizontally */
+  gap: 10px; /* Add spacing between the buttons */
+  margin-top: 20px; /* Add some space above the buttons */
 }
 
 

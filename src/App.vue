@@ -39,7 +39,8 @@
     </template>
 
     <template #fallback>
-      <div class="full-page-loader">
+      <div class="loading-container">
+        <div class="spinner"></div>
         <p>Loading...</p>
       </div>
     </template>
@@ -105,6 +106,32 @@ export default {
   gap: 20px;
 }
 
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 10px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-top: 5px solid rgb(173, 7, 82); /* Spinner color */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -270,7 +297,7 @@ export default {
 .logged-in-container {
   display: flex; /* Align items horizontally */
   align-items: center; /* Vertically center the text and link */
-  gap: 10px; /* Add spacing between the text and the link */
+  gap: 10px; /* Add spacing between the text and link */
 }
 
 .loggedInText {
