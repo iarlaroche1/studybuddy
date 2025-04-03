@@ -1,10 +1,6 @@
 <template>
     <div class="home-content-wrapper" style="flex-direction:column;">
-         <!--
-        <div class="input-container">
-            <label for="message">Receiver: {{ this.receiver }}</label>
-        </div>
-        -->
+        <router-link to='../chat'>Back</router-link>
         <h1>{{ receiver.fullName }} ({{ receiver.id }})</h1>
         <li v-for="message in conversation.messages" :key="message.id">
             <b>{{ message.sender }}</b>: {{ message.content }} <i>({{ message.timestamp }})</i>
