@@ -66,9 +66,6 @@ export default {
             if (user) {
                 this.user = user;
                 this.username = user.email.split('@')[0]; // Extract username from email
-                this.loadUsers().then(() => {
-                    this.getMessagesRealtime();
-                });
             } else {
                 console.log("No user is signed in");
                 this.$router.push('/login');
