@@ -8,11 +8,14 @@
       <div class="messages-container">
         <ul class="messages-list">
           <li v-for="message in conversation.messages" :key="message.id" class="message-item">
-            <img
-              class="message-sender-photo"
-              :src="getUserPhoto(message.sender)"
-              alt="Sender Photo"
-            />
+            <!-- Wrap the profile picture in a router-link -->
+            <router-link :to="'/user/' + message.sender">
+              <img
+                class="message-sender-photo"
+                :src="getUserPhoto(message.sender)"
+                alt="Sender Photo"
+              />
+            </router-link>
             <div class="message-content-wrapper">
               <b class="message-sender">{{ getUserName(message.sender) }}</b>
               <span class="message-content">{{ message.content }}</span>
