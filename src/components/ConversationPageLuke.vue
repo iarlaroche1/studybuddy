@@ -1,25 +1,48 @@
 <template>
-    <div class="home-content-wrapper" style="flex-direction:column;">
-        <router-link to='../chat'>Back</router-link>
-        <h1>{{ receiver.fullName }} ({{ receiver.id }})</h1>
-        <li v-for="message in conversation.messages" :key="message.id">
-            <b>{{ message.sender }}</b>: {{ message.content }} <i>({{ message.timestamp }})</i>
-        </li>
+  <div class="home-page-content">
+    <div class="home-content-wrapper" style="flex-direction: column;">
+      <router-link to="../chat" class="back-link">Back</router-link>
+      <h1 class="receiver-header">{{ receiver.fullName }} ({{ receiver.id }})</h1>
 
-        <!-- message input + send button -->
-        <div class="message-input-container">
-            <textarea id="messageContent" v-model="messageContent" type="text" placeholder="Message" class="input-field"></textarea>
-            <button class="sendMessageButton" @click="sendMessage()"><img class="msg-logo" alt="Send" src="@/assets/send_logo.jpg" /></button>
-        </div>
+      <!-- Messages List -->
+      <div class="messages-container">
+        <ul class="messages-list">
+          <li v-for="message in conversation.messages" :key="message.id" class="message-item">
+            <img
+              class="message-sender-photo"
+              :src="getUserPhoto(message.sender)"
+              alt="Sender Photo"
+            />
+            <div class="message-content-wrapper">
+              <b class="message-sender">{{ getUserName(message.sender) }}</b>
+              <span class="message-content">{{ message.content }}</span>
+              <i class="message-timestamp">({{ formatDate(message.timestamp) }})</i>
+            </div>
+          </li>
+        </ul>
+      </div>
 
+      <!-- Message Input -->
+      <div class="message-input-container">
+        <textarea
+          id="messageContent"
+          v-model="messageContent"
+          type="text"
+          placeholder="Message"
+          class="input-field"
+        ></textarea>
+        <button class="sendMessageButton" @click="sendMessage()">
+          <img class="msg-logo" alt="Send" src="@/assets/send_logo.jpg" />
+        </button>
+      </div>
     </div>
+  </div>
 </template>
 
 
 <script>
 /* eslint-disable */
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-// import { getFunctions, httpsCallable } from "firebase/functions";
 import { getFirestore, doc, collection, setDoc, getDoc, getDocs, onSnapshot } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebaseApp from "../api/firebase"; // Import the Firebase app instance
@@ -95,7 +118,6 @@ export default {
                     const messages = [];
                     messagesSnapshot.forEach((messageDoc) => {
                         const messageData = messageDoc.data();
-                        console.log(messageData.content);
                         messages.push({
                             id: messageDoc.id,
                             content: messageData.content,
@@ -124,11 +146,21 @@ export default {
                 const userDoc = await getDoc(doc(db, "users", participant));
                 participants.push({
                     "id": userDoc.id,
-                    "fullName": userDoc.data().fullName
+                    "fullName": userDoc.data().fullName,
+                    "photoURL": await this.getUserPhotoURL(userDoc.id)
                 });
             }
 
             return participants;
+        },
+        async getUserPhotoURL(userId) {
+            const storage = getStorage();
+            const storageRef = ref(storage, `profileImages/${userId}`);
+            try {
+                return await getDownloadURL(storageRef);
+            } catch {
+                return await getDownloadURL(ref(storage, "profileImages/blank.jpg"));
+            }
         },
         async sendMessage() {
             const db = getFirestore(firebaseApp);
@@ -189,6 +221,23 @@ export default {
             }, { merge: true }); // use merge: true to preserve existing data);
             
             this.messageContent = "";
+        },
+        getUserPhoto(userId) {
+            const user = this.conversation.participants.find((u) => u.id === userId);
+            return user ? user.photoURL : "default-profile.jpg";
+        },
+        getUserName(userId) {
+            const user = this.conversation.participants.find((u) => u.id === userId);
+            return user ? user.fullName : "Unknown User";
+        },
+        formatDate(date) {
+            return new Intl.DateTimeFormat("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+            }).format(date);
         }
     }
 };
@@ -196,125 +245,124 @@ export default {
 
 <style>
 .home-page-content {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    overflow: hidden;
-  }
-  
-  .message-input-container {
-    margin-bottom: 15px;
-  }
-  .receiver-input-container {
-    margin-bottom: 15px;
-  }
-  .input-container label {
-      font-size: 18px;
-      font-weight: 500;
-      color: #000;
-      margin-bottom: 8px;
-      /* space between label and input */
-  }
-  .home-content-wrapper {
-    display: flex;
-    gap: 20px;
-    flex: 1;
-    min-height: 0;
-  }
-  .msg-logo {
-      height: 20px;
-      width: 30px;
-      
-     
-  }
-  .bio-content-container,
-  .subjects-content-container {
-    flex: 1;
-    padding: 15px;
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    overflow-y: auto;
-    min-height: 0;
-  }
-  
-  
-  .home-header {
-    margin-bottom: 20px;
-  }
-  
-  .profile-display-top {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 20px;
-    padding: 10px;
-    border: 1px solid #ddd;
-  }
-  
-  .profile-picture {
-    height: 80px;
-    width: 80px;
-    border: 1px solid #000;
-    padding: 2px;
-  }
-  
-  .username-year {
-    flex-grow: 1;
-  }
-  
-  .edit-button-div {
-    margin-left: auto;
-  }
-  
-  .home-content-wrapper {
-    display: flex;
-    gap: 20px;
-  }
-  
-  
-  .sendMessageButton{
-     
-    
-     
-      cursor: pointer;
-      transition: background-color 0.3s;
-  }
-  
-  .priority-group {
-    margin-bottom: 15px;
-    padding: 5px;
-    /* Remove fixed height */
-    height: auto; /* Let content determine height */
-  }
-  .priority-title {
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  .subject-item {
-    margin-left: 20px;
-    padding: 5px 0;
-  }
-  
-  .empty-message {
-    color: #666;
-    font-style: italic;
-    margin-left: 20px;
-  }
-  
-  .edit-profile-button {
-    background-color: rgb(173, 7, 82);
-    color: white;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .edit-profile-button:hover {
-    background-color: rgb(160, 6, 75);
-  }
-  </style>
-  
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full height of the viewport */
+  overflow: hidden; /* Prevent content overflow */
+}
+
+.home-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
+}
+
+.back-link {
+  text-decoration: none;
+  color: rgb(173, 7, 82);
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.receiver-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.messages-container {
+  flex: 1; /* Allow the messages container to grow and fill available space */
+  overflow-y: auto; /* Enable vertical scrolling */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.messages-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.message-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  padding: 5px;
+  border-bottom: 1px solid #eee;
+}
+
+.message-item:last-child {
+  border-bottom: none; /* Remove border for the last message */
+}
+
+.message-sender-photo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.message-content-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.message-sender {
+  font-weight: bold;
+  color: rgb(173, 7, 82);
+}
+
+.message-content {
+  margin-left: 5px;
+  color: #333;
+}
+
+.message-timestamp {
+  font-size: 0.8rem;
+  color: #999;
+  margin-left: 10px;
+}
+
+.message-input-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.input-field {
+  flex: 1;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: none; /* Prevent resizing of the textarea */
+}
+
+.sendMessageButton {
+  background-color: rgb(173, 7, 82);
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.sendMessageButton:hover {
+  background-color: rgb(160, 6, 75);
+}
+
+.msg-logo {
+  height: 20px;
+  width: 30px;
+}
+</style>
